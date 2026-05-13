@@ -107,7 +107,11 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
         >
-          I build polished web experiences with React and Next.js, and I'm learning cybersecurity through TryHackMe. Focused on smooth animations, clean UI, and writing secure code.
+          I'm a frontend developer who's fallen down the cybersecurity rabbit hole. 
+          By day, I craft smooth React interfaces with pixel-perfect animations. 
+          By night, I'm knee-deep in TryHackMe rooms, learning how to think like 
+          an attacker so I can build more secure applications. Currently at Level 15 
+          with 42 rooms completed, and I'm just getting started.
         </motion.p>
 
         <motion.div

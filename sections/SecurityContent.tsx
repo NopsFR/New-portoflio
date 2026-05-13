@@ -161,66 +161,115 @@ const securityTools = [
   },
 ];
 
-// Interactive Data Collection Demo
+// Interactive Data Collection Demo - Enhanced
 function DataCollectionDemo() {
   const [collectedData, setCollectedData] = useState<Record<string, string>>({});
   const [isVisible, setIsVisible] = useState(false);
+  const [isScanning, setIsScanning] = useState(true);
 
   useEffect(() => {
-    // Collect data when component mounts
-    const data: Record<string, string> = {
-      'User Agent': navigator.userAgent.substring(0, 50) + '...',
-      'Screen Resolution': `${window.screen.width}x${window.screen.height}`,
-      'Language': navigator.language,
-      'Platform': navigator.platform,
-      'Cookies Enabled': navigator.cookieEnabled ? 'Yes' : 'No',
-      'Time Zone': Intl.DateTimeFormat().resolvedOptions().timeZone,
-      'Connection Type': (navigator as any).connection?.effectiveType || 'Unknown',
-      'Do Not Track': navigator.doNotTrack === '1' ? 'Enabled' : 'Disabled',
-    };
-    setCollectedData(data);
+    // Simulate scanning effect
+    const timer = setTimeout(() => {
+      // Collect comprehensive data that websites can access
+      const data: Record<string, string> = {
+        '🌐 Public IP': 'Hidden (would require external API)',
+        '🖥️ User Agent': navigator.userAgent.length > 60 ? navigator.userAgent.substring(0, 60) + '...' : navigator.userAgent,
+        '📺 Screen Resolution': `${window.screen.width} × ${window.screen.height} (${window.screen.colorDepth}-bit color)`,
+        '🌍 Language': `${navigator.language} (${(navigator.languages || []).join(', ')})`,
+        '💻 Platform': `${navigator.platform} | ${navigator.hardwareConcurrency} cores`,
+        '🍪 Cookies': navigator.cookieEnabled ? '✅ Enabled' : '❌ Disabled',
+        '🕐 Time Zone': Intl.DateTimeFormat().resolvedOptions().timeZone,
+        '📡 Connection': (navigator as any).connection?.effectiveType?.toUpperCase() || 'Unknown',
+        '🔒 Do Not Track': navigator.doNotTrack === '1' ? '✅ Enabled' : '❌ Disabled',
+        '📱 Touch Support': 'ontouchstart' in window ? '✅ Yes' : '❌ No',
+        '🎮 WebGL Vendor': 'Can identify GPU model',
+        '📦 Local Storage': localStorage ? '✅ Available' : '❌ Blocked',
+        '🔔 Notifications': Notification?.permission || 'Not requested',
+        '📍 Geolocation': 'Available with permission',
+        '📋 Clipboard': 'Read access requires permission',
+      };
+      setCollectedData(data);
+      setIsScanning(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div className="glass-card rounded-2xl p-8">
+    <div className="glass-card rounded-2xl p-8 border-violet-500/20">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-2xl font-bold text-white flex items-center gap-3">
-          <Database className="text-violet-500" size={28} />
-          Live Data Collection Demo
-        </h3>
-        <button
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-600 to-orange-500 flex items-center justify-center animate-pulse">
+            <Database className="text-white" size={24} />
+          </div>
+          <div>
+            <h3 className="text-2xl font-bold text-white">Browser Fingerprint Scanner</h3>
+            <p className="text-sm text-gray-500">Real-time data extraction demo</p>
+          </div>
+        </div>
+        <motion.button
           onClick={() => setIsVisible(!isVisible)}
-          className="px-4 py-2 rounded-lg bg-violet-600/20 text-violet-400 hover:bg-violet-600/30 transition-colors flex items-center gap-2"
+          className="px-4 py-2 rounded-lg bg-violet-600/20 text-violet-400 hover:bg-violet-600/30 transition-colors flex items-center gap-2 border border-violet-500/30"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           {isVisible ? <EyeOff size={18} /> : <Eye size={18} />}
           {isVisible ? 'Hide Data' : 'Reveal Data'}
-        </button>
+        </motion.button>
       </div>
 
-      <p className="text-gray-400 mb-6">
-        This demo shows what information websites can collect about you just by visiting. 
-        All data shown is collected from your browser locally - nothing is sent anywhere.
-      </p>
+      <div className="mb-6 p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
+        <div className="flex items-start gap-3">
+          <Terminal className="text-blue-400 mt-0.5 flex-shrink-0" size={20} />
+          <div>
+            <h4 className="text-blue-400 font-medium mb-1">Educational Security Demo</h4>
+            <p className="text-blue-200/70 text-sm">
+              This demo shows what information websites and potential attackers can collect 
+              about you just by visiting a page. All data is processed locally — nothing is 
+              transmitted or stored. This is for educational purposes only.
+            </p>
+          </div>
+        </div>
+      </div>
 
-      {isVisible ? (
-        <div className="grid md:grid-cols-2 gap-4">
-          {Object.entries(collectedData).map(([key, value]) => (
+      {isScanning ? (
+        <div className="flex items-center justify-center p-12 rounded-lg bg-black/30 border border-violet-500/30">
+          <div className="text-center">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+              className="w-16 h-16 border-4 border-violet-500 border-t-transparent rounded-full mx-auto mb-4"
+            />
+            <p className="text-violet-400 font-mono">Scanning browser fingerprint...</p>
+            <p className="text-gray-500 text-sm mt-2">Extracting device information</p>
+          </div>
+        </div>
+      ) : isVisible ? (
+        <div className="space-y-3">
+          {Object.entries(collectedData).map(([key, value], index) => (
             <motion.div
               key={key}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex items-center justify-between p-4 rounded-lg bg-white/5 border border-white/10"
+              initial={{ opacity: 0, x: -20, backgroundColor: 'rgba(139, 92, 246, 0.1)' }}
+              animate={{ opacity: 1, x: 0, backgroundColor: 'rgba(255, 255, 255, 0.03)' }}
+              transition={{ delay: index * 0.05 }}
+              className="flex items-center justify-between p-4 rounded-lg bg-white/3 border border-white/10 hover:border-violet-500/30 transition-colors"
             >
-              <span className="text-gray-400 text-sm">{key}</span>
-              <span className="text-white font-mono text-sm ml-4">{value}</span>
+              <span className="text-gray-300 text-sm font-medium flex items-center gap-2">
+                <span className="text-violet-500">{key.split(' ')[0]}</span>
+                {key.split(' ').slice(1).join(' ')}
+              </span>
+              <span className="text-cyan-400 font-mono text-sm ml-4 max-w-md truncate" title={value}>
+                {value}
+              </span>
             </motion.div>
           ))}
         </div>
       ) : (
-        <div className="flex items-center justify-center p-12 rounded-lg bg-white/5 border border-white/10">
+        <div className="flex items-center justify-center p-12 rounded-lg bg-black/30 border border-white/10">
           <div className="text-center">
             <Eye className="mx-auto mb-4 text-gray-500" size={48} />
-            <p className="text-gray-500">Click "Reveal Data" to see what information is being collected</p>
+            <p className="text-gray-400">Click "Reveal Data" to see what information is being collected</p>
+            <p className="text-gray-600 text-sm mt-2">This simulates what trackers and potential attackers can see</p>
           </div>
         </div>
       )}
@@ -231,8 +280,10 @@ function DataCollectionDemo() {
           <div>
             <h4 className="text-amber-400 font-medium mb-1">Why This Matters</h4>
             <p className="text-amber-200/70 text-sm">
-              Websites collect this data to build profiles about you for advertising, analytics, and tracking. 
-              Consider using privacy tools like VPNs, tracker blockers, and privacy-focused browsers to minimize your digital footprint.
+              Every website you visit can collect this data to build a unique fingerprint of your device. 
+              Advertisers use this for tracking, and attackers can use it for targeted attacks. 
+              Use VPNs, privacy browsers (Tor, Brave), tracker blockers (uBlock Origin), 
+              and disable unnecessary browser features to protect yourself.
             </p>
           </div>
         </div>

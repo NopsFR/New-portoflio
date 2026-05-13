@@ -63,17 +63,7 @@ export default function Navbar() {
           : 'bg-transparent py-6'
       }`}
     >
-      <div className="container-custom mx-auto px-6 flex items-center justify-between">
-        {/* Logo */}
-        <motion.a
-          href="#home"
-          onClick={(e) => handleNavClick('#home', e)}
-          className="text-2xl font-bold gradient-text"
-          whileHover={{ scale: 1.05 }}
-        >
-          Portfolio
-        </motion.a>
-
+      <div className="container-custom mx-auto px-6 flex items-center justify-center">
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-20">
           {navItems.map((item, index) => (

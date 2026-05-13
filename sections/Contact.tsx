@@ -36,6 +36,7 @@ export default function Contact() {
 
   const socialLinks = [
     { name: 'GitHub', href: 'https://github.com/NopsFR', icon: ExternalLink },
+    { name: 'LinkedIn', href: 'https://linkedin.com/in/OscarSenior', icon: ExternalLink },
   ];
 
   return (
@@ -118,7 +119,7 @@ export default function Contact() {
 
               {/* Contact Card */}
               <motion.a
-                href="mailto:Oscar.sDisc.ac.uk"
+                href="mailto:Oscar.s@Disc.ac.uk"
                 className="flex items-center gap-4 p-4 rounded-xl glass-card hover:border-violet-500/50 transition-colors duration-300 group"
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -129,7 +130,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <div className="text-sm text-gray-500">Email</div>
-                  <div className="text-white font-medium">Oscar.sDisc.ac.uk</div>
+                  <div className="text-white font-medium">Oscar.s@Disc.ac.uk</div>
                 </div>
               </motion.a>
             </motion.div>

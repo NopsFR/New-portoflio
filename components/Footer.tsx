@@ -4,10 +4,9 @@ import { motion } from 'framer-motion';
 import { Heart, ExternalLink, User, AtSign, Send } from 'lucide-react';
 
 const socialLinks = [
-  { name: 'GitHub', href: 'https://github.com/bigst', icon: ExternalLink },
-  { name: 'LinkedIn', href: 'https://linkedin.com/in/bigst', icon: User },
-  { name: 'Twitter', href: 'https://twitter.com/bigst', icon: Send },
-  { name: 'Email', href: 'mailto:hello@portfolio.com', icon: AtSign },
+  { name: 'GitHub', href: 'https://github.com/NopsFR', icon: ExternalLink },
+  { name: 'LinkedIn', href: 'https://linkedin.com/in/OscarSenior', icon: User },
+  { name: 'Email', href: 'mailto:Oscar.s@Disc.ac.uk', icon: AtSign },
 ];
 
 export default function Footer() {

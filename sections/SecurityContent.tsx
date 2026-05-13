@@ -140,7 +140,7 @@ const securityTools = [
     tools: [
       { name: 'WireGuard', description: 'Modern, fast VPN protocol', icon: '🔗' },
       { name: 'Pi-hole', description: 'Network-wide ad and tracker blocker', icon: '🕳️' },
-      { name: 'ProtonVPN', description: 'Privacy-focused VPN service', icon: '🌐' },
+      { name: 'Mullvad VPN', description: 'Anonymous, no-logs VPN service', icon: '🌐' },
     ],
   },
   {
@@ -148,7 +148,7 @@ const securityTools = [
     tools: [
       { name: 'Tor Browser', description: 'Anonymous web browsing', icon: '🧅' },
       { name: 'DuckDuckGo', description: 'Privacy-focused search engine', icon: '🦆' },
-      { name: 'ProtonMail', description: 'Encrypted email service', icon: '📧' },
+      { name: 'Mullvad Browser', description: 'Anti-fingerprinting browser', icon: '🌍' },
     ],
   },
   {

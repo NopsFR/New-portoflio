@@ -161,18 +161,91 @@ const securityTools = [
   },
 ];
 
-// Interactive Data Collection Demo - Enhanced
+// Interactive Data Collection Demo - Enhanced with IP API and Permissions
 function DataCollectionDemo() {
   const [collectedData, setCollectedData] = useState<Record<string, string>>({});
   const [isVisible, setIsVisible] = useState(false);
   const [isScanning, setIsScanning] = useState(true);
+  const [permissionsGranted, setPermissionsGranted] = useState(false);
+  const [ipAddress, setIpAddress] = useState<string | null>(null);
+  const [permissionStatus, setPermissionStatus] = useState<Record<string, string>>({});
+
+  // Fetch IP address from external API
+  useEffect(() => {
+    const fetchIP = async () => {
+      try {
+        // Using ipapi.co for IP detection (no API key required for basic usage)
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        setIpAddress(data.ip || 'Unable to detect');
+      } catch (error) {
+        // Fallback to ipify API
+        try {
+          const response = await fetch('https://api.ipify.org?format=json');
+          const data = await response.json();
+          setIpAddress(data.ip || 'Unable to detect');
+        } catch (fallbackError) {
+          setIpAddress('Unable to detect (API error)');
+        }
+      }
+    };
+    fetchIP();
+  }, []);
+
+  // Request permissions for enhanced data collection
+  const requestPermissions = async () => {
+    const permissions: Record<string, string> = {};
+    
+    // Request Geolocation permission
+    try {
+      if ('geolocation' in navigator) {
+        const result = await new Promise<string>((resolve) => {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              resolve(`Lat: ${position.coords.latitude.toFixed(2)}, Lng: ${position.coords.longitude.toFixed(2)}`);
+            },
+            (error) => {
+              resolve(`Denied: ${error.message}`);
+            },
+            { enableHighAccuracy: false, timeout: 5000 }
+          );
+        });
+        permissions['📍 Geolocation'] = result;
+      }
+    } catch (e) {
+      permissions['📍 Geolocation'] = '❌ Blocked';
+    }
+
+    // Request Notification permission
+    try {
+      if ('Notification' in window) {
+        const result = await Notification.requestPermission();
+        permissions['🔔 Notifications'] = result === 'granted' ? '✅ Granted' : `❌ ${result}`;
+      }
+    } catch (e) {
+      permissions['🔔 Notifications'] = '❌ Blocked';
+    }
+
+    // Check Clipboard permission
+    try {
+      if ('clipboard' in navigator) {
+        const status = await navigator.permissions.query({ name: 'clipboard-read' as PermissionName });
+        permissions['📋 Clipboard'] = status.state === 'granted' ? '✅ Readable' : `⚠️ ${status.state}`;
+      }
+    } catch (e) {
+      permissions['📋 Clipboard'] = '⚠️ Requires user action';
+    }
+
+    setPermissionStatus(permissions);
+    setPermissionsGranted(true);
+  };
 
   useEffect(() => {
     // Simulate scanning effect
     const timer = setTimeout(() => {
       // Collect comprehensive data that websites can access
       const data: Record<string, string> = {
-        '🌐 Public IP': 'Hidden (would require external API)',
+        '🌐 Public IP': ipAddress || 'Fetching...',
         '🖥️ User Agent': navigator.userAgent.length > 60 ? navigator.userAgent.substring(0, 60) + '...' : navigator.userAgent,
         '📺 Screen Resolution': `${window.screen.width} × ${window.screen.height} (${window.screen.colorDepth}-bit color)`,
         '🌍 Language': `${navigator.language} (${(navigator.languages || []).join(', ')})`,
@@ -193,7 +266,7 @@ function DataCollectionDemo() {
     }, 1500);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [ipAddress]);
 
   return (
     <div className="glass-card rounded-2xl p-8 border-violet-500/20">
@@ -204,7 +277,7 @@ function DataCollectionDemo() {
           </div>
           <div>
             <h3 className="text-2xl font-bold text-white">Browser Fingerprint Scanner</h3>
-            <p className="text-sm text-gray-500">Real-time data extraction demo</p>
+            <p className="text-sm text-gray-500">Real-time data extraction demo with IP detection</p>
           </div>
         </div>
         <motion.button
@@ -231,6 +304,32 @@ function DataCollectionDemo() {
           </div>
         </div>
       </div>
+
+      {/* Permission Request Section */}
+      {!permissionsGranted && (
+        <div className="mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+          <div className="flex items-start gap-3">
+            <Lock className="text-emerald-400 mt-0.5 flex-shrink-0" size={20} />
+            <div className="flex-1">
+              <h4 className="text-emerald-400 font-medium mb-2">Request Enhanced Permissions</h4>
+              <p className="text-emerald-200/70 text-sm mb-3">
+                Grant permissions to see what additional data websites can collect when you allow 
+                access to your location, notifications, and clipboard. This simulates what happens 
+                when you click "Allow" on permission prompts.
+              </p>
+              <motion.button
+                onClick={requestPermissions}
+                className="px-4 py-2 rounded-lg bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600/30 transition-colors flex items-center gap-2 border border-emerald-500/30"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Lock size={18} />
+                Grant All Permissions
+              </motion.button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {isScanning ? (
         <div className="flex items-center justify-center p-12 rounded-lg bg-black/30 border border-violet-500/30">
@@ -259,6 +358,25 @@ function DataCollectionDemo() {
                 {key.split(' ').slice(1).join(' ')}
               </span>
               <span className="text-cyan-400 font-mono text-sm ml-4 max-w-md truncate" title={value}>
+                {value}
+              </span>
+            </motion.div>
+          ))}
+          
+          {/* Permission-granted data */}
+          {permissionsGranted && Object.entries(permissionStatus).map(([key, value], index) => (
+            <motion.div
+              key={key}
+              initial={{ opacity: 0, x: -20, backgroundColor: 'rgba(16, 185, 129, 0.1)' }}
+              animate={{ opacity: 1, x: 0, backgroundColor: 'rgba(255, 255, 255, 0.03)' }}
+              transition={{ delay: (Object.keys(collectedData).length + index) * 0.05 }}
+              className="flex items-center justify-between p-4 rounded-lg bg-emerald-500/5 border border-emerald-500/20"
+            >
+              <span className="text-gray-300 text-sm font-medium flex items-center gap-2">
+                <span className="text-emerald-500">{key.split(' ')[0]}</span>
+                {key.split(' ').slice(1).join(' ')}
+              </span>
+              <span className="text-emerald-400 font-mono text-sm ml-4" title={value}>
                 {value}
               </span>
             </motion.div>

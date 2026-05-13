@@ -98,7 +98,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          Frontend Developer & Cybersecurity Learner
+          Cybersecurity Enthusiast & Penetration Testing Learner
         </motion.p>
 
         <motion.p
@@ -107,11 +107,13 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
         >
-          I'm a frontend developer who's fallen down the cybersecurity rabbit hole. 
-          By day, I craft smooth React interfaces with pixel-perfect animations. 
-          By night, I'm knee-deep in TryHackMe rooms, learning how to think like 
-          an attacker so I can build more secure applications. Currently at Level 15 
-          with 42 rooms completed, and I'm just getting started.
+          I'm on a mission to master cybersecurity through hands-on learning. 
+          Currently grinding through TryHackMe rooms — from Linux fundamentals 
+          to web exploitation, network scanning, and privilege escalation. 
+          I've completed 42 rooms, earned my Level 15 badge, and I'm deep into 
+          the "Complete Beginner to Advanced" path. Every day I'm learning how 
+          attackers think so I can build defenses that actually work. OSCP is 
+          the next goal.
         </motion.p>
 
         <motion.div

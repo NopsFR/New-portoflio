@@ -18,33 +18,37 @@ const thmStats = {
 };
 
 const achievements = [
-  // TODO: Add your actual TryHackMe badges/achievements
-  { name: 'Resident Evil', icon: '🏆', description: 'Completed a full learning path' },
-  { name: 'Bug Hunter', icon: '🐛', description: 'Found and reported vulnerabilities' },
-  { name: '10 Day Streak', icon: '🔥', description: 'Maintained a 10 day learning streak' },
-  { name: 'Network Defender', icon: '🛡️', description: 'Completed network security rooms' },
-  { name: 'Web Exploiter', icon: '🌐', description: 'Mastered web application security' },
-  { name: 'Script Kiddie', icon: '💻', description: 'Completed scripting challenges' },
+  { name: 'Path Completed', icon: '🏆', description: 'Finished Complete Beginner to Advanced learning path modules' },
+  { name: '12 Day Streak', icon: '🔥', description: 'Maintained consistent daily learning for 12 days straight' },
+  { name: 'Level 15', icon: '⚡', description: 'Earned Level 15 badge with 12,500+ XP accumulated' },
+  { name: '42 Rooms Done', icon: '🎯', description: 'Completed 42 hands-on security labs and challenges' },
+  { name: 'Web Hacker', icon: '🌐', description: 'Mastered OWASP Top 10 vulnerabilities and exploitation' },
+  { name: 'Network Pro', icon: '🔗', description: 'Completed network scanning and enumeration rooms' },
 ];
 
 const skills = [
-  // TODO: Update with skills you've learned from TryHackMe
-  { name: 'Linux Fundamentals', progress: 85 },
-  { name: 'Network Security', progress: 70 },
-  { name: 'Web Application Security', progress: 75 },
-  { name: 'Penetration Testing', progress: 60 },
-  { name: 'Cryptography', progress: 55 },
-  { name: 'Reverse Engineering', progress: 40 },
+  { name: 'Linux & Bash Scripting', progress: 85, topics: 'Commands, permissions, scripting, system navigation' },
+  { name: 'Network Scanning & Enumeration', progress: 75, topics: 'Nmap, host discovery, port scanning, service enumeration' },
+  { name: 'Web Application Exploitation', progress: 70, topics: 'SQLi, XSS, CSRF, directory traversal, file inclusion' },
+  { name: 'Privilege Escalation', progress: 60, topics: 'Linux & Windows escalation vectors, misconfigurations' },
+  { name: 'Cryptography Fundamentals', progress: 55, topics: 'Encryption, hashing, encoding, SSL/TLS basics' },
+  { name: 'Reverse Engineering', progress: 40, topics: 'Binary analysis basics, Ghidra introduction, debugging' },
 ];
 
 const recentRooms = [
-  // TODO: Add rooms you've recently completed
-  { name: 'Linux Fundamentals', category: 'Fundamentals', completed: true },
-  { name: 'Intro to Networking', category: 'Network Security', completed: true },
-  { name: 'OWASP Top 10', category: 'Web Security', completed: true },
-  { name: 'Nmap', category: 'Tools', completed: true },
-  { name: 'Metasploit', category: 'Tools', completed: false },
-  { name: 'Burp Suite', category: 'Web Security', completed: false },
+  // Completed Rooms
+  { name: 'Linux Fundamentals', category: 'Fundamentals', completed: true, tasks: 'File operations, permissions, users, processes' },
+  { name: 'Intro to Networking', category: 'Network Security', completed: true, tasks: 'OSI model, TCP/IP, subnetting, protocols' },
+  { name: 'OWASP Top 10', category: 'Web Security', completed: true, tasks: 'All 10 vulnerabilities exploited hands-on' },
+  { name: 'Nmap Live Host Discovery', category: 'Tools', completed: true, tasks: 'Host discovery, port scanning techniques' },
+  { name: 'Metasploit Introduction', category: 'Exploitation', completed: true, tasks: 'Module usage, payloads, post-exploitation' },
+  { name: 'Burp Suite Basics', category: 'Web Security', completed: true, tasks: 'Proxy setup, repeater, intruder, scanner' },
+  
+  // In Progress Rooms
+  { name: 'Active Directory Exploitation', category: 'Advanced', completed: false, tasks: 'Kerberoasting, golden ticket, DCSync' },
+  { name: 'Privilege Escalation', category: 'Advanced', completed: false, tasks: 'Linux & Windows escalation techniques' },
+  { name: 'OSCP Prep', category: 'Certification', completed: false, tasks: 'Practice labs and exam preparation' },
+  { name: 'Red Team Operations', category: 'Advanced', completed: false, tasks: 'C2 frameworks, lateral movement, persistence' },
 ];
 
 export default function THMProgress() {
@@ -285,7 +289,7 @@ export default function THMProgress() {
             </div>
           </motion.div>
 
-          {/* Recent Rooms - Enhanced with status indicators */}
+          {/* Recent Rooms - Enhanced with tasks and status */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
@@ -298,47 +302,85 @@ export default function THMProgress() {
               >
                 <BookOpen className="text-cyan-500" size={28} />
               </motion.div>
-              Recent Rooms
+              Rooms Completed & In Progress
             </h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {recentRooms.map((room, index) => (
-                <motion.div
-                  key={room.name}
-                  className="glass-card rounded-xl p-4 flex items-center justify-between group cursor-pointer"
-                  whileHover={{
-                    scale: 1.03,
-                    x: 5,
-                    borderColor: room.completed ? 'rgba(16, 185, 129, 0.5)' : 'rgba(245, 158, 11, 0.5)',
-                  }}
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
-                  transition={{ duration: 0.4, delay: 1 + index * 0.05 }}
-                >
-                  <div className="flex-1">
-                    <div className="text-white font-medium group-hover:text-violet-300 transition-colors">
-                      {room.name}
-                    </div>
-                    <div className="text-sm text-gray-500">{room.category}</div>
-                  </div>
+            
+            {/* Completed Rooms */}
+            <div className="mb-8">
+              <h4 className="text-lg font-semibold text-emerald-400 mb-4 flex items-center gap-2">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                Completed ({recentRooms.filter(r => r.completed).length})
+              </h4>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {recentRooms.filter(r => r.completed).map((room, index) => (
                   <motion.div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      room.completed 
-                        ? 'bg-emerald-500/20 text-emerald-500' 
-                        : 'bg-amber-500/20 text-amber-500'
-                    }`}
-                    whileHover={{ scale: 1.2, rotate: 360 }}
-                    transition={{ duration: 0.4 }}
+                    key={room.name}
+                    className="glass-card rounded-xl p-4 group cursor-pointer border border-emerald-500/20"
+                    whileHover={{
+                      scale: 1.03,
+                      x: 5,
+                      borderColor: 'rgba(16, 185, 129, 0.5)',
+                    }}
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+                    transition={{ duration: 0.4, delay: 1 + index * 0.05 }}
                   >
-                    {room.completed ? (
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    ) : (
-                      <Clock className="w-5 h-5" />
-                    )}
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1">
+                        <div className="text-white font-medium group-hover:text-emerald-300 transition-colors">
+                          {room.name}
+                        </div>
+                        <div className="text-xs text-emerald-500/70 mt-1">{room.category}</div>
+                      </div>
+                      <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                        <svg className="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="text-xs text-gray-500 mt-2">{room.tasks}</div>
                   </motion.div>
-                </motion.div>
-              ))}
+                ))}
+              </div>
+            </div>
+
+            {/* In Progress Rooms */}
+            <div>
+              <h4 className="text-lg font-semibold text-amber-400 mb-4 flex items-center gap-2">
+                <Clock className="w-5 h-5" />
+                In Progress ({recentRooms.filter(r => !r.completed).length})
+              </h4>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {recentRooms.filter(r => !r.completed).map((room, index) => (
+                  <motion.div
+                    key={room.name}
+                    className="glass-card rounded-xl p-4 group cursor-pointer border border-amber-500/20"
+                    whileHover={{
+                      scale: 1.03,
+                      x: 5,
+                      borderColor: 'rgba(245, 158, 11, 0.5)',
+                    }}
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+                    transition={{ duration: 0.4, delay: 1.3 + index * 0.05 }}
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1">
+                        <div className="text-white font-medium group-hover:text-amber-300 transition-colors">
+                          {room.name}
+                        </div>
+                        <div className="text-xs text-amber-500/70 mt-1">{room.category}</div>
+                      </div>
+                      <div className="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center flex-shrink-0">
+                        <Clock className="w-4 h-4 text-amber-500" />
+                      </div>
+                    </div>
+                    <div className="text-xs text-gray-500 mt-2">{room.tasks}</div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </motion.div>
 

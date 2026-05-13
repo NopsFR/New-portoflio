@@ -70,47 +70,19 @@ export default function About() {
                     <h3 className="text-2xl font-semibold text-white mb-4">
                       TryHackMe Progress & Achievements
                     </h3>
-                    <p className="text-gray-400 leading-relaxed mb-4">
+                    <p className="text-gray-400 leading-relaxed">
                       My journey through TryHackMe has been incredible. I've gone from 
                       knowing nothing about cybersecurity to completing rooms on network 
                       scanning, web application exploitation, privilege escalation, and 
                       even some reverse engineering. Every room teaches something new — 
                       whether it's using Nmap to discover open ports, exploiting SQL 
                       injection vulnerabilities, or understanding how Active Directory 
-                      attacks work.
+                      attacks work. I've earned badges for completing learning paths, 
+                      maintained a 12-day streak, and accumulated over 12,500 XP through 
+                      consistent daily practice. Currently at Level 15 with 42 rooms 
+                      completed, and I'm working through the "Complete Beginner to Advanced" 
+                      learning path while preparing for my OSCP certification.
                     </p>
-                    
-                    {/* THM Stats */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-                      <motion.div 
-                        className="p-4 rounded-xl bg-violet-600/10 border border-violet-500/20 text-center"
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        <div className="text-2xl font-bold text-violet-400">15</div>
-                        <div className="text-sm text-gray-500">Level</div>
-                      </motion.div>
-                      <motion.div 
-                        className="p-4 rounded-xl bg-cyan-600/10 border border-cyan-500/20 text-center"
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        <div className="text-2xl font-bold text-cyan-400">12,500</div>
-                        <div className="text-sm text-gray-500">Total XP</div>
-                      </motion.div>
-                      <motion.div 
-                        className="p-4 rounded-xl bg-orange-600/10 border border-orange-500/20 text-center"
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        <div className="text-2xl font-bold text-orange-400">12</div>
-                        <div className="text-sm text-gray-500">Day Streak</div>
-                      </motion.div>
-                      <motion.div 
-                        className="p-4 rounded-xl bg-emerald-600/10 border border-emerald-500/20 text-center"
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        <div className="text-2xl font-bold text-emerald-400">42</div>
-                        <div className="text-sm text-gray-500">Rooms Done</div>
-                      </motion.div>
-                    </div>
                   </div>
                 </div>
               </div>

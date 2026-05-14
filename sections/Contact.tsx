@@ -66,8 +66,9 @@ export default function Contact() {
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-violet-600 to-cyan-500 mx-auto rounded-full" />
             <p className="mt-6 text-gray-400 max-w-2xl mx-auto">
-              Want to collaborate on a project, talk about frontend development, 
-              or just say hi? I'm always open to connecting with other developers.
+              If you want to talk about a project, swap frontend development stories, 
+              or just say hi, feel free to reach out. I'm always happy to connect 
+              with other developers.
             </p>
           </motion.div>
 
@@ -84,7 +85,7 @@ export default function Contact() {
                   Let's Connect
                 </h3>
                 <p className="text-gray-400 leading-relaxed mb-8">
-                  I'm always interested in discussing new projects, frontend 
+                  I'm interested in talking about new projects, frontend 
                   development, or cybersecurity. Whether you have a question 
                   or just want to share ideas, feel free to reach out.
                 </p>

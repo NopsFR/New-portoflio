@@ -12,7 +12,7 @@ const hackerTypes = [
     name: 'White Hat',
     icon: '🤍',
     color: 'from-emerald-500 to-green-500',
-    description: 'The good guys of the cyber world. White hat hackers use their skills ethically to help organizations find and fix security vulnerabilities before the bad guys can exploit them.',
+    description: 'Ethical hackers who use their skills to help organizations find and fix security vulnerabilities before malicious actors can exploit them.',
     fullDescription: `Think of white hats as digital security guards. They're hired by companies to break into their systems legally, find weaknesses, and report them so they can be fixed. Many work as penetration testers, security researchers, or as part of "red teams" that simulate attacks.
 
 These hackers often have certifications like CEH (Certified Ethical Hacker) or OSCP (Offensive Security Certified Professional). They follow a strict code of ethics and always get permission before testing systems.
@@ -29,7 +29,7 @@ Some white hats work independently, participating in bug bounty programs where c
     name: 'Black Hat',
     icon: '🖤',
     color: 'from-red-500 to-rose-500',
-    description: 'The criminals of cyberspace. Black hat hackers break into systems illegally for personal gain, to steal data, cause damage, or for malicious purposes.',
+    description: 'Hackers who break into systems illegally for personal gain, to steal data, cause damage, or for malicious purposes.',
     fullDescription: `Black hat hackers are the ones you see in the news. They break into systems without permission, steal sensitive data, deploy ransomware, or cause chaos for fun or profit. Their activities are entirely illegal and can result in serious prison time.
 
 These hackers might sell stolen data on the dark web, hold companies hostage with ransomware, or steal intellectual property. Some work alone, while others are part of organized cybercrime groups or even state-sponsored teams.
@@ -46,7 +46,7 @@ Common black hat activities include phishing scams, creating malware, credit car
     name: 'Grey Hat',
     icon: '💜',
     color: 'from-purple-500 to-indigo-500',
-    description: 'Operating in the moral grey area between white and black. Grey hats may break into systems without permission but typically expose vulnerabilities publicly rather than exploiting them for personal gain.',
+    description: 'Hackers who operate in a moral grey area. They may break into systems without permission but typically expose vulnerabilities publicly rather than exploiting them for personal gain.',
     fullDescription: `Grey hat hackers are the rebels of the security world. They might hack into systems without permission (which is illegal), but instead of stealing data or causing damage, they'll often publicly expose the vulnerability to force the company to fix it.
 
 The ethics here are debatable. On one hand, they're helping improve security. On the other, they're breaking the law and potentially exposing users to risk by revealing vulnerabilities before patches are available.
@@ -98,8 +98,8 @@ export default function HackersPage() {
               Types of <span className="gradient-text">Hackers</span>
             </h1>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-              Not all hackers are criminals. Understanding the different types helps you 
-              grasp the complex world of cybersecurity and the people who shape it.
+              Not all hackers are criminals. Here's a breakdown of the different types 
+              and what actually separates them.
             </p>
           </motion.div>
 

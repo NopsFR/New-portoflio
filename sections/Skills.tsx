@@ -81,7 +81,7 @@ export default function Skills() {
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-violet-600 to-cyan-500 mx-auto rounded-full" />
             <p className="mt-6 text-gray-400 max-w-2xl mx-auto">
-              The technologies I use daily for frontend development and cybersecurity learning
+              Tools and technologies I work with — some I use every day, others I'm still getting comfortable with
             </p>
           </motion.div>
 

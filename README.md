@@ -1,35 +1,39 @@
 # Modern Portfolio - Oscar
 
-A premium, futuristic portfolio built with Next.js 16, TypeScript, Tailwind CSS, and Framer Motion. Featuring glassmorphism, animated backgrounds, and smooth interactions inspired by e-z.bio.
+A portfolio site built with Next.js 16, TypeScript, Tailwind CSS, and Framer Motion. Dark theme with glassmorphism effects and animated backgrounds.
 
 🔗 **Live Demo**: [portfolio-nopsfrs-projects.vercel.app](https://portfolio-nopsfrs-projects.vercel.app/)
 
-## ✨ Features
+## What This Is
+
+This is my personal portfolio — part showcase, part learning project. I built it to practice modern frontend techniques (Framer Motion animations, glassmorphism, responsive design) while also documenting my cybersecurity learning journey through TryHackMe.
+
+## Features
 
 ### Design
-- **Futuristic Aesthetic** - Dark theme with purple/blue glow accents
-- **Glassmorphism** - Frosted glass cards and elements
-- **Animated Background** - Dynamic gradient orbs and grid patterns
-- **Premium Typography** - Large, clean visual hierarchy
-- **Responsive Design** - Flawless on mobile, tablet, and desktop
+- **Dark theme** with purple/blue glow accents
+- **Glassmorphism** — frosted glass cards and UI elements
+- **Animated background** — gradient orbs that pulse and move, plus a subtle grid overlay
+- **Large typography** with clear visual hierarchy
+- **Fully responsive** — works on mobile, tablet, and desktop
 
 ### Sections
-- **Hero** - Immersive introduction with animated elements
-- **About** - Personal story and background
-- **Skills** - Technical abilities with visual tags
-- **Work** - Project showcase with hover effects
-- **TryHackMe Progress** - Cybersecurity learning journey
-- **Contact** - Functional contact form with social links
+- **Hero** — Introduction with animated background elements
+- **About** — My background and what I'm working on
+- **Skills** — Technologies I use, grouped by category
+- **Work** — Projects I've built (some polished, some experimental)
+- **TryHackMe Progress** — My cybersecurity learning stats and progress
+- **Security Knowledge** — Educational content about cybersecurity concepts
+- **Contact** — Contact form and social links
 
 ### Interactions
 - Smooth scrolling navigation
-- Animated page reveals on scroll
-- Hover animations on all interactive elements
-- Floating navbar with mobile menu
-- Loading animations
+- Animated reveals as you scroll
+- Hover effects on interactive elements
+- Floating navbar with mobile hamburger menu
 - Scroll progress indicator
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 ModernPortfolio/
@@ -57,10 +61,10 @@ ModernPortfolio/
 └── next.config.ts          # Next.js configuration
 ```
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
-- Node.js 18+ (recommended: latest LTS)
+- Node.js 18+ (latest LTS recommended)
 - npm or yarn
 
 ### Installation
@@ -91,11 +95,11 @@ npm run build
 npm run start
 ```
 
-## 🌐 Deployment
+## Deployment
 
 ### Deploy to Vercel (Recommended)
 
-The easiest way to deploy this portfolio is using [Vercel](https://vercel.com):
+The easiest way to deploy is using [Vercel](https://vercel.com):
 
 1. **Push to GitHub**
    ```bash
@@ -134,7 +138,7 @@ The easiest way to deploy this portfolio is using [Vercel](https://vercel.com):
    # Output will be in the `out` folder
    ```
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: Next.js 16 (App Router)
 - **Language**: TypeScript 5
@@ -143,21 +147,21 @@ The easiest way to deploy this portfolio is using [Vercel](https://vercel.com):
 - **Icons**: Lucide React
 - **Deployment**: Vercel
 
-## 📝 Customization
+## Customization
 
 ### Update Personal Information
 
-1. **Basic Info** - Edit `sections/Hero.tsx`, `sections/About.tsx`
-2. **Skills** - Modify the skills array in `sections/Skills.tsx`
-3. **Projects** - Update the projects array in `sections/Work.tsx`
-4. **Contact** - Change email and social links in `sections/Contact.tsx`
-5. **TryHackMe** - Update stats in `sections/THMProgress.tsx`
+1. **Basic Info** — Edit `sections/Hero.tsx`, `sections/About.tsx`
+2. **Skills** — Modify the skills array in `sections/Skills.tsx`
+3. **Projects** — Update the projects array in `sections/Work.tsx`
+4. **Contact** — Change email and social links in `sections/Contact.tsx`
+5. **TryHackMe** — Update stats in `sections/THMProgress.tsx`
 
 ### Styling
 
-- **Colors** - Modify the color palette in `tailwind.config.ts`
-- **Global Styles** - Edit `app/globals.css`
-- **Component Styles** - Update individual component files
+- **Colors** — Modify the color palette in `tailwind.config.ts`
+- **Global Styles** — Edit `app/globals.css`
+- **Component Styles** — Update individual component files
 
 ### Adding New Sections
 
@@ -165,42 +169,38 @@ The easiest way to deploy this portfolio is using [Vercel](https://vercel.com):
 2. Import it in `app/page.tsx`
 3. Add it to the page layout
 
-## 🎯 Features in Detail
+## Design Details
 
 ### Glassmorphism Effect
-Used throughout the design with `backdrop-blur` and semi-transparent backgrounds.
+Used throughout with `backdrop-blur` and semi-transparent backgrounds to create the frosted glass look.
 
 ### Animated Background
-- Gradient orbs that pulse and move
-- Grid pattern overlay
-- Smooth transitions between states
+- Gradient orbs that pulse and move using Framer Motion
+- Subtle grid pattern overlay
+- Smooth transitions between animation states
 
 ### Responsive Design
 - Mobile-first approach
 - Breakpoints at 640px (sm), 768px (md), 1024px (lg), 1280px (xl)
-- Touch-friendly interactions
+- Touch-friendly interactions with appropriate tap targets
 
 ### Performance
 - Static generation for fast load times
-- Optimized images and assets
+- Optimized animations that don't block the main thread
 - Minimal dependencies
-- Efficient animations
+- Efficient re-rendering with React memoization where needed
 
-## 📄 License
+## License
 
-This project is open source and available for personal use.
+Open source — feel free to use this for your own portfolio or learning.
 
-## 🤝 Contributing
+## Contact
 
-Feel free to fork this project and submit pull requests for improvements.
-
-## 📧 Contact
-
-- **Email**: hello@portfolio.com
-- **GitHub**: [github.com/bigst](https://github.com/bigst)
-- **LinkedIn**: [linkedin.com/in/bigst](https://linkedin.com/in/bigst)
-- **Twitter**: [twitter.com/bigst](https://twitter.com/bigst)
+- **Email**: Oscar.s@Disc.ac.uk
+- **GitHub**: [github.com/NopsFR](https://github.com/NopsFR)
+- **LinkedIn**: [linkedin.com/in/OscarSenior](https://linkedin.com/in/OscarSenior)
+- **TryHackMe**: [tryhackme.com/p/Oscar.Senior](https://tryhackme.com/p/Oscar.Senior)
 
 ---
 
-Built with ❤️ by Oscar using Next.js, Tailwind CSS, and Framer Motion.
+Built with Next.js, Tailwind CSS, and Framer Motion.

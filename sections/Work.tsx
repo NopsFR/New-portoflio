@@ -7,8 +7,8 @@ import Button from '@/components/ui/Button';
 
 const projects = [
   {
-    title: 'Modern Portfolio Website',
-    description: 'A premium portfolio built with Next.js, TypeScript, and Tailwind CSS. Features smooth Framer Motion animations, glassmorphism design, and fully responsive layouts. Deployed on Vercel.',
+    title: 'This Portfolio',
+    description: 'Built with Next.js and Tailwind CSS. I wanted to practice Framer Motion animations and glassmorphism design patterns. Everything is responsive and deployed on Vercel. The animated background with gradient orbs took longer than I expected.',
     tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Vercel'],
     icon: Layout,
     gradient: 'from-violet-600 to-purple-500',
@@ -16,8 +16,8 @@ const projects = [
     githubUrl: 'https://github.com/bigst',
   },
   {
-    title: 'Secure Auth System',
-    description: 'A full-stack authentication system implementing JWT tokens, refresh tokens, rate limiting, and protection against common attacks like SQL injection and XSS.',
+    title: 'Auth System with JWT',
+    description: 'A Node.js/Express authentication system I built to understand how auth actually works under the hood. Implements JWT tokens with refresh rotation, rate limiting, and defenses against SQL injection and XSS. Written this after learning about common auth vulnerabilities on TryHackMe.',
     tags: ['Node.js', 'Express', 'JWT', 'bcrypt', 'Security'],
     icon: Shield,
     gradient: 'from-cyan-600 to-blue-500',
@@ -25,8 +25,8 @@ const projects = [
     githubUrl: 'https://github.com/bigst',
   },
   {
-    title: 'Animated Landing Page',
-    description: 'An experimental landing page focused on micro-interactions and scroll-triggered animations. Exploring the limits of Framer Motion and CSS animations.',
+    title: 'Animation Experiments',
+    description: 'A playground for scroll-triggered animations and micro-interactions. I built this to understand Framer Motion capabilities and CSS animation timing. Some of the animations are probably over-engineered, but it was a good way to learn.',
     tags: ['React', 'Framer Motion', 'CSS', 'GSAP'],
     icon: Sparkles,
     gradient: 'from-emerald-600 to-teal-500',
@@ -74,7 +74,7 @@ export default function Work() {
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-violet-600 to-cyan-500 mx-auto rounded-full" />
             <p className="mt-6 text-gray-400 max-w-2xl mx-auto">
-              A collection of projects I've built while learning frontend development and cybersecurity
+              Projects I've built while learning — some are polished, others are experiments that taught me something
             </p>
           </motion.div>
 
@@ -157,8 +157,8 @@ export default function Work() {
             transition={{ duration: 0.6, delay: 0.8 }}
           >
             <p className="text-gray-500 mb-6">
-              I'm always working on new projects and experiments. 
-              Check out my GitHub for more.
+              There's more on my GitHub — half-finished experiments, 
+              learning projects, and things I built just to figure out how they work.
             </p>
             <Button
               variant="outline"

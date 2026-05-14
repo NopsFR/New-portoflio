@@ -134,7 +134,7 @@ export default function THMProgress() {
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-violet-600 to-cyan-500 mx-auto rounded-full" />
             <p className="mt-6 text-gray-400 max-w-2xl mx-auto">
-              Tracking my cyber security learning journey through hands-on challenges and rooms
+              My progress on TryHackMe — rooms completed, skills learned, and where I'm at right now
             </p>
             <motion.a
               href={thmStats.profileUrl}
@@ -209,7 +209,7 @@ export default function THMProgress() {
               >
                 <Medal className="text-violet-500" size={28} />
               </motion.div>
-              Skills Developed
+              Skills I've Built
             </h3>
             <div className="grid md:grid-cols-2 gap-6">
               {skills.map((skill, index) => (
@@ -255,7 +255,7 @@ export default function THMProgress() {
               >
                 <Trophy className="text-amber-500" size={28} />
               </motion.div>
-              Achievements & Badges
+              Milestones
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {achievements.map((achievement, index) => (
@@ -302,7 +302,7 @@ export default function THMProgress() {
               >
                 <BookOpen className="text-cyan-500" size={28} />
               </motion.div>
-              Rooms Completed & In Progress
+              Rooms — Done and In Progress
             </h3>
             
             {/* Completed Rooms */}

@@ -465,8 +465,9 @@ export default function SecurityContent() {
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            Understanding cybersecurity fundamentals, threats, and best practices 
-            for staying safe in the digital world.
+            Notes and explanations from my cybersecurity learning journey — 
+            concepts I've picked up, tools I've used, and things worth knowing 
+            about staying safe online.
           </motion.p>
 
           <motion.div
@@ -849,8 +850,10 @@ export default function SecurityContent() {
                 Keep <span className="gradient-text">Learning</span>
               </h2>
               <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-                Cybersecurity is an ever-evolving field. Stay curious, keep practicing, 
-                and never stop learning. The digital world needs more security-conscious individuals.
+                Cybersecurity changes constantly — new vulnerabilities, new tools, 
+                new attack methods. The only way to keep up is to stay curious and 
+                keep practicing. If you're thinking about getting into security, 
+                just start. TryHackMe is a great place to begin.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button

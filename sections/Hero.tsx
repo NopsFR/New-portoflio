@@ -98,7 +98,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          Cybersecurity Enthusiast & Penetration Testing Learner
+          Learning to break into systems so I can build them better
         </motion.p>
 
         <motion.p
@@ -107,13 +107,13 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
         >
-          I'm on a mission to master cybersecurity through hands-on learning. 
-          Currently grinding through TryHackMe rooms — from Linux fundamentals 
-          to web exploitation, network scanning, and privilege escalation. 
-          I've completed 42 rooms, earned my Level 15 badge, and I'm deep into 
-          the "Complete Beginner to Advanced" path. Every day I'm learning how 
-          attackers think so I can build defenses that actually work. OSCP is 
-          the next goal.
+          I spend most of my time on TryHackMe, working through rooms that 
+          cover everything from basic Linux commands to full penetration 
+          testing workflows. I've finished 42 rooms so far, hit Level 15, 
+          and I'm working through the "Complete Beginner to Advanced" path. 
+          The goal is simple: understand how attackers think so I can write 
+          code that doesn't fall apart when someone actually tries to break it. 
+          OSCP is on the roadmap.
         </motion.p>
 
         <motion.div

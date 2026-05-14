@@ -46,15 +46,16 @@ export default function About() {
                   </div>
                   <div>
                     <h3 className="text-2xl font-semibold text-white mb-4">
-                      Cybersecurity Enthusiast & Developer
+                      What I Do
                     </h3>
                     <p className="text-gray-400 leading-relaxed">
-                      I'm passionate about cybersecurity and hands-on learning through TryHackMe. 
-                      I've completed 42 rooms covering everything from basic Linux commands to 
-                      full penetration testing methodologies. What started as curiosity about 
-                      how hackers think has turned into a genuine obsession with understanding 
-                      vulnerabilities, exploitation techniques, and how to build more secure 
-                      applications from the ground up.
+                      I'm a developer who spends most of my free time on TryHackMe. 
+                      I've worked through 42 rooms so far, covering everything from 
+                      basic Linux commands to full penetration testing workflows. 
+                      It started with curiosity about how hackers actually break into 
+                      things — that curiosity turned into a deep dive into vulnerabilities, 
+                      exploitation techniques, and how to write code that doesn't crumble 
+                      when someone probes it for weaknesses.
                     </p>
                   </div>
                 </div>
@@ -68,20 +69,18 @@ export default function About() {
                   </div>
                   <div>
                     <h3 className="text-2xl font-semibold text-white mb-4">
-                      TryHackMe Progress & Achievements
+                      TryHackMe Progress
                     </h3>
                     <p className="text-gray-400 leading-relaxed">
-                      My journey through TryHackMe has been incredible. I've gone from 
-                      knowing nothing about cybersecurity to completing rooms on network 
-                      scanning, web application exploitation, privilege escalation, and 
-                      even some reverse engineering. Every room teaches something new — 
-                      whether it's using Nmap to discover open ports, exploiting SQL 
-                      injection vulnerabilities, or understanding how Active Directory 
-                      attacks work. I've earned badges for completing learning paths, 
-                      maintained a 12-day streak, and accumulated over 12,500 XP through 
-                      consistent daily practice. Currently at Level 15 with 42 rooms 
-                      completed, and I'm working through the "Complete Beginner to Advanced" 
-                      learning path while preparing for my OSCP certification.
+                      I started from zero — didn't know what Nmap was, had never touched 
+                      a Linux terminal. Now I'm completing rooms on network scanning, web 
+                      exploitation, privilege escalation, and dipping my toes into reverse 
+                      engineering. Each room teaches something practical: how to use Nmap 
+                      for host discovery, how to chain SQL injection exploits, how Active 
+                      Directory attacks work under the hood. I've hit Level 15, kept a 
+                      12-day streak going, and earned over 12,500 XP. I'm working through 
+                      the "Complete Beginner to Advanced" path and starting to prep for 
+                      the OSCP.
                     </p>
                   </div>
                 </div>
@@ -136,12 +135,12 @@ export default function About() {
                   </div>
                   <div className="flex-1">
                     <h3 className="text-2xl font-semibold text-white mb-4">
-                      Technical Skills from TryHackMe
+                      What I've Actually Used
                     </h3>
                     <p className="text-gray-400 mb-6">
-                      Through hands-on labs and real-world scenarios, I've developed practical 
-                      skills in various areas of cybersecurity. These aren't just theoretical — 
-                      I've actually used these tools and techniques in guided exercises.
+                      These aren't buzzwords on a resume — I've used each of these in 
+                      TryHackMe rooms and labs. Some I'm still getting comfortable with, 
+                      others I reach for regularly.
                     </p>
                     <div className="grid md:grid-cols-2 gap-4">
                       {[
@@ -193,32 +192,30 @@ export default function About() {
                       <li className="flex items-start gap-3 text-gray-400">
                         <span className="text-violet-500 mt-1">→</span>
                         <span>
-                          Completing the "Complete Beginner to Advanced" learning 
-                          path on TryHackMe — currently working through intermediate 
-                          penetration testing modules
+                          Working through the intermediate penetration testing 
+                          modules in the "Complete Beginner to Advanced" path
                         </span>
                       </li>
                       <li className="flex items-start gap-3 text-gray-400">
                         <span className="text-violet-500 mt-1">→</span>
                         <span>
-                          Practicing Active Directory exploitation — learning how 
-                          Kerberos attacks work and how to pivot through networks
+                          Active Directory labs — Kerberoasting, golden tickets, 
+                          DCSync attacks, and lateral movement techniques
                         </span>
                       </li>
                       <li className="flex items-start gap-3 text-gray-400">
                         <span className="text-violet-500 mt-1">→</span>
                         <span>
-                          Building secure web applications by applying what I've 
-                          learned about vulnerabilities — writing code that's 
-                          resistant to OWASP Top 10 attacks
+                          Writing web applications with the OWASP Top 10 in mind — 
+                          trying to build things that don't have obvious injection 
+                          points
                         </span>
                       </li>
                       <li className="flex items-start gap-3 text-gray-400">
                         <span className="text-violet-500 mt-1">→</span>
                         <span>
-                          Preparing for OSCP certification — practicing on 
-                          HackTheBox and doing additional penetration testing 
-                          labs outside of TryHackMe
+                          Starting OSCP prep — picking up extra labs on HackTheBox 
+                          and working through additional pen test exercises
                         </span>
                       </li>
                     </ul>

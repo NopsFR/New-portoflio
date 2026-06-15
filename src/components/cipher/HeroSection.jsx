@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Clock } from './Overlays';
 import { profileData } from '../../lib/profileData';
 
 export const HeroSection = () => {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
     <section id="bio" className="relative min-h-screen flex flex-col items-start justify-center px-8 pt-20 pb-32 bg-obsidian">
       <div className="max-w-6xl w-full">
@@ -14,17 +12,9 @@ export const HeroSection = () => {
               [SYSTEM_INITIALIZE]
             </div>
             <h1
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-              className={`font-display text-9xl font-black leading-tight mb-4 transition-all duration-500 tracking-tighter ${
-                isHovered
-                  ? 'text-cyber-lime drop-shadow-[0_0_20px_rgba(204,255,0,0.8)]'
-                  : 'text-transparent bg-clip-text bg-gradient-to-r from-gray-600 to-gray-700'
-              }`}
+              className="font-display text-9xl font-black leading-tight mb-4 text-cyber-lime drop-shadow-[0_0_20px_rgba(204,255,0,0.8)]"
               style={{
-                textStroke: isHovered ? 'none' : '0.3px rgba(204, 255, 0, 0.3)',
-                WebkitTextStroke: isHovered ? 'none' : '0.3px rgba(204, 255, 0, 0.3)',
-                letterSpacing: '0.12em',
+                letterSpacing: '0.15em',
                 fontKerning: 'auto',
               }}
             >

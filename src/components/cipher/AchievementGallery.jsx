@@ -23,9 +23,9 @@ export const AchievementGallery = () => {
       <div className="max-w-6xl mx-auto">
         <div className="mb-12">
           <h2 className="text-4xl font-bold text-white mb-2 font-mono">
-            <span className="text-cyber-lime">[03]</span> ACHIEVEMENT GALLERY
+            <span className="text-cyber-lime">[03]</span> CREDENTIALS
           </h2>
-          <p className="text-gray-500 font-mono text-sm">Verified credentials and completed pathways</p>
+          <p className="text-gray-500 font-mono text-sm">Verified pathways and certified completion</p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">

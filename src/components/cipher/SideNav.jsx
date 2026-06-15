@@ -30,18 +30,22 @@ export const SideNav = () => {
   };
 
   return (
-    <nav className="fixed right-0 top-0 h-screen w-16 bg-obsidian border-l border-cyber-lime/20 flex flex-col items-center justify-center gap-8 z-40">
+    <nav className="fixed right-0 top-0 h-screen w-20 bg-obsidian border-l border-cyber-lime/20 flex flex-col items-center justify-center gap-12 z-40 px-2">
       {profileData.sections.map((section) => (
         <button
           key={section.id}
           onClick={() => scrollToSection(section.id)}
-          className={`writing-mode-vertical transform -rotate-90 text-xs font-mono font-bold tracking-widest transition-all duration-300 ${
+          className={`flex flex-col items-center gap-1 transition-all duration-300 group ${
             activeSection === section.id
               ? 'text-cyber-lime drop-shadow-[0_0_10px_rgba(204,255,0,0.5)]'
               : 'text-gray-500 hover:text-cyber-lime/70'
           }`}
+          title={section.name}
         >
-          <span className="inline-block">{section.number}_{section.name}</span>
+          <div className="font-mono text-xs font-bold">{section.number}</div>
+          <div className="font-mono text-xs font-bold leading-tight tracking-wider text-center whitespace-pre-line">
+            {section.name.split('').join('\n')}
+          </div>
         </button>
       ))}
     </nav>

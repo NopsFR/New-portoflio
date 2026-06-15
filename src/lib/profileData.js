@@ -1,7 +1,7 @@
 export const profileData = {
   name: "Oscar Senior",
   location: "United Kingdom",
-  bio: "Penetration tester and red team operator. Completed Red Teaming, Jr Penetration Tester, and Pre Security pathways on TryHackMe.",
+  bio: "Penetration tester and red team operator. Specialized in offensive security, command & control operations, and post-exploitation techniques. Completed Red Teaming, Jr Penetration Tester, and Pre Security pathways on TryHackMe.",
   status: "ACTIVE",
   
   tryhackme: {
@@ -61,24 +61,51 @@ export const profileData = {
   ],
 
   skills: {
-    "Red Team": [
+    "Offensive Security": [
+      "Penetration Testing",
+      "Red Team Operations",
+      "Exploit Development",
+      "Social Engineering",
+    ],
+    "Post-Exploitation": [
       "C2 Operations",
       "Lateral Movement",
       "Privilege Escalation",
       "Evasion Techniques",
+      "Persistence Mechanisms",
+      "Data Exfiltration",
     ],
-    "Core": [
-      "Linux",
-      "Bash",
-      "HTTP/DNS",
-      "Web Security",
+    "Systems & Infrastructure": [
+      "Linux Security",
+      "Windows Security",
+      "Active Directory",
+      "Network Reconnaissance",
+      "Vulnerability Assessment",
+    ],
+    "Core Technical": [
+      "Bash/Shell Scripting",
+      "Python",
+      "HTTP/DNS Protocols",
       "Network Fundamentals",
+      "Web Application Security",
+      "Reverse Engineering",
     ],
   },
 
+  capabilities: [
+    "Active Network Reconnaissance & Mapping",
+    "Vulnerability Discovery & Exploitation",
+    "Post-Exploitation & Persistence",
+    "Lateral Movement & Privilege Escalation",
+    "Command & Control Infrastructure Setup",
+    "Evasion & Anti-Forensics Techniques",
+    "Red Team Campaign Planning",
+    "Security Assessment & Reporting",
+  ],
+
   sections: [
-    { number: "01", name: "BIO", id: "bio" },
-    { number: "02", name: "ARSENAL", id: "arsenal" },
-    { number: "03", name: "ACHIEVEMENTS", id: "achievements" },
+    { number: "01", name: "PROFILE", id: "bio" },
+    { number: "02", name: "CAPABILITIES", id: "arsenal" },
+    { number: "03", name: "CREDENTIALS", id: "achievements" },
   ],
 };

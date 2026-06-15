@@ -2,7 +2,7 @@ import './App.css';
 import {
   HeroSection,
   TryHackMeTracker,
-  TechArsenal,
+  CapabilitiesSection,
   AchievementGallery,
   SideNav,
   ScanlineOverlay,
@@ -28,10 +28,10 @@ function App() {
           </div>
         </section>
 
-        {/* Skills Arsenal */}
-        <TechArsenal />
+        {/* Capabilities & Skills */}
+        <CapabilitiesSection />
 
-        {/* Achievements */}
+        {/* Credentials */}
         <AchievementGallery />
       </main>
 

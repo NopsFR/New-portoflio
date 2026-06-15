@@ -22,9 +22,9 @@ export const HeroSection = () => {
                   : 'text-transparent bg-clip-text bg-gradient-to-r from-gray-600 to-gray-700'
               }`}
               style={{
-                textStroke: isHovered ? 'none' : '0.5px rgba(204, 255, 0, 0.3)',
-                WebkitTextStroke: isHovered ? 'none' : '0.5px rgba(204, 255, 0, 0.3)',
-                letterSpacing: '0.05em',
+                textStroke: isHovered ? 'none' : '0.3px rgba(204, 255, 0, 0.3)',
+                WebkitTextStroke: isHovered ? 'none' : '0.3px rgba(204, 255, 0, 0.3)',
+                letterSpacing: '0.12em',
                 fontKerning: 'auto',
               }}
             >

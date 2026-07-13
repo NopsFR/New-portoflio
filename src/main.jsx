@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import App from './App.jsx';
 import TrackingWrapper from './components/TrackingWrapper';
+import ErrorBoundary from './components/ErrorBoundary';
 import {
   AdminLogin,
   AdminLayout,
@@ -29,9 +30,10 @@ function ProtectedRoute({ children }) {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <TrackingWrapper>
-        <Routes>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <TrackingWrapper>
+          <Routes>
           {/* ===== PRIVATE ADMIN ROUTES ===== */}
           <Route path="/Oscar.admin" element={<AdminLogin />} />
 
@@ -55,8 +57,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
           {/* ===== PUBLIC ROUTES ===== */}
           <Route path="/*" element={<App />} />
-        </Routes>
-      </TrackingWrapper>
-    </BrowserRouter>
+          </Routes>
+        </TrackingWrapper>
+      </BrowserRouter>
+    </ErrorBoundary>
   </React.StrictMode>
 );

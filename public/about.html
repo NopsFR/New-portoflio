@@ -1,0 +1,929 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Personal dossier of Oscar Senior — Penetration Tester & Red Team Operator." />
+    <meta name="theme-color" content="#050814" />
+    <title>About — Oscar Senior</title>
+    <style>
+      :root {
+        --bg: #050814;
+        --surface: rgba(11, 16, 33, 0.65);
+        --border: rgba(74, 142, 255, 0.20);
+        --accent: #4a8eff;
+        --accent-glow: rgba(74, 142, 255, 0.55);
+        --text: #d8dfee;
+        --muted: #7c8aa8;
+        --white: #f0f4ff;
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        line-height: 1.75;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      canvas#particles {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 0; pointer-events: none;
+      }
+
+      .glow-orb {
+        position: fixed; width: 600px; height: 600px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(74,142,255,0.08) 0%, transparent 70%);
+        pointer-events: none; z-index: 0;
+        transform: translate(-50%, -50%);
+        transition: top 0.15s linear;
+      }
+
+      .container {
+        max-width: 820px; margin: 0 auto; padding: 48px 24px 60px;
+        position: relative; z-index: 5;
+      }
+
+      .back-link {
+        display: inline-flex; align-items: center; gap: 8px;
+        color: var(--accent); text-decoration: none; font-size: 13px; font-weight: 500;
+        margin-bottom: 44px; padding: 8px 18px; border: 1px solid var(--border);
+        border-radius: 30px; letter-spacing: 0.5px; transition: all 0.35s ease;
+        backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+        background: rgba(11, 16, 33, 0.55);
+      }
+      .back-link:hover {
+        background: var(--accent); color: #fff; border-color: var(--accent);
+        box-shadow: 0 0 30px var(--accent-glow); transform: translateY(-2px);
+      }
+      .back-link svg { width: 14px; height: 14px; }
+
+      .page-title {
+        font-size: 40px; font-weight: 700; color: var(--white); margin-bottom: 6px;
+        letter-spacing: -0.5px;
+        background: linear-gradient(135deg, #b8d4ff 0%, #4a8eff 50%, #7cb4ff 100%);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .page-subtitle {
+        color: var(--muted); font-size: 14px; font-weight: 500; margin-bottom: 44px;
+        letter-spacing: 1.5px; text-transform: uppercase;
+      }
+
+      .section {
+        margin-bottom: 40px; border: 1px solid var(--border); border-radius: 16px;
+        background: var(--surface); backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px); padding: 0;
+        opacity: 0; transform: translateY(30px);
+        animation: fadeSlideUp 0.7s ease forwards;
+        position: relative; overflow: hidden;
+      }
+      .section::before {
+        content: ''; position: absolute; inset: 0; border-radius: 16px;
+        background: linear-gradient(135deg, rgba(74,142,255,0.06) 0%, transparent 50%, rgba(74,142,255,0.04) 100%);
+        pointer-events: none; z-index: 0;
+      }
+      .section:nth-child(2) { animation-delay: 0.0s; }
+      .section:nth-child(3) { animation-delay: 0.15s; }
+      .section:nth-child(4) { animation-delay: 0.3s; }
+      .section:nth-child(5) { animation-delay: 0.45s; }
+
+      @keyframes fadeSlideUp {
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .section-inner {
+        position: relative; z-index: 1; padding: 32px 34px;
+        transition: transform 0.1s ease;
+      }
+
+      .section {
+        perspective: 800px;
+      }
+      .section:hover {
+        border-color: rgba(74, 142, 255, 0.50);
+        box-shadow: 0 4px 50px rgba(74, 142, 255, 0.14), inset 0 0 60px rgba(74,142,255,0.03);
+      }
+      .section .section-inner {
+        transition: transform 0.35s ease-out;
+        will-change: transform;
+      }
+      .section:hover .section-inner {
+        transition: transform 0.15s ease-out;
+      }
+
+      .section-header {
+        font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 18px;
+        letter-spacing: 0.5px; display: flex; align-items: center; gap: 12px;
+      }
+      .section-number {
+        font-size: 11px; font-weight: 600; color: var(--accent); letter-spacing: 3px;
+        background: rgba(74, 142, 255, 0.14); padding: 3px 10px; border-radius: 20px;
+      }
+
+      .prose { font-size: 15px; color: var(--text); line-height: 1.85; margin-bottom: 16px; }
+      .prose strong { color: var(--white); }
+
+      hr.divider {
+        border: none; border-top: 1px solid rgba(74, 142, 255, 0.08);
+        margin: 26px 0 20px;
+      }
+
+      .highlight-block {
+        margin: 22px 0; padding: 22px 26px; border-left: 3px solid var(--accent);
+        background: rgba(74, 142, 255, 0.06); border-radius: 0 14px 14px 0;
+        backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+        font-size: 15px; color: var(--text); line-height: 1.85;
+      }
+      .highlight-block strong { color: var(--white); }
+      .stat-badge {
+        display: inline; color: #fff; font-size: 17px; font-weight: 700;
+        background: rgba(74, 142, 255, 0.20); padding: 2px 9px; border-radius: 6px;
+        margin: 0 2px; border: 1px solid rgba(74, 142, 255, 0.45);
+        backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+        box-shadow: 0 0 12px rgba(74, 142, 255, 0.25), inset 0 1px 0 rgba(255,255,255,0.06);
+        text-shadow: 0 0 10px rgba(74, 142, 255, 0.4);
+      }
+      .stat-badge small { font-size: 10px; font-weight: 600; }
+
+      .interest-sub {
+        font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase;
+        letter-spacing: 2px; margin-bottom: 14px; margin-top: 32px;
+      }
+      .model-grid {
+        display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        gap: 14px; margin-top: 6px;
+      }
+      .model-card {
+        background: rgba(11, 16, 33, 0.6); border: 1px solid var(--border);
+        border-radius: 14px; padding: 18px; transition: all 0.35s ease;
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      }
+      .model-card:hover {
+        background: rgba(74, 142, 255, 0.12); border-color: rgba(74, 142, 255, 0.50);
+        box-shadow: 0 4px 28px rgba(74, 142, 255, 0.14);
+        transform: translateY(-3px);
+      }
+      .model-name {
+        font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 8px;
+        letter-spacing: 0.3px;
+      }
+      .model-spec {
+        font-size: 12px; color: var(--muted); line-height: 1.7;
+      }
+      .model-spec span { color: var(--accent); font-weight: 600; }
+
+      /* ---- Experience Section ---- */
+      .exp-section {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        margin-bottom: 8px;
+      }
+      .exp-icon {
+        flex-shrink: 0;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: rgba(74, 142, 255, 0.10);
+        color: var(--accent);
+        margin-top: 2px;
+      }
+      .exp-content h3 {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--white);
+        margin-bottom: 6px;
+      }
+      .exp-content p {
+        font-size: 14px;
+        color: var(--text);
+        line-height: 1.8;
+      }
+      .exp-content p strong { color: var(--white); }
+
+      .footer-note {
+        margin-top: 44px; text-align: center; color: var(--muted); font-size: 12px;
+        letter-spacing: 1px; opacity: 0.7;
+      }
+
+      /* ---- Guns.lol Bio Section ---- */
+      .guns-standalone {
+        margin-bottom: 40px;
+        border-radius: 16px;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeSlideUp 0.7s ease forwards;
+        animation-delay: 0.6s;
+      }
+      .guns-container {
+        position: relative;
+        min-height: 420px;
+        border-radius: 16px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .guns-bg-video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+        opacity: 0.7;
+      }
+      .guns-tv-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+          0deg,
+          rgba(0,0,0,0.08) 0px,
+          rgba(0,0,0,0.08) 2px,
+          transparent 2px,
+          transparent 4px
+        );
+      }
+      .guns-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 30px 20px;
+        width: 100%;
+      }
+      .guns-volume {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        color: rgba(255,255,255,0.5);
+        cursor: pointer;
+        transition: color 0.2s;
+        z-index: 3;
+      }
+      .guns-volume:hover { color: #fff; }
+      .guns-avatar-wrap {
+        display: inline-block;
+        border-radius: 50%;
+        padding: 3px;
+        border: 4px solid rgba(255, 0, 0, 0.4);
+        margin-bottom: 14px;
+        box-shadow: 0 0 24px rgba(255, 0, 0, 0.2);
+      }
+      .guns-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        display: block;
+      }
+      .guns-username {
+        font-size: 32px;
+        font-weight: 700;
+        color: #fff;
+        text-shadow: 0 0 20px rgba(255,255,255,0.4);
+        margin-bottom: 4px;
+        letter-spacing: -0.3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+      .guns-premium-badge {
+        color: #000;
+        filter: drop-shadow(#000 0 0 3px);
+        display: inline-flex;
+      }
+      .guns-typewriter {
+        font-size: 16px;
+        font-weight: 500;
+        color: rgba(255,255,255,0.7);
+        min-height: 24px;
+        margin-bottom: 2px;
+      }
+      .guns-joined {
+        font-size: 13px;
+        font-weight: 400;
+        color: rgba(255,255,255,0.45);
+        margin-bottom: 18px;
+      }
+      .guns-socials {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .guns-social-icon {
+        color: #fff;
+        filter: drop-shadow(#fff 1px 0 7px);
+        transition: transform 0.2s, filter 0.2s;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+      }
+      .guns-social-icon:hover {
+        transform: scale(1.15);
+        filter: drop-shadow(#fff 1px 0 14px);
+      }
+      .guns-bottom-row {
+        display: flex;
+        justify-content: center;
+        gap: 18px;
+        margin-bottom: 8px;
+      }
+      .guns-stat {
+        font-size: 14px;
+        font-weight: 550;
+        color: rgba(255,255,255,0.65);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        cursor: default;
+      }
+      .guns-music-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        padding: 8px 16px;
+        border-radius: 24px;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.15);
+        transition: all 0.3s ease;
+        font-size: 13px;
+        font-weight: 500;
+        color: rgba(255,255,255,0.7);
+        margin-top: 12px;
+        user-select: none;
+      }
+      .guns-music-toggle:hover {
+        background: rgba(255,255,255,0.15);
+        border-color: rgba(255,255,255,0.3);
+        color: #fff;
+      }
+      .guns-music-toggle.active {
+        background: rgba(74, 222, 128, 0.15);
+        border-color: rgba(74, 222, 128, 0.4);
+        color: #4ade80;
+        box-shadow: 0 0 16px rgba(74, 222, 128, 0.15);
+      }
+      .guns-music-toggle .music-icon-off { display: none; }
+      .guns-music-toggle.active .music-icon-on { display: none; }
+      .guns-music-toggle.active .music-icon-off { display: inline; }
+      .spotify-hidden { display: none; }
+      .spotify-visible { display: block; }
+
+      @media (max-width: 640px) {
+        .container { padding: 28px 14px 40px; }
+        .page-title { font-size: 28px; }
+        .section, .section-inner { padding: 20px 16px; }
+        .model-grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="particles"></canvas>
+    <div class="glow-orb" id="glowOrb"></div>
+
+    <div class="container">
+      <a href="/" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Portfolio
+      </a>
+
+      <h1 class="page-title">Personal Bio</h1>
+      <p class="page-subtitle">Who I am, what drives me</p>
+
+      <!-- SECTION [04] PERSONAL_DOSSIER -->
+      <div class="section">
+        <div class="section-inner">
+        <div class="section-header">
+          <span class="section-number">[04]</span>
+          PERSONAL_BIO
+        </div>
+
+        <p class="prose">
+          <strong>The Journey</strong> — Penetration tester and red team operator specializing in
+          offensive security, command & control operations, and post-exploitation techniques. I
+          completed the Pre Security, Jr Penetration Tester, and Red Teaming pathways on TryHackMe
+          between September and December 2024 — hitting the Master tier with 156 rooms completed and
+          22 badges earned. My work spans active network reconnaissance, vulnerability discovery and
+          exploitation, lateral movement and privilege escalation, C2 infrastructure deployment, and
+          evasion techniques. Every engagement sharpens the toolkit and reinforces the fundamentals.
+        </p>
+
+        <hr class="divider">
+
+        <p class="prose">
+          <strong>Perspective</strong> — I'm on the spectrum. I don't say that as a disclaimer — I say
+          it because it's genuinely part of why I'm good at this. The same wiring that makes small talk
+          exhausting makes staring at packet captures for six hours feel natural. I notice patterns other
+          people gloss over. I don't get bored drilling the same technique until it's muscle memory.
+          Hyperfocus isn't a buzzword for me — it's just how my brain works.
+        </p>
+
+        <div class="highlight-block">
+          I hit <span class="stat-badge">TOP 2<small>%</small></span> on
+          <strong>TryHackMe</strong> out of millions of users. That's not a flex for the sake of it —
+          it's evidence that the way my mind operates is an advantage in this field. I pick up on
+          subtle patterns in systems, I refuse to leave a puzzle unsolved, and I'll spend whatever
+          time it takes to understand something fully rather than just scraping past. The things that
+          make me different are exactly what made that ranking possible.
+        </div>
+
+        <p class="prose">
+          If you're neurodivergent and reading this — the industry needs people who see things
+          differently. Don't let anyone convince you your brain is a problem. It's just tuned to a
+          different frequency. Find the work that resonates with that frequency and you'll outpace
+          people who've been doing it twice as long.
+        </p>
+        </div>
+      </div>
+
+      <!-- SECTION [05] INTERESTS_AND_MECHANICS -->
+      <div class="section">
+        <div class="section-inner">
+        <div class="section-header">
+          <span class="section-number">[05]</span>
+          INTERESTS_AND_MECHANICS
+        </div>
+
+        <p class="prose">
+          Away from the keyboard, I gravitate toward things that demand precision and respect —
+          machines where half a second of bad judgment has real consequences. Here's a breakdown of
+          what keeps the adrenaline going.
+        </p>
+
+        <p class="interest-sub">Sport Bikes</p>
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-name">BMW S1000RR</div>
+            <div class="model-spec"><span>Engine:</span> 999cc inline-4, 4-cylinder</div>
+            <div class="model-spec"><span>Power:</span> 205 hp @ 13,500 rpm</div>
+            <div class="model-spec"><span>Torque:</span> 113 Nm @ 11,000 rpm</div>
+            <div class="model-spec"><span>Top Speed:</span> 193 mph (310 km/h)</div>
+            <div class="model-spec"><span>Weight:</span> 197 kg wet</div>
+            <div class="model-spec"><span>Tech:</span> ShiftCam, DTC, ABS Pro</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Ducati Panigale V4</div>
+            <div class="model-spec"><span>Engine:</span> 1,103cc V4, Desmosedici Stradale</div>
+            <div class="model-spec"><span>Power:</span> 215 hp @ 13,000 rpm</div>
+            <div class="model-spec"><span>Torque:</span> 124 Nm @ 10,000 rpm</div>
+            <div class="model-spec"><span>Top Speed:</span> 186 mph (299 km/h)</div>
+            <div class="model-spec"><span>Weight:</span> 198 kg wet</div>
+            <div class="model-spec"><span>Tech:</span> Ducati Quick Shift, Slide Control</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Yamaha YZF-R1</div>
+            <div class="model-spec"><span>Engine:</span> 998cc inline-4, crossplane crank</div>
+            <div class="model-spec"><span>Power:</span> 200 hp @ 13,500 rpm</div>
+            <div class="model-spec"><span>Torque:</span> 112 Nm @ 11,500 rpm</div>
+            <div class="model-spec"><span>Top Speed:</span> 186 mph (299 km/h)</div>
+            <div class="model-spec"><span>Weight:</span> 199 kg wet</div>
+            <div class="model-spec"><span>Tech:</span> Slide Control, Lift Control, Launch Control</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Kawasaki Ninja ZX-10R</div>
+            <div class="model-spec"><span>Engine:</span> 998cc inline-4, DOHC</div>
+            <div class="model-spec"><span>Power:</span> 203 hp @ 13,500 rpm (ram air)</div>
+            <div class="model-spec"><span>Torque:</span> 115 Nm @ 11,200 rpm</div>
+            <div class="model-spec"><span>Top Speed:</span> 186 mph (299 km/h)</div>
+            <div class="model-spec"><span>Weight:</span> 206 kg wet</div>
+            <div class="model-spec"><span>Tech:</span> Kawasaki Cornering Management, &OElig;hlins</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Honda CBR1000RR-R Fireblade</div>
+            <div class="model-spec"><span>Engine:</span> 999cc inline-4, DOHC</div>
+            <div class="model-spec"><span>Power:</span> 215 hp @ 14,500 rpm</div>
+            <div class="model-spec"><span>Torque:</span> 113 Nm @ 12,500 rpm</div>
+            <div class="model-spec"><span>Top Speed:</span> 186 mph (299 km/h)</div>
+            <div class="model-spec"><span>Weight:</span> 201 kg wet</div>
+            <div class="model-spec"><span>Tech:</span> Winglets, &OElig;hlins Smart EC, HSTC</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Aprilia RSV4 1100 Factory</div>
+            <div class="model-spec"><span>Engine:</span> 1,099cc V4, 65&deg; narrow angle</div>
+            <div class="model-spec"><span>Power:</span> 217 hp @ 13,200 rpm</div>
+            <div class="model-spec"><span>Torque:</span> 125 Nm @ 10,500 rpm</div>
+            <div class="model-spec"><span>Top Speed:</span> 189 mph (305 km/h)</div>
+            <div class="model-spec"><span>Weight:</span> 199 kg wet</div>
+            <div class="model-spec"><span>Tech:</span> APRC, &OElig;hlins Smart EC 2.0</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Suzuki GSX-R1000R</div>
+            <div class="model-spec"><span>Engine:</span> 999cc inline-4, variable valve timing</div>
+            <div class="model-spec"><span>Power:</span> 199 hp @ 13,200 rpm</div>
+            <div class="model-spec"><span>Torque:</span> 117 Nm @ 10,800 rpm</div>
+            <div class="model-spec"><span>Top Speed:</span> 186 mph (299 km/h)</div>
+            <div class="model-spec"><span>Weight:</span> 203 kg wet</div>
+            <div class="model-spec"><span>Tech:</span> Motion Track ABS, Showa BFF</div>
+          </div>
+        </div>
+
+        <p class="interest-sub">JDM Cars</p>
+        <div class="model-grid">
+          <div class="model-card">
+            <div class="model-name">Nissan Skyline GT-R (R34)</div>
+            <div class="model-spec"><span>Engine:</span> RB26DETT 2.6L twin-turbo inline-6</div>
+            <div class="model-spec"><span>Power:</span> 276 hp stock / 400+ tuned</div>
+            <div class="model-spec"><span>Drivetrain:</span> AWD, ATTESA E-TS Pro</div>
+            <div class="model-spec"><span>Gearbox:</span> 6-speed Getrag manual</div>
+            <div class="model-spec"><span>0-60:</span> 4.9 seconds</div>
+            <div class="model-spec"><span>Known for:</span> RB cult following, Godzilla legend</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Toyota Supra MK4 (A80)</div>
+            <div class="model-spec"><span>Engine:</span> 2JZ-GTE 3.0L twin-turbo inline-6</div>
+            <div class="model-spec"><span>Power:</span> 320 hp stock / 1000+ capable</div>
+            <div class="model-spec"><span>Drivetrain:</span> RWD, Torsen LSD</div>
+            <div class="model-spec"><span>Gearbox:</span> 6-speed V160 Getrag manual</div>
+            <div class="model-spec"><span>Top Speed:</span> 155 mph (limited) / 180+ delimited</div>
+            <div class="model-spec"><span>Known for:</span> Bulletproof block, heavy tuning scene</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Mazda RX-7 (FD3S)</div>
+            <div class="model-spec"><span>Engine:</span> 13B-REW 1.3L twin-rotor, twin-turbo</div>
+            <div class="model-spec"><span>Power:</span> 276 hp @ 6,500 rpm</div>
+            <div class="model-spec"><span>Drivetrain:</span> RWD, Torsen LSD</div>
+            <div class="model-spec"><span>Weight:</span> 1,270 kg (2,800 lbs)</div>
+            <div class="model-spec"><span>Top Speed:</span> 155 mph</div>
+            <div class="model-spec"><span>Known for:</span> Rotary soundtrack, 50:50 balance, timeless looks</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Honda NSX (NA1/NA2)</div>
+            <div class="model-spec"><span>Engine:</span> C30A / C32B 3.0-3.2L V6 VTEC</div>
+            <div class="model-spec"><span>Power:</span> 270-290 hp</div>
+            <div class="model-spec"><span>Drivetrain:</span> Mid-engine RWD</div>
+            <div class="model-spec"><span>Weight:</span> 1,370 kg (3,020 lbs) aluminium body</div>
+            <div class="model-spec"><span>0-60:</span> 5.2 seconds</div>
+            <div class="model-spec"><span>Known for:</span> Senna-tuned chassis, titanium conrods</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Subaru Impreza WRX STI</div>
+            <div class="model-spec"><span>Engine:</span> EJ20/EJ25 2.0-2.5L turbo boxer-4</div>
+            <div class="model-spec"><span>Power:</span> 280-310 hp (varies by generation)</div>
+            <div class="model-spec"><span>Drivetrain:</span> AWD, DCCD with driver control</div>
+            <div class="model-spec"><span>Gearbox:</span> 6-speed close-ratio manual</div>
+            <div class="model-spec"><span>0-60:</span> 4.8 seconds</div>
+            <div class="model-spec"><span>Known for:</span> Rally pedigree, boxer rumble, all-weather grip</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Mitsubishi Lancer Evo VI (Tommi M&auml;kinen)</div>
+            <div class="model-spec"><span>Engine:</span> 4G63T 2.0L turbo inline-4</div>
+            <div class="model-spec"><span>Power:</span> 276 hp @ 6,500 rpm</div>
+            <div class="model-spec"><span>Drivetrain:</span> AWD, Active Yaw Control</div>
+            <div class="model-spec"><span>Gearbox:</span> 5-speed manual</div>
+            <div class="model-spec"><span>0-60:</span> 4.4 seconds</div>
+            <div class="model-spec"><span>Known for:</span> WRC dominance, aggressive styling</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Nissan Silvia S15 Spec-R</div>
+            <div class="model-spec"><span>Engine:</span> SR20DET 2.0L turbo inline-4</div>
+            <div class="model-spec"><span>Power:</span> 247 hp @ 6,400 rpm</div>
+            <div class="model-spec"><span>Drivetrain:</span> RWD, helical LSD</div>
+            <div class="model-spec"><span>Weight:</span> 1,240 kg (2,734 lbs)</div>
+            <div class="model-spec"><span>Gearbox:</span> 6-speed manual</div>
+            <div class="model-spec"><span>Known for:</span> Drift icon, razor-sharp handling</div>
+          </div>
+          <div class="model-card">
+            <div class="model-name">Toyota AE86 Sprinter Trueno</div>
+            <div class="model-spec"><span>Engine:</span> 4A-GE 1.6L inline-4, 20V</div>
+            <div class="model-spec"><span>Power:</span> 128 hp @ 7,400 rpm / 162 hp (20V Blacktop)</div>
+            <div class="model-spec"><span>Drivetrain:</span> RWD, lightweight chassis</div>
+            <div class="model-spec"><span>Weight:</span> 940 kg (2,072 lbs)</div>
+            <div class="model-spec"><span>Gearbox:</span> 5-speed manual, T50</div>
+            <div class="model-spec"><span>Known for:</span> Initial D legend, 50:50 balance, 9k RPM scream</div>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <!-- SECTION [06] EXPERIENCE_AND_TECHNICAL_CORE -->
+      <div class="section">
+        <div class="section-inner">
+        <div class="section-header">
+          <span class="section-number">[06]</span>
+          EXPERIENCE_AND_TECHNICAL_CORE
+        </div>
+
+        <div class="exp-section">
+          <div class="exp-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+          <div class="exp-content">
+            <h3>Cybersecurity & Reverse Engineering</h3>
+            <p>My technical curiosity has driven me deep into the internals of software. I spend
+            time pulling apart executables in <strong>IDA Pro</strong> and <strong>x64dbg</strong>,
+            stepping through disassembly to understand how programs are structured, how they
+            branch, and how they can be manipulated. Analysing file structures at a low level
+            and tracing malware behaviour isn't just a skill I picked up — it's something I
+            genuinely enjoy. Being able to reconstruct logic from raw instructions gives me an
+            edge when it comes to exploit development and understanding attacker tradecraft.</p>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="exp-section">
+          <div class="exp-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+          </div>
+          <div class="exp-content">
+            <h3>Systems Administration</h3>
+            <p>Alongside offensive security work, I have hands-on experience working with IT
+            infrastructure teams — managing <strong>Active Directory</strong> environments,
+            configuring <strong>Microsoft Intune</strong> for endpoint management, and operating
+            across cloud platforms. Understanding the systems I attack from the defender's
+            perspective means I know where misconfigurations live, how policies are enforced,
+            and what a well-hardened environment actually looks like.</p>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="exp-section">
+          <div class="exp-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <div class="exp-content">
+            <h3>Web Development Fundamentals</h3>
+            <p>I have a solid understanding of how web applications are built — from front-end
+            interfaces to back-end APIs and database communication. This bridges the gap between
+            exploitation and creation: knowing how a REST endpoint processes input makes it
+            easier to find where sanitisation fails, and understanding session management from
+            a developer's standpoint clarifies exactly where authentication flaws creep in.</p>
+          </div>
+        </div>
+
+        </div>
+      </div>
+
+      <div class="guns-standalone">
+        <div class="guns-container">
+          <video class="guns-bg-video" autoplay loop muted playsinline>
+            <source src="https://r2.guns.lol/4f5f41b4-0070-49fe-84a3-db5cbdc075a3.mov" type="video/mp4">
+          </video>
+          <div class="guns-tv-overlay"></div>
+
+          <div class="guns-content">
+            <div class="guns-volume">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48"><path fill="currentColor" d="M24 6v36c-7 0-12.201-9.16-12.201-9.16H6a2 2 0 0 1-2-2V17.01a2 2 0 0 1 2-2h5.799S17 6 24 6Z"/><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" d="M32 15a11.9 11.9 0 0 1 0 18M38 11a20 20 0 0 1 0 26"/></svg>
+            </div>
+
+            <div class="guns-avatar-wrap">
+              <img src="https://r2.guns.lol/9c6e9e08-3f48-4a5b-a834-071e9bdfd986.jpeg" alt="Avatar" class="guns-avatar">
+            </div>
+
+            <h2 class="guns-username">
+              Nopabopa
+              <span class="guns-premium-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="23 32 465 448"><path fill="currentColor" d="M396.31 32H264l84.19 112.26L396.31 32zm-280.62 0l48.12 112.26L248 32H115.69zM256 74.67L192 160h128l-64-85.33zm166.95-23.61L376.26 160H488L422.95 51.06zm-333.9 0L23 160h112.74L89.05 51.06zM146.68 192H24l222.8 288h.53L146.68 192zm218.64 0L264.67 480h.53L488 192H365.32zm-35.93 0H182.61L256 400l73.39-208z"/></svg>
+              </span>
+            </h2>
+
+            <div class="guns-typewriter" id="gunsTypewriter"></div>
+
+            <p class="guns-joined">Joined over 1 year ago</p>
+
+            <div class="guns-socials">
+              <a href="https://open.spotify.com/user/31dgow74dmcvsmw5drbtcfds2pqa?si=4dbd2398d9954b53" target="_blank" rel="noopener noreferrer" class="guns-social-icon" title="Spotify">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="2.02 2.02 19.98 19.98"><path fill="currentColor" d="M12.01 2.019c-5.495 0-9.991 4.496-9.991 9.991c0 5.494 4.496 9.99 9.991 9.99c5.494 0 9.99-4.496 9.99-9.99c0-5.495-4.446-9.991-9.99-9.991zm4.595 14.436c-.199.299-.549.4-.85.201c-2.349-1.45-5.296-1.75-8.793-.951c-.348.102-.648-.148-.748-.449c-.101-.35.149-.648.45-.749c3.795-.85 7.093-.499 9.69 1.1c.35.149.4.548.251.848zm1.2-2.747c-.251.349-.7.499-1.051.249c-2.697-1.646-6.792-2.148-9.939-1.148c-.398.101-.85-.1-.949-.498c-.101-.402.1-.852.499-.952c3.646-1.098 8.143-.548 11.239 1.351c.3.149.45.648.201.998zm.099-2.799c-3.197-1.897-8.542-2.097-11.59-1.146a.938.938 0 0 1-1.148-.6a.937.937 0 0 1 .599-1.151c3.547-1.049 9.392-.85 13.089 1.351c.449.249.599.849.349 1.298c-.25.35-.849.498-1.299.248z"/></svg>
+              </a>
+              <span class="guns-social-icon guns-discord-copy" title="Discord: nopsmain">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="1.96 4.26 20.03 15.53"><path fill="currentColor" d="M14.82 4.26a10.14 10.14 0 0 0-.53 1.1a14.66 14.66 0 0 0-4.58 0a10.14 10.14 0 0 0-.53-1.1a16 16 0 0 0-4.13 1.3a17.33 17.33 0 0 0-3 11.59a16.6 16.6 0 0 0 5.07 2.59A12.89 12.89 0 0 0 8.23 18a9.65 9.65 0 0 1-1.71-.83a3.39 3.39 0 0 0 .42-.33a11.66 11.66 0 0 0 10.12 0q.21.18.42.33a10.84 10.84 0 0 1-1.71.84a12.41 12.41 0 0 0 1.08 1.78a16.44 16.44 0 0 0 5.06-2.59a17.22 17.22 0 0 0-3-11.59a16.09 16.09 0 0 0-4.09-1.35zM8.68 14.81a1.94 1.94 0 0 1-1.8-2a1.93 1.93 0 0 1 1.8-2a1.93 1.93 0 0 1 1.8 2a1.93 1.93 0 0 1-1.8 2zm6.64 0a1.94 1.94 0 0 1-1.8-2a1.93 1.93 0 0 1 1.8-2a1.92 1.92 0 0 1 1.8 2a1.92 1.92 0 0 1-1.8 2z"/></svg>
+              </span>
+              <a href="https://github.com/NopsFR" target="_blank" rel="noopener noreferrer" class="guns-social-icon" title="GitHub">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="2.05 2 19.95 19.46"><path fill="currentColor" fill-rule="evenodd" d="M12.026 2c-5.509 0-9.974 4.465-9.974 9.974c0 4.406 2.857 8.145 6.821 9.465c.499.09.679-.217.679-.481c0-.237-.008-.865-.011-1.696c-2.775.602-3.361-1.338-3.361-1.338c-.452-1.152-1.107-1.459-1.107-1.459c-.905-.619.069-.605.069-.605c1.002.07 1.527 1.028 1.527 1.028c.89 1.524 2.336 1.084 2.902.829c.091-.645.351-1.085.635-1.334c-2.214-.251-4.542-1.107-4.542-4.93c0-1.087.389-1.979 1.024-2.675c-.101-.253-.446-1.268.099-2.64c0 0 .837-.269 2.742 1.021a9.58 9.58 0 0 1 2.496-.336a9.55 9.55 0 0 1 2.496.336c1.906-1.291 2.742-1.021 2.742-1.021c.545 1.372.203 2.387.099 2.64c.64.696 1.024 1.587 1.024 2.675c0 3.833-2.33 4.675-4.552 4.922c.355.308.675.916.675 1.846c0 1.334-.012 2.41-.012 2.737c0 .267.178.577.687.479C19.146 20.115 22 16.379 22 11.974C22 6.465 17.535 2 12.026 2z" clip-rule="evenodd"/></svg>
+              </a>
+              <a href="https://roblox.com/Nopsvacban" target="_blank" rel="noopener noreferrer" class="guns-social-icon" title="Roblox">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0.16 0 23.68 24"><path fill="currentColor" d="M5.164 0L.16 18.928L18.836 24L23.84 5.072zm8.747 15.354l-5.219-1.417l1.399-5.29l5.22 1.418l-1.4 5.29z"/></svg>
+              </a>
+            </div>
+
+            <div class="guns-bottom-row">
+              <span class="guns-stat" title="Profile Views">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
+                126
+              </span>
+              <span class="guns-stat" title="Location">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="4 2 16 20"><path fill="currentColor" d="M12 12q.825 0 1.413-.587T14 10t-.587-1.412T12 8t-1.412.588T10 10t.588 1.413T12 12m0 10q-4.025-3.425-6.012-6.362T4 10.2q0-3.75 2.413-5.975T12 2t5.588 2.225T20 10.2q0 2.5-1.987 5.438T12 22"/></svg>
+                🫆
+              </span>
+            </div>
+
+            <div class="guns-music-toggle" id="musicToggle" title="Toggle Music">
+              <svg class="music-icon-on" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              <svg class="music-icon-off" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+              <span class="music-label">Music Off</span>
+            </div>
+
+            <div id="spotifyEmbed" class="spotify-hidden">
+              <iframe src="https://open.spotify.com/embed/track/61BY4bNeFfKitZzkJd5F1r" width="280" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" style="border-radius:8px;margin:12px auto 0;display:block;"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="footer-note">My Portfolio &mdash; oscar senior</p>
+    </div>
+
+    <script>
+      (function() {
+        const words = ['✩', '☜', '☭'];
+        let wordIndex = 0, charIndex = 0, isDeleting = false;
+        const el = document.getElementById('gunsTypewriter');
+        if (!el) return;
+
+        function type() {
+          const current = words[wordIndex];
+          if (isDeleting) {
+            el.textContent = current.substring(0, charIndex - 1);
+            charIndex--;
+          } else {
+            el.textContent = current.substring(0, charIndex + 1);
+            charIndex++;
+          }
+          if (!isDeleting && charIndex === current.length) {
+            setTimeout(() => { isDeleting = true; type(); }, 1200);
+            return;
+          }
+          if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            wordIndex = (wordIndex + 1) % words.length;
+            setTimeout(type, 300);
+            return;
+          }
+          setTimeout(type, isDeleting ? 70 : 120);
+        }
+        type();
+
+        /* Music Toggle */
+        (function() {
+          const toggle = document.getElementById('musicToggle');
+          const container = document.getElementById('spotifyEmbed');
+          const label = toggle.querySelector('.music-label');
+          if (!toggle || !container) return;
+
+          let playing = false;
+          function sendCmd(cmd) {
+            const ifr = container.querySelector('iframe');
+            if (ifr && ifr.contentWindow) {
+              ifr.contentWindow.postMessage({ method: cmd }, 'https://open.spotify.com');
+            }
+          }
+
+          toggle.addEventListener('click', function() {
+            if (playing) {
+              sendCmd('pause');
+              container.classList.add('spotify-hidden');
+              container.classList.remove('spotify-visible');
+              toggle.classList.remove('active');
+              label.textContent = 'Music Off';
+              playing = false;
+            } else {
+              container.classList.remove('spotify-hidden');
+              container.classList.add('spotify-visible');
+              toggle.classList.add('active');
+              label.textContent = 'Music On';
+              playing = true;
+              setTimeout(function() { sendCmd('play'); }, 600);
+            }
+          });
+        })();
+
+        /* Discord copy */
+        var db = document.querySelector('.guns-discord-copy');
+        if (db) {
+          db.addEventListener('click', function() {
+            navigator.clipboard.writeText('nopsmain').then(function() {
+              var orig = db.getAttribute('title');
+              db.setAttribute('title', 'Copied!');
+              setTimeout(function() { db.setAttribute('title', orig); }, 1500);
+            });
+          });
+        }
+      })();
+    </script>
+
+    <script>
+      (function() {
+        var canvas = document.getElementById('particles');
+        var ctx = canvas.getContext('2d');
+        var width, height, particles;
+        function resize() {
+          width = canvas.width = window.innerWidth;
+          height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+        var PARTICLE_COUNT = 80, CONNECT_DIST = 160;
+        function Particle() {
+          this.reset();
+          this.y = Math.random() * height;
+        }
+        Particle.prototype.reset = function() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+          this.vx = (Math.random() - 0.5) * 0.6;
+          this.vy = (Math.random() - 0.5) * 0.6;
+          this.r = Math.random() * 1.8 + 0.4;
+          this.opacity = Math.random() * 0.5 + 0.12;
+        };
+        Particle.prototype.update = function() {
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.x < -20) this.x = width + 20;
+          if (this.x > width + 20) this.x = -20;
+          if (this.y < -20) this.y = height + 20;
+          if (this.y > height + 20) this.y = -20;
+        };
+        Particle.prototype.draw = function(ctx) {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+          ctx.fillStyle = 'rgba(74,142,255,' + this.opacity + ')';
+          ctx.fill();
+        };
+        particles = [];
+        for (var i=0;i<PARTICLE_COUNT;i++) particles.push(new Particle());
+        var mouse = {x:null,y:null};
+        window.addEventListener('mousemove', function(e) { mouse.x=e.clientX; mouse.y=e.clientY; });
+        window.addEventListener('mouseout', function() { mouse.x=null; mouse.y=null; });
+        function animate() {
+          ctx.clearRect(0,0,width,height);
+          for (var i=0;i<particles.length;i++) { particles[i].update(); particles[i].draw(ctx); }
+          for (var i=0; i < particles.length; i++) {
+            for (var j = i+1; j < particles.length; j++) {
+              var a=particles[i], b=particles[j];
+              var dx=a.x-b.x, dy=a.y-b.y;
+              var dist=Math.sqrt(dx*dx+dy*dy);
+              if (dist<CONNECT_DIST) {
+                var alpha=(1-dist/CONNECT_DIST)*0.13;
+                ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+                ctx.strokeStyle='rgba(74,142,255,'+alpha+')'; ctx.lineWidth=0.5; ctx.stroke();
+              }
+            }
+          }
+          if (mouse.x&&mouse.y) {
+            for (var i=0;i<particles.length;i++) {
+              var p=particles[i];
+              var dx=p.x-mouse.x, dy=p.y-mouse.y;
+              var dist=Math.sqrt(dx*dx+dy*dy);
+              if (dist<180) {
+                var force=(180-dist)/180*0.03;
+                p.vx+=dx*force; p.vy+=dy*force;
+              }
+            }
+            for (var i=0;i<particles.length;i++) {
+              var p=particles[i];
+              var dx=p.x-mouse.x, dy=p.y-mouse.y;
+              var dist=Math.sqrt(dx*dx+dy*dy);
+              if (dist<180) {
+                var alpha=(1-dist/180)*0.2;
+                ctx.beginPath(); ctx.moveTo(mouse.x,mouse.y); ctx.lineTo(p.x,p.y);
+                ctx.strokeStyle='rgba(74,142,255,'+alpha+')'; ctx.lineWidth=0.8; ctx.stroke();
+              }
+            }
+          }
+          requestAnimationFrame(animate);
+        }
+        animate();
+        var orb=document.getElementById('glowOrb');
+        window.addEventListener('scroll', function() {
+          var docH=document.body.scrollHeight-window.innerHeight;
+          orb.style.top=(window.scrollY/Math.max(docH,1))*100+'%';
+        });
+        var sections=document.querySelectorAll('.section');
+        var observer=new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) entry.target.style.boxShadow='0 4px 50px rgba(74,142,255,0.12)';
+            else entry.target.style.boxShadow='';
+          });
+        },{threshold:0.3});
+        sections.forEach(function(s) { observer.observe(s); });
+        sections.forEach(function(section) {
+          var inner=section.querySelector('.section-inner');
+          if(!inner) return;
+          section.addEventListener('mousemove', function(e) {
+            var rect=section.getBoundingClientRect();
+            var xFrac=((e.clientX-rect.left)/rect.width)*2-1;
+            var yFrac=((e.clientY-rect.top)/rect.height)*2-1;
+            inner.style.transform='rotateY('+(xFrac*3)+'deg) rotateX('+(-yFrac*3)+'deg)';
+          });
+          section.addEventListener('mouseleave', function() {
+            inner.style.transform='rotateY(0deg) rotateX(0deg)';
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>

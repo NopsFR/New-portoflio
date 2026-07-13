@@ -18,7 +18,7 @@ function App() {
       <ScanlineOverlay />
 
       {/* Main Content */}
-      <main className="mr-16">
+      <main className="ml-20">
         <HeroSection />
 
         {/* TryHackMe Stats */}

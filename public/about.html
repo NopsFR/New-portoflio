@@ -769,6 +769,73 @@
         </div>
       </div>
 
+      <!-- SECTION [07] BLOB_IMAGE_GALLERY -->
+      <div class="section" id="blobGallerySection" style="display:none;">
+        <div class="section-inner">
+        <div class="section-header">
+          <span class="section-number">[07]</span>
+          BLOB_IMAGE_GALLERY
+        </div>
+        <div class="blob-gallery-grid" id="blobGallery"></div>
+        <p class="blob-empty" id="blobEmpty" style="display:none;text-align:center;color:var(--muted);font-size:13px;padding:24px 0;">No images uploaded yet.</p>
+        </div>
+      </div>
+
+      <style>
+        .blob-gallery-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+          gap: 12px;
+          margin-top: 8px;
+        }
+        .blob-gallery-item {
+          position: relative;
+          border-radius: 10px;
+          overflow: hidden;
+          border: 1px solid var(--border);
+          background: rgba(11, 16, 33, 0.4);
+          aspect-ratio: 1;
+          cursor: pointer;
+          transition: all 0.35s ease;
+        }
+        .blob-gallery-item:hover {
+          border-color: var(--accent);
+          box-shadow: 0 4px 28px rgba(74, 142, 255, 0.14);
+          transform: translateY(-2px);
+        }
+        .blob-gallery-item img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+        .blob-gallery-item .blob-overlay {
+          position: absolute;
+          inset: 0;
+          background: rgba(5,8,20,0.7);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+        .blob-gallery-item:hover .blob-overlay {
+          opacity: 1;
+        }
+        .blob-overlay-text {
+          color: var(--white);
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 1px;
+        }
+        @media (max-width: 768px) {
+          .blob-gallery-grid {
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 8px;
+          }
+        }
+      </style>
+
       <p class="footer-note">My Portfolio &mdash; oscar senior</p>
     </div>
 
@@ -959,6 +1026,78 @@
           });
         });
       })();
+
+    /* ===== Blob Image Gallery ===== */
+    (function() {
+      var gallerySection = document.getElementById('blobGallerySection');
+      var galleryGrid = document.getElementById('blobGallery');
+      var galleryEmpty = document.getElementById('blobEmpty');
+
+      if (!gallerySection || !galleryGrid) return;
+
+      // Fetch images from Vercel Blob API
+      fetch('/api/list-images')
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          if (!data.success || !data.images || data.images.length === 0) {
+            if (galleryEmpty) galleryEmpty.style.display = 'block';
+            gallerySection.style.display = 'block';
+            animateSection(gallerySection);
+            return;
+          }
+
+          gallerySection.style.display = 'block';
+          if (galleryEmpty) galleryEmpty.style.display = 'none';
+
+          data.images.forEach(function(img) {
+            var item = document.createElement('div');
+            item.className = 'blob-gallery-item';
+
+            var image = document.createElement('img');
+            image.src = img.url;
+            image.alt = img.pathname;
+            image.loading = 'lazy';
+
+            var overlay = document.createElement('div');
+            overlay.className = 'blob-overlay';
+
+            var overlayText = document.createElement('span');
+            overlayText.className = 'blob-overlay-text';
+            overlayText.textContent = 'View';
+
+            overlay.appendChild(overlayText);
+            item.appendChild(image);
+            item.appendChild(overlay);
+
+            // Click to open in new tab
+            item.addEventListener('click', function() {
+              window.open(img.url, '_blank');
+            });
+
+            galleryGrid.appendChild(item);
+          });
+
+          animateSection(gallerySection);
+        })
+        .catch(function(err) {
+          console.error('Failed to load blob gallery:', err);
+          if (galleryEmpty) {
+            galleryEmpty.textContent = 'Gallery unavailable.';
+            galleryEmpty.style.display = 'block';
+          }
+          gallerySection.style.display = 'block';
+          animateSection(gallerySection);
+        });
+
+      function animateSection(section) {
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(30px)';
+        section.style.animation = 'none';
+        requestAnimationFrame(function() {
+          section.style.animation = 'fadeSlideUp 0.7s ease forwards';
+        });
+      }
+    })();
     </script>
   </body>
 </html>

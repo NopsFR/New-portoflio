@@ -10,6 +10,7 @@ import {
   Eye,
   Activity,
   ChevronRight,
+  Image,
 } from 'lucide-react';
 
 function AdminLayout() {
@@ -34,6 +35,7 @@ function AdminLayout() {
     { path: '/Oscar.admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { path: '/Oscar.admin/analytics', label: 'Analytics', icon: Activity },
     { path: '/Oscar.admin/users', label: 'User Management', icon: Users },
+    { path: '/Oscar.admin/media', label: 'Media', icon: Image },
     { path: '/Oscar.admin/security', label: 'Security', icon: Shield },
     { path: '/Oscar.admin/config', label: 'Config', icon: Settings },
   ];

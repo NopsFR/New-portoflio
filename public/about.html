@@ -382,11 +382,46 @@
       .spotify-hidden { display: none; }
       .spotify-visible { display: block; }
 
-      @media (max-width: 640px) {
-        .container { padding: 28px 14px 40px; }
-        .page-title { font-size: 28px; }
+      @media (max-width: 768px) {
+        .container { padding: 28px 16px 40px; max-width: 100%; }
+        .page-title { font-size: 26px; }
+        .page-subtitle { font-size: 12px; margin-bottom: 32px; letter-spacing: 1px; }
+        .back-link { font-size: 12px; padding: 6px 14px; margin-bottom: 28px; }
         .section, .section-inner { padding: 20px 16px; }
+        .section-header { font-size: 16px; flex-wrap: wrap; }
+        .section-number { font-size: 9px; padding: 2px 8px; letter-spacing: 1px; }
+        .prose { font-size: 14px; line-height: 1.7; }
+        .highlight-block { font-size: 13px; padding: 16px 16px; }
+        .stat-badge { font-size: 15px; padding: 1px 7px; }
+        .stat-badge small { font-size: 9px; }
+        .interest-sub { font-size: 11px; letter-spacing: 1px; margin-top: 24px; }
+        .model-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+        .model-card { padding: 14px; }
+        .model-name { font-size: 14px; }
+        .model-spec { font-size: 11px; line-height: 1.6; }
+        .footer-note { font-size: 10px; margin-top: 32px; }
+        .guns-standalone { margin-bottom: 28px; }
+        .guns-container { min-height: 360px; }
+        .guns-content { padding: 24px 16px; }
+        .guns-username { font-size: 26px; }
+        .guns-avatar { width: 64px; height: 64px; }
+        .guns-socials { gap: 10px; }
+        .guns-bottom-row { gap: 14px; flex-wrap: wrap; justify-content: center; }
+        .guns-stat { font-size: 13px; }
+        .guns-music-toggle { font-size: 12px; padding: 6px 14px; }
+        .exp-section { gap: 12px; }
+        .exp-icon { width: 30px; height: 30px; border-radius: 8px; }
+        .exp-icon svg { width: 16px; height: 16px; }
+        .exp-content h3 { font-size: 14px; }
+        .exp-content p { font-size: 13px; line-height: 1.65; }
+      }
+      @media (max-width: 400px) {
+        .page-title { font-size: 22px; }
         .model-grid { grid-template-columns: 1fr; }
+        .guns-username { font-size: 22px; }
+        .guns-avatar-wrap { padding: 2px; }
+        .guns-avatar { width: 56px; height: 56px; }
+        .section-inner { padding: 16px 12px; }
       }
     </style>
   </head>

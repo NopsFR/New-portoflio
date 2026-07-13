@@ -133,11 +133,33 @@
       }
       .platform-nav a:hover { color: var(--lime); border-color: var(--lime); background: rgba(57,255,20,0.05); }
 
-      @media (max-width: 600px) {
-        .page-title { font-size: 18px; }
-        .container { padding: 24px 12px; }
-        .platform-section { padding: 14px 12px; }
+      @media (max-width: 768px) {
+        .container { padding: 24px 16px; max-width: 100%; }
+        .page-title { font-size: 20px; letter-spacing: 1px; }
+        .page-subtitle { font-size: 11px; letter-spacing: 1px; }
+        .page-intro { font-size: 13px; margin-bottom: 28px; }
+        .back-link { font-size: 12px; padding: 6px 14px; margin-bottom: 24px; }
+        .platform-nav { gap: 6px; margin-bottom: 24px; }
+        .platform-nav a { font-size: 10px; padding: 3px 8px; letter-spacing: 0.5px; }
+        .platform-section { padding: 14px 14px; margin-bottom: 24px; }
+        .platform-title { font-size: 16px; letter-spacing: 1px; }
+        .subcat-title { font-size: 12px; letter-spacing: 1px; padding-left: 6px; }
+        .project-item { padding: 8px 10px; }
+        .project-name { font-size: 13px; }
+        .project-desc { font-size: 11px; }
+        .project-notes { font-size: 10px; }
         .project-links { gap: 6px; }
+        .proj-link { font-size: 10px; padding: 2px 6px; letter-spacing: 0.5px; }
+        .proj-protocols { font-size: 9px; }
+        .disclaimer { font-size: 11px; padding: 14px 16px; }
+        .footer-note { font-size: 10px; }
+      }
+      @media (max-width: 400px) {
+        .page-title { font-size: 17px; }
+        .platform-section { padding: 10px 8px; }
+        .project-item { padding: 6px 8px; }
+        .platform-nav { gap: 4px; }
+        .platform-nav a { font-size: 9px; padding: 2px 6px; }
       }
     </style>
   </head>

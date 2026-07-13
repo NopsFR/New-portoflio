@@ -91,10 +91,6 @@ function SecurityPage() {
     { key: 'contentSecurityPolicy', label: 'Content Security Policy', desc: 'Restrict resource loading sources', icon: Lock },
   ];
 
-  function Globe(props) {
-    return <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>;
-  }
-
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -303,7 +299,7 @@ function SecurityPage() {
   );
 }
 
-// Clock icon inline since we import from lucide but need it independently
+// Helper icon components (not available in lucide-react)
 function Clock(props) {
   return (
     <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -313,7 +309,6 @@ function Clock(props) {
   );
 }
 
-// Globe icon inline
 function Globe(props) {
   return (
     <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

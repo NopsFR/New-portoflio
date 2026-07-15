@@ -382,6 +382,28 @@
       .spotify-hidden { display: none; }
       .spotify-visible { display: block; }
 
+      .guns-play-overlay {
+        position: absolute; inset: 0; z-index: 5;
+        display: flex; align-items: center; justify-content: center;
+        background: rgba(0,0,0,0.45); backdrop-filter: blur(3px);
+        -webkit-backdrop-filter: blur(3px);
+        border-radius: 16px; cursor: pointer;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+      }
+      .guns-play-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+      .guns-play-btn {
+        display: flex; flex-direction: column; align-items: center; gap: 10px;
+        padding: 16px 30px; border: 2px solid rgba(255,255,255,0.45);
+        border-radius: 50px; background: rgba(255,255,255,0.06);
+        color: #fff; font-size: 14px; font-weight: 600; letter-spacing: 0.8px;
+        transition: all 0.3s ease; user-select: none;
+      }
+      .guns-play-btn:hover, .guns-play-btn:active {
+        background: rgba(255,255,255,0.15); border-color: #fff;
+        box-shadow: 0 0 24px rgba(255,255,255,0.12); transform: scale(1.03);
+      }
+      .guns-play-btn .play-icon { font-size: 24px; }
+
       @media (max-width: 768px) {
         .container { padding: 28px 16px 40px; max-width: 100%; }
         .page-title { font-size: 26px; }
@@ -712,6 +734,14 @@
           </video>
           <div class="guns-tv-overlay"></div>
 
+          <!-- Tap-to-play overlay for mobile autoplay policy -->
+          <div class="guns-play-overlay" id="gunsPlayOverlay">
+            <div class="guns-play-btn">
+              <span class="play-icon">▶</span>
+              <span>Tap to Enter</span>
+            </div>
+          </div>
+
           <div class="guns-content">
             <div class="guns-volume">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48"><path fill="currentColor" d="M24 6v36c-7 0-12.201-9.16-12.201-9.16H6a2 2 0 0 1-2-2V17.01a2 2 0 0 1 2-2h5.799S17 6 24 6Z"/><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" d="M32 15a11.9 11.9 0 0 1 0 18M38 11a20 20 0 0 1 0 26"/></svg>
@@ -871,14 +901,17 @@
         }
         type();
 
-        /* Music Toggle */
+        /* Music Toggle — mobile-compatible with autoplay handling */
         (function() {
           const toggle = document.getElementById('musicToggle');
           const container = document.getElementById('spotifyEmbed');
-          const label = toggle.querySelector('.music-label');
+          const overlay = document.getElementById('gunsPlayOverlay');
+          const label = toggle ? toggle.querySelector('.music-label') : null;
           if (!toggle || !container) return;
 
           let playing = false;
+          let userInteracted = false;
+
           function sendCmd(cmd) {
             const ifr = container.querySelector('iframe');
             if (ifr && ifr.contentWindow) {
@@ -886,22 +919,107 @@
             }
           }
 
+          function showPlayButton() {
+            if (overlay) overlay.classList.remove('hidden');
+            toggle.classList.remove('active');
+            if (label) label.textContent = 'Music Off';
+            playing = false;
+          }
+
+          function hidePlayButton() {
+            if (overlay) overlay.classList.add('hidden');
+          }
+
+          function startMusic() {
+            userInteracted = true;
+            container.classList.remove('spotify-hidden');
+            container.classList.add('spotify-visible');
+            toggle.classList.add('active');
+            if (label) label.textContent = 'Music On';
+
+            // Delay to let iframe inject, then attempt play
+            setTimeout(function() {
+              try {
+                sendCmd('play');
+              } catch (e) {
+                console.warn('Spotify play command failed:', e);
+              }
+            }, 800);
+            playing = true;
+            hidePlayButton();
+          }
+
+          function stopMusic() {
+            try {
+              sendCmd('pause');
+            } catch (e) {
+              console.warn('Spotify pause command failed:', e);
+            }
+            container.classList.add('spotify-hidden');
+            container.classList.remove('spotify-visible');
+            toggle.classList.remove('active');
+            if (label) label.textContent = 'Music Off';
+            playing = false;
+          }
+
+          // Handle tap on the overlay — this satisfies browser autoplay policy
+          if (overlay) {
+            overlay.addEventListener('click', function(e) {
+              e.stopPropagation();
+              startMusic();
+            });
+            overlay.addEventListener('touchend', function(e) {
+              e.stopPropagation();
+              e.preventDefault();
+              startMusic();
+            });
+          }
+
+          // Main toggle click
           toggle.addEventListener('click', function() {
             if (playing) {
-              sendCmd('pause');
-              container.classList.add('spotify-hidden');
-              container.classList.remove('spotify-visible');
-              toggle.classList.remove('active');
-              label.textContent = 'Music Off';
-              playing = false;
+              stopMusic();
             } else {
+              startMusic();
+            }
+          });
+
+          // Attempt autoplay on page load (will likely be blocked on mobile)
+          // If blocked, the overlay remains visible for user to tap
+          window.addEventListener('load', function() {
+            // Do NOT attempt autoplay — always show overlay on mobile,
+            // but on desktop where autoplay may work, try once and catch
+            var p = new Promise(function(resolve, reject) {
               container.classList.remove('spotify-hidden');
               container.classList.add('spotify-visible');
               toggle.classList.add('active');
-              label.textContent = 'Music On';
+              if (label) label.textContent = 'Music On';
               playing = true;
-              setTimeout(function() { sendCmd('play'); }, 600);
-            }
+
+              setTimeout(function() {
+                try {
+                  sendCmd('play');
+                  // If we get here without error, assume success
+                  resolve();
+                } catch (e) {
+                  reject(e);
+                }
+              }, 1000);
+            });
+
+            p.then(function() {
+              // Autoplay succeeded — hide overlay
+              hidePlayButton();
+            }).catch(function(err) {
+              // Autoplay blocked — show the tap overlay
+              console.info('Autoplay blocked by browser policy — showing tap overlay.');
+              showPlayButton();
+              container.classList.add('spotify-hidden');
+              container.classList.remove('spotify-visible');
+              toggle.classList.remove('active');
+              if (label) label.textContent = 'Music Off';
+              playing = false;
+            });
           });
         })();
 

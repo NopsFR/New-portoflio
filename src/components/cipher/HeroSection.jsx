@@ -12,7 +12,7 @@ export const HeroSection = () => {
               [SYSTEM_INITIALIZE]
             </div>
             <h1
-              className="font-display text-9xl font-black leading-tight mb-4 text-cyber-lime drop-shadow-[0_0_20px_rgba(204,255,0,0.8)]"
+              className="font-display text-6xl md:text-8xl lg:text-9xl font-black leading-tight mb-4 text-cyber-lime drop-shadow-[0_0_20px_rgba(204,255,0,0.8)]"
               style={{
                 letterSpacing: '0.15em',
                 fontKerning: 'auto',
@@ -32,7 +32,7 @@ export const HeroSection = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-12">
           <div>
             <p className="font-sans text-lg leading-relaxed text-gray-400 mb-4">
               {profileData.bio}
@@ -56,7 +56,7 @@ export const HeroSection = () => {
         </div>
 
         <div className="border-t border-cyber-lime/20 pt-8">
-          <div className="grid grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">
             {profileData.pathways.map((pathway, idx) => (
               <div key={idx}>
                 <div className="font-mono text-xs text-cyber-lime mb-2 tracking-widest">

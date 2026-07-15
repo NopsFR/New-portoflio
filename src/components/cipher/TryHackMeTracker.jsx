@@ -24,7 +24,7 @@ export const TryHackMeTracker = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
         <div className="bg-obsidian border border-cyber-lime/20 rounded p-4">
           <div className="text-xs text-gray-500 font-mono mb-2">RANK</div>
           <div className="text-cyber-lime font-bold text-lg font-mono">{stats.rank}</div>
@@ -53,7 +53,7 @@ export const TryHackMeTracker = () => {
       {/* Pathway Indicators */}
       <div className="space-y-3">
         <div className="text-xs text-gray-500 font-mono uppercase tracking-wider">Pathways Completed</div>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
           {profileData.pathways.map((pathway, idx) => (
             <div
               key={idx}

@@ -30,7 +30,7 @@ export const SideNav = () => {
   };
 
   return (
-    <nav className="fixed right-0 top-0 h-screen w-20 bg-obsidian border-l border-cyber-lime/20 flex flex-col items-center justify-center gap-12 z-40 px-2">
+    <nav className="fixed right-0 top-0 h-screen w-20 bg-obsidian border-l border-cyber-lime/20 flex-col items-center justify-center gap-12 z-40 px-2 hidden md:flex">
       {profileData.sections.map((section) => (
         <button
           key={section.id}

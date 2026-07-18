@@ -5,12 +5,16 @@ import React, { useRef, useEffect } from 'react';
  * Particles glow and connect when near the cursor.
  */
 export default function ParticleField({
-  particleCount = 80,
-  color = '0, 255, 65', // Lime green
+  particleCount: baseCount = 80,
+  color = '0, 255, 65',
   maxDistance = 120,
   opacity = 0.5,
   className = '',
 }) {
+  // Halve particles on mobile for performance
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const particleCount = isMobile ? Math.floor(baseCount / 3) : baseCount;
+  const connectDistance = isMobile ? maxDistance * 0.6 : maxDistance;
   const canvasRef = useRef(null);
   const animRef = useRef(null);
   const mouseRef = useRef({ x: -1000, y: -1000 });

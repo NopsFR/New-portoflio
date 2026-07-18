@@ -449,9 +449,10 @@
       }
     </style>
   </head>
-  <body>
+<body>
     <canvas id="particles"></canvas>
     <div class="glow-orb" id="glowOrb"></div>
+    <div id="scrollBar" style="position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,transparent,#4a8eff,#a0d2ff);z-index:100;width:0%;transition:width 0.1s linear;border-radius:0 2px 2px 0;box-shadow:0 0 8px rgba(74,142,255,0.5);"></div>
 
     <div class="container">
       <a href="/" class="back-link">
@@ -459,8 +460,8 @@
         Back to Portfolio
       </a>
 
-      <h1 class="page-title">Personal Bio</h1>
-      <p class="page-subtitle">Who I am, what drives me</p>
+      <h1 class="page-title" id="pageTitle"></h1>
+      <p class="page-subtitle" id="pageSub"></p>
 
       <!-- SECTION [04] PERSONAL_DOSSIER -->
       <div class="section">
@@ -1038,6 +1039,47 @@
     </script>
 
     <script>
+      /* ===== Title typing animation ===== */
+      (function() {
+        var titleEl = document.getElementById('pageTitle');
+        var subEl = document.getElementById('pageSub');
+        var fullTitle = 'Personal Bio';
+        var fullSub = 'Who I am, what drives me';
+        var i = 0, j = 0;
+        if (titleEl) titleEl.textContent = '';
+        if (subEl) subEl.textContent = '';
+        function typeTitle() {
+          if (titleEl && i < fullTitle.length) {
+            titleEl.textContent += fullTitle.charAt(i);
+            i++;
+            setTimeout(typeTitle, 60);
+          } else if (subEl) {
+            typeSub();
+          }
+        }
+        function typeSub() {
+          if (subEl && j < fullSub.length) {
+            subEl.textContent += fullSub.charAt(j);
+            j++;
+            setTimeout(typeSub, 25);
+          }
+        }
+        setTimeout(typeTitle, 200);
+      })();
+
+      /* ===== Scroll progress bar ===== */
+      (function() {
+        var bar = document.getElementById('scrollBar');
+        if (!bar) return;
+        window.addEventListener('scroll', function() {
+          var h = document.documentElement;
+          var st = h.scrollTop || document.body.scrollTop;
+          var sh = h.scrollHeight || document.body.scrollHeight;
+          var pct = (st / (sh - h.clientHeight)) * 100;
+          bar.style.width = Math.min(pct, 100).toFixed(1) + '%';
+        }, { passive: true });
+      })();
+
       (function() {
         var canvas = document.getElementById('particles');
         var ctx = canvas.getContext('2d');

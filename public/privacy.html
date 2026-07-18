@@ -165,11 +165,13 @@
   </head>
   <body>
     <div class="grid-bg"></div>
+    <canvas id="particlesCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+    <div id="scrollBar" style="position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,transparent,#39ff14,#a0ffa0);z-index:100;width:0%;transition:width 0.1s linear;border-radius:0 2px 2px 0;box-shadow:0 0 8px rgba(57,255,20,0.5);"></div>
     <div class="container">
       <a href="/" class="back-link">&larr; Back to Portfolio</a>
 
-      <h1 class="page-title">PRISM Break</h1>
-      <p class="page-subtitle">Opt Out of Global Data Surveillance</p>
+      <h1 class="page-title" id="privacyTitle"></h1>
+      <p class="page-subtitle" id="privacySub"></p>
       <p class="page-intro">
         <strong>Opt out of global data surveillance programs like
         <a href="https://en.wikipedia.org/wiki/PRISM_(surveillance_program)" target="_blank" rel="noopener noreferrer">PRISM</a>,
@@ -4475,5 +4477,102 @@ There is also a DuckDuckGo hidden service at [3g2upl4pq6kufc4m.onion](http://3g2
         Data sourced from <a href="https://prism-break.org" target="_blank" rel="noopener noreferrer" style="color:var(--lime);">prism-break.org</a>
       </p>
     </div>
+
+    <script>
+      /* ===== Title typing animation ===== */
+      (function() {
+        var t = document.getElementById('privacyTitle');
+        var s = document.getElementById('privacySub');
+        var ft = 'PRISM Break';
+        var fs = 'Opt Out of Global Data Surveillance';
+        var i = 0, j = 0;
+        if (t) t.textContent = '';
+        if (s) s.textContent = '';
+        function typeTitle() {
+          if (t && i < ft.length) { t.textContent += ft.charAt(i); i++; setTimeout(typeTitle, 50); }
+          else if (s) typeSub();
+        }
+        function typeSub() {
+          if (s && j < fs.length) { s.textContent += fs.charAt(j); j++; setTimeout(typeSub, 20); }
+        }
+        setTimeout(typeTitle, 150);
+      })();
+
+      /* ===== Scroll progress bar ===== */
+      (function() {
+        var b = document.getElementById('scrollBar');
+        if (!b) return;
+        window.addEventListener('scroll', function() {
+          var d = document.documentElement;
+          var st = d.scrollTop || document.body.scrollTop;
+          var sh = d.scrollHeight || document.body.scrollHeight;
+          b.style.width = Math.min((st / (sh - d.clientHeight)) * 100, 100).toFixed(1) + '%';
+        }, { passive: true });
+      })();
+
+      /* ===== Particle canvas ===== */
+      (function() {
+        var canvas = document.getElementById('particlesCanvas');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        var w, h, parts = [];
+        var isMobile = window.innerWidth < 768;
+        function resize() {
+          w = canvas.width = window.innerWidth;
+          h = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+        var count = isMobile ? 30 : 70;
+        for (var i = 0; i < count; i++) {
+          parts.push({
+            x: Math.random() * w,
+            y: Math.random() * h,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.5,
+            r: Math.random() * 1.5 + 0.3,
+            o: Math.random() * 0.4 + 0.08
+          });
+        }
+        var mouse = { x: null, y: null };
+        window.addEventListener('mousemove', function(e) { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
+        window.addEventListener('mouseout', function() { mouse.x = null; mouse.y = null; });
+        function anim() {
+          ctx.clearRect(0, 0, w, h);
+          for (var i = 0; i < parts.length; i++) {
+            var p = parts[i];
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
+            if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(57,255,20,' + p.o + ')';
+            ctx.fill();
+            if (mouse.x && mouse.y) {
+              var dx = p.x - mouse.x, dy = p.y - mouse.y;
+              var dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 150) {
+                var force = (150 - dist) / 150 * 0.02;
+                p.vx += dx * force; p.vy += dy * force;
+              }
+            }
+          }
+          for (var i = 0; i < parts.length; i++) {
+            for (var j = i + 1; j < parts.length; j++) {
+              var a = parts[i], b = parts[j];
+              var dx = a.x - b.x, dy = a.y - b.y;
+              var dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 140) {
+                var alpha = (1 - dist / 140) * 0.1;
+                ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+                ctx.strokeStyle = 'rgba(57,255,20,' + alpha + ')'; ctx.lineWidth = 0.5; ctx.stroke();
+              }
+            }
+          }
+          requestAnimationFrame(anim);
+        }
+        anim();
+      })();
+    </script>
   </body>
 </html>

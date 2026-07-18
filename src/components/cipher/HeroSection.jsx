@@ -163,16 +163,42 @@ export const HeroSection = () => {
               </GlitchText>
             </div>
 
-            {/* Glitch Name */}
-            <h1 className="font-display text-6xl md:text-8xl lg:text-9xl font-black leading-tight mb-4">
-              <GlitchText
-                className="text-[#CCFF00] drop-shadow-[0_0_20px_rgba(204,255,0,0.6)]"
-                intensity="intense"
-                glitchOnHover={true}
-                style={{ letterSpacing: '0.15em' }}
+            {/* Auto-glitching neon name */}
+            <h1
+              className="font-display text-6xl md:text-8xl lg:text-9xl font-black leading-tight mb-4 relative"
+              style={{ letterSpacing: '0.15em' }}
+            >
+              <span
+                className="text-[#CCFF00] block relative animate-flicker"
+                style={{
+                  textShadow: '0 0 10px #CCFF00, 0 0 30px rgba(204,255,0,0.6), 0 0 60px rgba(204,255,0,0.3)',
+                }}
               >
+                {/* Red channel offset */}
+                <span
+                  className="absolute inset-0 text-[#ff0040] opacity-70"
+                  style={{
+                    animation: 'glitch-shake 0.15s infinite',
+                    clipPath: 'polygon(0 20%, 100% 20%, 100% 35%, 0 35%)',
+                  }}
+                  aria-hidden="true"
+                >
+                  {profileData.name}
+                </span>
+                {/* Blue channel offset */}
+                <span
+                  className="absolute inset-0 text-[#00d4ff] opacity-70"
+                  style={{
+                    animation: 'glitch-shake 0.2s infinite reverse',
+                    clipPath: 'polygon(0 65%, 100% 65%, 100% 80%, 0 80%)',
+                  }}
+                  aria-hidden="true"
+                >
+                  {profileData.name}
+                </span>
+                {/* Main text */}
                 {profileData.name}
-              </GlitchText>
+              </span>
             </h1>
           </div>
 

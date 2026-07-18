@@ -7,7 +7,7 @@ import {
   SideNav,
   Footer,
 } from './components/cipher';
-import { MatrixRain } from './components/vfx';
+import { TerminalBackground } from './components/vfx';
 
 function ScrollReveal({ children, className = '', delay = 0 }) {
   const ref = useRef(null);
@@ -38,35 +38,31 @@ function ScrollReveal({ children, className = '', delay = 0 }) {
 
 function App() {
   return (
-    <div className="relative text-white overflow-x-hidden min-h-screen" style={{ background: '#050505' }}>
-      {/* Full-screen Matrix rain — single canvas, zIndex 0 */}
-      <MatrixRain opacity={0.05} />
-
-      {/* CRT scanline overlay */}
-      <div className="scanline-overlay" />
+    <div className="relative text-white overflow-x-hidden min-h-screen" style={{ background: 'var(--color-bg)' }}>
+      {/* Single-canvas background: matrix rain + particle web + scanline sweep */}
+      <TerminalBackground opacity={0.06} />
 
       <SideNav />
 
-      <main className="md:mr-20 relative" style={{ zIndex: 'var(--z-content)' }}>
+      <main className="md:mr-20 relative flex flex-col items-center" style={{ zIndex: 'var(--z-content)' }}>
         <HeroSection />
         <ScrollReveal delay={100}>
-          <section className="py-20 px-6 md:px-8">
+          <section className="py-20 px-6 md:px-8 w-full">
             <div className="max-w-6xl mx-auto">
               <TryHackMeTracker />
             </div>
           </section>
         </ScrollReveal>
-        <ScrollReveal delay={150}>
+        <ScrollReveal delay={150} className="w-full">
           <CapabilitiesSection />
         </ScrollReveal>
-        <ScrollReveal delay={200}>
+        <ScrollReveal delay={200} className="w-full">
           <AchievementGallery />
         </ScrollReveal>
+        <ScrollReveal delay={250} className="w-full">
+          <Footer />
+        </ScrollReveal>
       </main>
-
-      <ScrollReveal delay={250}>
-        <Footer />
-      </ScrollReveal>
     </div>
   );
 }

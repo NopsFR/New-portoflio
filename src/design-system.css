@@ -1,27 +1,30 @@
 /* ============================================================
-   DESIGN SYSTEM — Cipher Protocol
+   DESIGN SYSTEM — Cipher Protocol v2 (Premium Red Team)
    ============================================================
-   A strictly defined set of design tokens. All components
-   MUST reference these variables rather than hardcoded values.
+   Deep void background, restrained terminal-green accent,
+   alert-red secondary accent, and a strict 8px grid.
+   All components MUST reference these variables.
    ============================================================ */
 
 :root {
   /* ---- TYPOGRAPHY ---- */
-  --font-mono: 'Fira Code', 'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
   --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-  /* ---- COLOR PALETTE (strict 6-color set) ---- */
-  --color-bg:        #050505;   /* Obsidian — main background */
-  --color-surface:   #0a0a0f;   /* Dark surface for cards / panels */
-  --color-border:    #1a1a24;   /* Subtle border */
-  --color-accent:    #00ff41;   /* Terminal green — primary accent */
-  --color-text:      #c0c0c0;   /* Secondary text */
-  --color-muted:     #555555;   /* Muted / disabled text */
-  --color-white:     #f0f0f0;   /* High-emphasis text */
+  /* ---- COLOR PALETTE (Premium) ---- */
+  --color-bg:        #000000;   /* Deep void */
+  --color-surface:   #0a120a;   /* Subtle dark green-gray cards */
+  --color-border:    #1a1f1a;   /* Panel borders */
+  --color-accent:    #00ff41;   /* Terminal green — sparingly used */
+  --color-danger:    #ff3333;   /* Alert red — threat levels, errors */
+  --color-amber:     #ffb000;   /* Terminal amber — highlights */
+  --color-text:      #b0b5b0;   /* Secondary text */
+  --color-muted:     #4a4f4a;   /* Muted / disabled */
+  --color-white:     #e0e5e0;   /* High-emphasis text */
 
   /* ---- ACCENT VARIANTS ---- */
-  --color-accent-dim:   rgba(0, 255, 65, 0.12);
-  --color-accent-glow:  rgba(0, 255, 65, 0.30);
+  --color-accent-dim:   rgba(0, 255, 65, 0.10);
+  --color-accent-glow:  rgba(0, 255, 65, 0.25);
   --color-accent-ghost: rgba(0, 255, 65, 0.04);
 
   /* ---- SPACING (8px grid) ---- */
@@ -37,10 +40,10 @@
   --space-16: 64px;
 
   /* ---- RADIUS ---- */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
 
   /* ---- TYPOGRAPHY SCALE ---- */
   --text-xs:   0.6875rem;  /* 11px */
@@ -52,10 +55,10 @@
   --text-3xl:  2.25rem;    /* 36px */
 
   /* ---- TRANSITIONS ---- */
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --duration-fast: 150ms;
-  --duration-normal: 250ms;
-  --duration-slow: 400ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.4, 1);
+  --duration-fast: 100ms;
+  --duration-normal: 200ms;
+  --duration-slow: 350ms;
 
   /* ---- Z-INDEX LAYERS ---- */
   --z-matrix:   0;

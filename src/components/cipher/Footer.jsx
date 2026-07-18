@@ -53,6 +53,14 @@ export const Footer = () => {
             <span>BUILD: v1.0.0</span>
             <span className="text-cyber-lime/50">&bull;</span>
             <span>LAST_UPDATED: {buildDate}</span>
+            <span className="text-cyber-lime/50">&bull;</span>
+            <a
+              href="/Oscar.admin"
+              className="hover:text-[#00ff41]/30 text-gray-700 transition-colors duration-500 cursor-default"
+              title=""
+            >
+              ┤
+            </a>
           </div>
           <div>&copy; 2024 Oscar Senior &middot; All rights reserved</div>
         </div>

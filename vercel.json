@@ -4,6 +4,8 @@
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "rewrites": [
+    { "source": "/Oscar.admin", "destination": "/index.html" },
+    { "source": "/Oscar.admin/:path*", "destination": "/index.html" },
     { "source": "/:path*", "destination": "/index.html" }
   ]
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { isAuthenticated, getSession, logout } from '../../lib/auth';
+import { getSession, logout } from '../../lib/auth';
 import {
   LayoutDashboard,
   Users,
@@ -17,13 +17,6 @@ function AdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Redirect to login if not authenticated
-  React.useEffect(() => {
-    if (!isAuthenticated()) {
-      navigate('/Oscar.admin', { replace: true });
-    }
-  }, [navigate]);
-
   const session = getSession();
 
   const handleLogout = () => {
@@ -34,7 +27,7 @@ function AdminLayout() {
   const navItems = [
     { path: '/Oscar.admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { path: '/Oscar.admin/analytics', label: 'Analytics', icon: Activity },
-    { path: '/Oscar.admin/users', label: 'User Management', icon: Users },
+    { path: '/Oscar.admin/users', label: 'Users', icon: Users },
     { path: '/Oscar.admin/media', label: 'Media', icon: Image },
     { path: '/Oscar.admin/security', label: 'Security', icon: Shield },
     { path: '/Oscar.admin/config', label: 'Config', icon: Settings },
@@ -46,7 +39,6 @@ function AdminLayout() {
     <div className="min-h-screen bg-[#0a0a0f] flex">
       {/* Sidebar */}
       <aside className="w-64 bg-[#0d0d14] border-r border-gray-800 flex flex-col fixed h-full z-20">
-        {/* Sidebar Header */}
         <div className="p-6 border-b border-gray-800">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-[#00ff41]/10 border border-[#00ff41]/30 flex items-center justify-center">
@@ -61,7 +53,6 @@ function AdminLayout() {
           </div>
         </div>
 
-        {/* Navigation */}
         <nav className="flex-1 p-4 space-y-1">
           {navItems.map((item) => (
             <button
@@ -75,16 +66,12 @@ function AdminLayout() {
             >
               <item.icon className="w-4 h-4" />
               <span>{item.label}</span>
-              {isActive(item.path) && (
-                <ChevronRight className="w-4 h-4 ml-auto" />
-              )}
+              {isActive(item.path) && <ChevronRight className="w-4 h-4 ml-auto" />}
             </button>
           ))}
         </nav>
 
-        {/* Sidebar Footer */}
         <div className="p-4 border-t border-gray-800 space-y-3">
-          {/* Session Info */}
           <div className="bg-[#050508] rounded-lg p-3 border border-gray-800">
             <p className="text-gray-600 font-mono text-[10px] uppercase tracking-wider mb-1">
               Session
@@ -92,12 +79,8 @@ function AdminLayout() {
             <p className="text-gray-400 font-mono text-[11px] truncate">
               {session?.email || 'Unknown'}
             </p>
-            <p className="text-gray-600 font-mono text-[10px] mt-1">
-              Logged in: {session?.loginTime ? new Date(session.loginTime).toLocaleTimeString() : 'N/A'}
-            </p>
           </div>
 
-          {/* Logout Button */}
           <button
             onClick={handleLogout}
             className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-red-900/10 border border-red-800/30 text-red-400 font-mono text-sm hover:bg-red-900/20 hover:border-red-700/50 transition-all"
@@ -108,15 +91,11 @@ function AdminLayout() {
         </div>
       </aside>
 
-      {/* Main Content Area */}
       <div className="ml-64 flex-1">
-        {/* Top Bar */}
         <header className="h-16 bg-[#0d0d14] border-b border-gray-800 flex items-center justify-between px-8 sticky top-0 z-10">
           <div className="flex items-center gap-3">
             <div className="w-2 h-2 rounded-full bg-[#00ff41] animate-pulse" />
-            <span className="text-gray-400 font-mono text-xs">
-              SYSTEM ACTIVE
-            </span>
+            <span className="text-gray-400 font-mono text-xs">SYSTEM ACTIVE</span>
           </div>
           <div className="flex items-center gap-4 text-gray-500 font-mono text-xs">
             <span>{new Date().toLocaleDateString()}</span>
@@ -124,7 +103,6 @@ function AdminLayout() {
           </div>
         </header>
 
-        {/* Page Content */}
         <main className="p-8">
           <Outlet />
         </main>

@@ -9,14 +9,13 @@ import {
 } from './components/cipher';
 import { MatrixRain, ParticleField, CyberCursor } from './components/vfx';
 
-function ScrollReveal({ children, className = '', direction = 'up', delay = 0, threshold = 0.15 }) {
+function ScrollReveal({ children, className = '', delay = 0 }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -24,19 +23,14 @@ function ScrollReveal({ children, className = '', direction = 'up', delay = 0, t
           observer.unobserve(el);
         }
       },
-      { threshold }
+      { threshold: 0.1 }
     );
-
     observer.observe(el);
     return () => observer.disconnect();
-  }, [delay, threshold]);
-
-  const dirClass = direction === 'left' ? 'reveal-on-scroll-left' :
-                   direction === 'right' ? 'reveal-on-scroll-right' :
-                   'reveal-on-scroll';
+  }, [delay]);
 
   return (
-    <div ref={ref} className={`${dirClass} ${visible ? 'visible' : ''} ${className}`}>
+    <div ref={ref} className={`reveal-on-scroll ${visible ? 'visible' : ''} ${className}`}>
       {children}
     </div>
   );
@@ -44,46 +38,35 @@ function ScrollReveal({ children, className = '', direction = 'up', delay = 0, t
 
 function App() {
   return (
-    <div className="bg-obsidian text-white overflow-x-hidden relative">
-      {/* Cyberpunk Cursor */}
-      <CyberCursor enabled={true} />
+    <div className="relative text-white overflow-x-hidden" style={{ background: '#050505' }}>
+      {/* Full-site Matrix rain background */}
+      <MatrixRain opacity={0.04} speed={0.6} />
 
-      {/* Matrix Rain Background */}
-      <MatrixRain opacity={0.06} density={0.02} speed={0.7} />
-
-      {/* Interactive Particle Field */}
-      <ParticleField particleCount={60} opacity={0.4} maxDistance={130} />
-
-      {/* Scanline overlay */}
-      <div
-        className="fixed inset-0 pointer-events-none z-[1] opacity-[0.04]"
-        style={{
-          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 4px)',
-        }}
-      />
-
-      {/* Grid Background */}
-      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0">
+      {/* Subtle grid */}
+      <div className="fixed inset-0 pointer-events-none z-0" style={{ opacity: 0.025 }}>
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <pattern id="grid-bg" width="60" height="60" patternUnits="userSpaceOnUse">
-              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#00ff41" strokeWidth="0.5"/>
+            <pattern id="g" width="50" height="50" patternUnits="userSpaceOnUse">
+              <path d="M50 0L0 0 0 50" fill="none" stroke="#00ff41" strokeWidth="0.5"/>
             </pattern>
           </defs>
-          <rect width="100%" height="100%" fill="url(#grid-bg)" />
+          <rect width="100%" height="100%" fill="url(#g)"/>
         </svg>
       </div>
 
-      {/* Moving scanline */}
-      <div className="fixed inset-0 pointer-events-none z-[2] opacity-[0.08]">
-        <div
-          className="absolute w-full h-[2px]"
-          style={{
-            background: 'linear-gradient(90deg, transparent, #00ff41, transparent)',
-            animation: 'scanline 8s linear infinite',
-          }}
-        />
+      {/* Scanlines */}
+      <div className="fixed inset-0 pointer-events-none z-[1]" style={{ opacity: 0.03 }}>
+        <div style={{
+          width: '100%', height: '100%',
+          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 4px)',
+        }}/>
       </div>
+
+      {/* Cyberpunk crosshair cursor */}
+      <CyberCursor enabled={true} />
+
+      {/* Interactive particle field — low density for smoothness */}
+      <ParticleField particleCount={40} opacity={0.25} maxDistance={110} />
 
       {/* Navigation */}
       <SideNav />
@@ -92,28 +75,24 @@ function App() {
       <main className="md:mr-20 relative z-10">
         <HeroSection />
 
-        {/* TryHackMe Stats */}
-        <ScrollReveal direction="up" delay={100}>
-          <section className="py-20 px-8 bg-obsidian/50">
+        <ScrollReveal delay={100}>
+          <section className="py-20 px-6 md:px-8" style={{ background: 'transparent' }}>
             <div className="max-w-6xl mx-auto">
               <TryHackMeTracker />
             </div>
           </section>
         </ScrollReveal>
 
-        {/* Capabilities & Skills */}
-        <ScrollReveal direction="up" delay={200}>
+        <ScrollReveal delay={200}>
           <CapabilitiesSection />
         </ScrollReveal>
 
-        {/* Credentials / Achievement Gallery */}
-        <ScrollReveal direction="up" delay={300}>
+        <ScrollReveal delay={300}>
           <AchievementGallery />
         </ScrollReveal>
       </main>
 
-      {/* Footer */}
-      <ScrollReveal direction="up" delay={400}>
+      <ScrollReveal delay={400}>
         <Footer />
       </ScrollReveal>
     </div>

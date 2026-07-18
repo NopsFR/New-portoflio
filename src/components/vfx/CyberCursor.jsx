@@ -1,153 +1,109 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 /**
- * Minimal, smooth cyberpunk cursor with subtle trail.
- * Uses requestAnimationFrame for buttery 60fps.
+ * Minimal terminal/hacker crosshair cursor.
+ * No circles — just a crisp green cross (+) with a tiny center dot.
+ * Ultra-smooth via requestAnimationFrame lerp.
  */
 export default function CyberCursor({ enabled = true }) {
-  const rafRef = useRef(null);
-  const mouseRef = useRef({ x: -100, y: -100 });
-  const containerRef = useRef(null);
-  const cursorEl = useRef(null);
-  const dotEl = useRef(null);
-  const trailEls = useRef([]);
+  const raf = useRef(0);
+  const mouse = useRef({ x: -100, y: -100 });
 
   useEffect(() => {
     if (!enabled) return;
 
-    // Build DOM once
     const container = document.createElement('div');
     container.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9999;';
     document.body.appendChild(container);
-    containerRef.current = container;
 
-    // Main ring — smaller (16px), thin border
-    const cursor = document.createElement('div');
-    cursor.style.cssText = `
-      position:fixed;width:16px;height:16px;
-      border:1px solid rgba(0,255,65,0.7);
-      border-radius:50%;pointer-events:none;
+    // Horizontal line
+    const hLine = document.createElement('div');
+    hLine.style.cssText = `
+      position:fixed;width:20px;height:1px;
+      background:rgba(0,255,65,0.7);
+      pointer-events:none;z-index:10000;
       transform:translate(-50%,-50%);
-      box-shadow:0 0 6px rgba(0,255,65,0.25);
-      transition:width 0.12s,height 0.12s,border-color 0.12s,box-shadow 0.12s;
-      z-index:10000;will-change:left,top;
+      will-change:left,top;transition:opacity 0.1s;
     `;
-    container.appendChild(cursor);
-    cursorEl.current = cursor;
+    container.appendChild(hLine);
 
-    // Center dot — tiny (3px)
+    // Vertical line
+    const vLine = document.createElement('div');
+    vLine.style.cssText = `
+      position:fixed;width:1px;height:20px;
+      background:rgba(0,255,65,0.7);
+      pointer-events:none;z-index:10000;
+      transform:translate(-50%,-50%);
+      will-change:left,top;transition:opacity 0.1s;
+    `;
+    container.appendChild(vLine);
+
+    // Tiny center dot
     const dot = document.createElement('div');
     dot.style.cssText = `
-      position:fixed;width:3px;height:3px;
-      background:#00ff41;border-radius:50%;pointer-events:none;
+      position:fixed;width:2px;height:2px;
+      background:#00ff41;border-radius:50%;
+      pointer-events:none;z-index:10001;
       transform:translate(-50%,-50%);
-      box-shadow:0 0 4px #00ff41,0 0 8px rgba(0,255,65,0.5);
-      z-index:10001;will-change:left,top;
+      box-shadow:0 0 3px #00ff41;
+      will-change:left,top;transition:opacity 0.1s;
     `;
     container.appendChild(dot);
-    dotEl.current = dot;
 
-    // Trail — only 5 dots for performance
-    const trailDots = [];
-    for (let i = 0; i < 5; i++) {
-      const t = document.createElement('div');
-      t.style.cssText = `
-        position:fixed;
-        width:${1 + (5 - i) * 0.3}px;
-        height:${1 + (5 - i) * 0.3}px;
-        background:rgba(0,255,65,${0.08 + (5 - i) * 0.04});
-        border-radius:50%;pointer-events:none;
-        transform:translate(-50%,-50%);
-        will-change:left,top,opacity;
-      `;
-      container.appendChild(t);
-      trailDots.push({ el: t, x: -100, y: -100 });
-    }
-    trailEls.current = trailDots;
-
-    // Hide default cursor only for body (not admin pages — they're on different route but same DOM)
+    // Hide native cursor on body
     const style = document.createElement('style');
     style.id = 'cyber-cursor-style';
-    style.textContent = `
-      html.cyber-cursor-active, html.cyber-cursor-active * { cursor: none !important; }
-    `;
+    style.textContent = 'html.cursor-hack, html.cursor-hack *{cursor:none!important}';
     document.head.appendChild(style);
-    document.documentElement.classList.add('cyber-cursor-active');
+    document.documentElement.classList.add('cursor-hack');
 
-    function onMouseMove(e) {
-      mouseRef.current = { x: e.clientX, y: e.clientY };
+    function onMove(e) {
+      mouse.current = { x: e.clientX, y: e.clientY };
     }
 
     function onClick() {
-      if (cursorEl.current) {
-        cursorEl.current.style.width = '10px';
-        cursorEl.current.style.height = '10px';
-        cursorEl.current.style.borderColor = 'rgba(0,255,65,0.9)';
-        cursorEl.current.style.boxShadow = '0 0 12px rgba(0,255,65,0.5)';
-        setTimeout(() => {
-          if (cursorEl.current) {
-            cursorEl.current.style.width = '16px';
-            cursorEl.current.style.height = '16px';
-            cursorEl.current.style.borderColor = 'rgba(0,255,65,0.7)';
-            cursorEl.current.style.boxShadow = '0 0 6px rgba(0,255,65,0.25)';
-          }
-        }, 120);
-      }
+      hLine.style.background = 'rgba(0,255,65,1)';
+      vLine.style.background = 'rgba(0,255,65,1)';
+      dot.style.boxShadow = '0 0 8px #00ff41';
+      setTimeout(() => {
+        hLine.style.background = 'rgba(0,255,65,0.7)';
+        vLine.style.background = 'rgba(0,255,65,0.7)';
+        dot.style.boxShadow = '0 0 3px #00ff41';
+      }, 100);
     }
 
-    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    window.addEventListener('mousemove', onMove, { passive: true });
     window.addEventListener('click', onClick);
 
+    let currentX = -100, currentY = -100;
+
     function animate() {
-      const { x, y } = mouseRef.current;
-      const c = cursorEl.current;
-      const d = dotEl.current;
-      const trail = trailEls.current;
+      const { x, y } = mouse.current;
+      currentX += (x - currentX) * 0.35;
+      currentY += (y - currentY) * 0.35;
 
-      // Smooth cursor ring (lerp)
-      if (c) {
-        const cx = parseFloat(c.style.left || '-100');
-        const cy = parseFloat(c.style.top || '-100');
-        c.style.left = `${cx + (x - cx) * 0.25}px`;
-        c.style.top = `${cy + (y - cy) * 0.25}px`;
-        c.style.opacity = x < 0 ? '0' : '1';
-      }
+      hLine.style.left = `${currentX}px`;
+      hLine.style.top = `${currentY}px`;
+      vLine.style.left = `${currentX}px`;
+      vLine.style.top = `${currentY}px`;
+      dot.style.left = `${x}px`;
+      dot.style.top = `${y}px`;
 
-      // Dot follows instantly
-      if (d) {
-        d.style.left = `${x}px`;
-        d.style.top = `${y}px`;
-        d.style.opacity = x < 0 ? '0' : '1';
-      }
+      const visible = x >= 0 && y >= 0 ? '1' : '0';
+      hLine.style.opacity = visible;
+      vLine.style.opacity = visible;
+      dot.style.opacity = visible;
 
-      // Trail
-      if (trail.length > 0) {
-        trail[0].x += (x - trail[0].x) * 0.4;
-        trail[0].y += (y - trail[0].y) * 0.4;
-        trail[0].el.style.left = `${trail[0].x}px`;
-        trail[0].el.style.top = `${trail[0].y}px`;
-
-        for (let i = 1; i < trail.length; i++) {
-          trail[i].x += (trail[i - 1].x - trail[i].x) * 0.3;
-          trail[i].y += (trail[i - 1].y - trail[i].y) * 0.3;
-          trail[i].el.style.left = `${trail[i].x}px`;
-          trail[i].el.style.top = `${trail[i].y}px`;
-          trail[i].el.style.opacity = x < 0 ? '0' : '1';
-        }
-      }
-
-      rafRef.current = requestAnimationFrame(animate);
+      raf.current = requestAnimationFrame(animate);
     }
-
-    rafRef.current = requestAnimationFrame(animate);
+    raf.current = requestAnimationFrame(animate);
 
     return () => {
-      cancelAnimationFrame(rafRef.current);
+      cancelAnimationFrame(raf.current);
       container.remove();
-      const s = document.getElementById('cyber-cursor-style');
-      if (s) s.remove();
-      document.documentElement.classList.remove('cyber-cursor-active');
-      window.removeEventListener('mousemove', onMouseMove);
+      document.getElementById('cyber-cursor-style')?.remove();
+      document.documentElement.classList.remove('cursor-hack');
+      window.removeEventListener('mousemove', onMove);
       window.removeEventListener('click', onClick);
     };
   }, [enabled]);

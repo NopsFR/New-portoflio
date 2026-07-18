@@ -1,31 +1,34 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 
 /**
- * Canvas-based Matrix rain effect.
- * Renders falling green characters for a cyberpunk aesthetic.
+ * Full-screen Matrix rain canvas.
+ * Renders green katakana + hex characters falling at consistent speed.
+ * Performance optimized — uses requestAnimationFrame with throttled character density.
  */
-export default function MatrixRain({ opacity = 0.08, density = 0.03, speed = 1.0 }) {
+export default function MatrixRain({ opacity = 0.05, speed = 1.0 }) {
   const canvasRef = useRef(null);
-  const animRef = useRef(null);
+  const rafRef = useRef(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    const ctx = canvas.getContext('2d', { alpha: true });
 
-    const ctx = canvas.getContext('2d');
-    let drops = [];
+    const chars = ('アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン' +
+                   '0123456789ABCDEF<>?/{}[]|!@#$%^&*()_+-=.:;').split('');
+    const fontSize = 13;
     let columns = 0;
-
-    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/?{}[]|!@#$%^&*()_+-=.:;'.split('');
+    let drops = [];
 
     function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      columns = Math.floor(canvas.width / 14);
-      drops = [];
-      for (let i = 0; i < columns; i++) {
-        drops[i] = Math.random() * -canvas.height;
-      }
+      const dpr = Math.min(window.devicePixelRatio || 1, 2); // Cap at 2x for performance
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+      ctx.scale(dpr, dpr);
+      columns = Math.floor(window.innerWidth / fontSize);
+      drops = Array(columns).fill(0).map(() => Math.random() * -window.innerHeight);
     }
 
     resize();
@@ -33,56 +36,54 @@ export default function MatrixRain({ opacity = 0.08, density = 0.03, speed = 1.0
 
     function draw() {
       ctx.fillStyle = `rgba(5, 5, 5, ${0.15 * speed})`;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
-      ctx.font = '13px monospace';
+      ctx.font = `${fontSize}px "JetBrains Mono", monospace`;
 
       for (let i = 0; i < drops.length; i++) {
-        if (Math.random() > density) {
-          drops[i] += 14 * speed;
-          if (drops[i] > canvas.height && Math.random() > 0.975) {
-            drops[i] = 0;
-          }
+        // Skip some columns randomly for sparse rain
+        if (Math.random() > 0.018) {
+          drops[i] += fontSize * speed;
+          if (drops[i] > window.innerHeight && Math.random() > 0.97) drops[i] = 0;
           continue;
         }
 
         const char = chars[Math.floor(Math.random() * chars.length)];
+        const x = i * fontSize;
+        const y = drops[i];
 
-        // Leading character (brighter)
-        ctx.fillStyle = `rgba(0, 255, 65, ${0.9 * opacity})`;
-        ctx.fillText(char, i * 14, drops[i]);
+        // Leading character — brighter
+        ctx.fillStyle = `rgba(0, 255, 65, ${0.7 * opacity})`;
+        ctx.fillText(char, x, y);
 
-        // Trail characters
-        for (let j = 1; j < 5; j++) {
-          const trailChar = chars[Math.floor(Math.random() * chars.length)];
-          const trailOpacity = (0.7 * opacity) / (j + 1);
-          ctx.fillStyle = `rgba(0, 255, 65, ${trailOpacity})`;
-          ctx.fillText(trailChar, i * 14, drops[i] - j * 14);
+        // Faint trail
+        for (let j = 1; j <= 3; j++) {
+          ctx.fillStyle = `rgba(0, 255, 65, ${(0.4 * opacity) / (j + 1)})`;
+          ctx.fillText(chars[Math.floor(Math.random() * chars.length)], x, y - j * fontSize);
         }
 
-        drops[i] += 14 * speed;
-
-        if (drops[i] > canvas.height && Math.random() > 0.975) {
+        drops[i] += fontSize * speed;
+        if (drops[i] > window.innerHeight && Math.random() > 0.97) {
           drops[i] = 0;
         }
       }
 
-      animRef.current = requestAnimationFrame(draw);
+      rafRef.current = requestAnimationFrame(draw);
     }
 
-    animRef.current = requestAnimationFrame(draw);
+    rafRef.current = requestAnimationFrame(draw);
 
     return () => {
-      cancelAnimationFrame(animRef.current);
+      cancelAnimationFrame(rafRef.current);
       window.removeEventListener('resize', resize);
     };
-  }, [opacity, density, speed]);
+  }, [opacity, speed]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0"
-      style={{ opacity }}
+      className="fixed inset-0 pointer-events-none"
+      style={{ zIndex: 0, opacity }}
     />
   );
 }

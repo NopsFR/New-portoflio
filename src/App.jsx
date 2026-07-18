@@ -42,19 +42,12 @@ function App() {
       {/* Full-screen Matrix rain — single canvas, zIndex 0 */}
       <MatrixRain opacity={0.05} />
 
-      {/* CRT scanline overlay — pure CSS, no canvas */}
-      <div
-        className="fixed inset-0 pointer-events-none"
-        style={{
-          zIndex: 1,
-          opacity: 0.04,
-          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 4px)',
-        }}
-      />
+      {/* CRT scanline overlay */}
+      <div className="scanline-overlay" />
 
       <SideNav />
 
-      <main className="md:mr-20 relative" style={{ zIndex: 10 }}>
+      <main className="md:mr-20 relative" style={{ zIndex: 'var(--z-content)' }}>
         <HeroSection />
         <ScrollReveal delay={100}>
           <section className="py-20 px-6 md:px-8">

@@ -7,15 +7,38 @@
     <meta name="theme-color" content="#050814" />
     <title>About — Oscar Senior</title>
     <style>
+      /* ---- SHARED DESIGN SYSTEM (Cipher Protocol) ---- */
       :root {
-        --bg: #050814;
-        --surface: rgba(11, 16, 33, 0.65);
-        --border: rgba(74, 142, 255, 0.20);
-        --accent: #4a8eff;
-        --accent-glow: rgba(74, 142, 255, 0.55);
-        --text: #d8dfee;
-        --muted: #7c8aa8;
-        --white: #f0f4ff;
+        --font-mono: 'Fira Code', 'Courier New', monospace;
+        --font-sans: system-ui, -apple-system, sans-serif;
+
+        --color-bg:        #050505;
+        --color-surface:   #0a0a0f;
+        --color-border:    #1a1a24;
+        --color-accent:    #00ff41;
+        --color-text:      #c0c0c0;
+        --color-muted:     #555555;
+        --color-white:     #f0f0f0;
+
+        --color-accent-dim:   rgba(0, 255, 65, 0.12);
+        --color-accent-ghost: rgba(0, 255, 65, 0.04);
+        --radius-sm: 4px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --z-scanline: 1;
+        --z-content: 10;
+      }
+
+      /* Local page overrides for existing classes */
+      :root {
+        --bg: var(--color-bg);
+        --surface: rgba(10, 10, 15, 0.65);
+        --border: rgba(0, 255, 65, 0.15);
+        --accent: var(--color-accent);
+        --accent-glow: rgba(0, 255, 65, 0.55);
+        --text: var(--color-text);
+        --muted: var(--color-muted);
+        --white: var(--color-white);
       }
 
       * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,23 +46,38 @@
       body {
         background: var(--bg);
         color: var(--text);
-        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        font-family: var(--font-mono);
         line-height: 1.75;
         min-height: 100vh;
         overflow-x: hidden;
       }
 
-      canvas#particles {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        z-index: 0; pointer-events: none;
+      /* Hide old elements */
+      canvas#particles { display: none; }
+      .glow-orb { display: none; }
+
+      /* Scanline overlay */
+      .scanline-overlay {
+        position: fixed; inset: 0; pointer-events: none;
+        z-index: var(--z-scanline);
+        opacity: 0.04;
+        background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 4px);
       }
 
-      .glow-orb {
-        position: fixed; width: 60vw; height: 60vw; max-width: 600px; max-height: 600px; border-radius: 50%;
-        background: radial-gradient(circle, rgba(74,142,255,0.08) 0%, transparent 70%);
-        pointer-events: none; z-index: 0;
-        transform: translate(-50%, -50%);
-        transition: top 0.15s linear;
+      /* Crosshair cursor */
+      html {
+        cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'><line x1='10' y1='2' x2='10' y2='9' stroke='%2300ff41' stroke-width='1'/><line x1='10' y1='11' x2='10' y2='18' stroke='%2300ff41' stroke-width='1'/><line x1='2' y1='10' x2='9' y2='10' stroke='%2300ff41' stroke-width='1'/><line x1='11' y1='10' x2='18' y2='10' stroke='%2300ff41' stroke-width='1'/><circle cx='10' cy='10' r='1.5' fill='%2300ff41'/></svg>") 10 10, crosshair;
+      }
+      a, button { cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'><line x1='10' y1='2' x2='10' y2='9' stroke='%2300ff41' stroke-width='1'/><line x1='10' y1='11' x2='10' y2='18' stroke='%2300ff41' stroke-width='1'/><line x1='2' y1='10' x2='9' y2='10' stroke='%2300ff41' stroke-width='1'/><line x1='11' y1='10' x2='18' y2='10' stroke='%2300ff41' stroke-width='1'/><circle cx='10' cy='10' r='1.5' fill='%2300ff41'/></svg>") 10 10, crosshair; }
+
+      /* CSS Matrix rain */
+      @keyframes matrix-fall { 0% { transform: translateY(-100%); } 100% { transform: translateY(100vh); } }
+
+      /* Update gradient title to green */
+      .page-title {
+        background: linear-gradient(135deg, #b8ffb8 0%, #00ff41 50%, #7cff7c 100%);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
 
       .container {
@@ -450,9 +488,14 @@
     </style>
   </head>
 <body>
-    <canvas id="particles"></canvas>
-    <div class="glow-orb" id="glowOrb"></div>
-    <div id="scrollBar" style="position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,transparent,#4a8eff,#a0d2ff);z-index:100;width:0%;transition:width 0.1s linear;border-radius:0 2px 2px 0;box-shadow:0 0 8px rgba(74,142,255,0.5);"></div>
+    <!-- Scanline overlay -->
+    <div class="scanline-overlay"></div>
+
+    <!-- CSS Matrix rain -->
+    <div style="position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.05;" aria-hidden="true" id="matrixRain"></div>
+
+    <!-- Scroll progress bar -->
+    <div id="scrollBar" style="position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,transparent,#00ff41,#a0ffa0);z-index:100;width:0%;transition:width 0.1s linear;border-radius:0 2px 2px 0;box-shadow:0 0 8px rgba(0,255,65,0.5);"></div>
 
     <div class="container">
       <a href="/" class="back-link">
@@ -873,6 +916,30 @@
     </div>
 
     <script>
+      /* ===== CSS Matrix rain initialization ===== */
+      (function() {
+        var container = document.getElementById('matrixRain');
+        if (!container) return;
+        var cols = 40;
+        var frag = document.createDocumentFragment();
+        for (var i = 0; i < cols; i++) {
+          var span = document.createElement('span');
+          var chars = '';
+          for (var j = 0; j < 15; j++) {
+            chars += '0123456789ABCDEF'[Math.floor(Math.random() * 16)];
+            if (j < 14) chars += '\n';
+          }
+          span.textContent = chars;
+          span.style.cssText = 'position:absolute;top:0;left:' + (i / cols * 100) + '%;' +
+            'font-family:var(--font-mono);font-size:' + (10 + Math.random() * 4) + 'px;' +
+            'line-height:1;color:var(--color-accent);white-space:pre;' +
+            'opacity:0.15;letter-spacing:0.15em;' +
+            'animation:matrix-fall ' + (3 + Math.random() * 4) + 's linear ' + (Math.random() * 4) + 's infinite;';
+          frag.appendChild(span);
+        }
+        container.appendChild(frag);
+      })();
+
       (function() {
         const words = ['✩', '☜', '☭'];
         let wordIndex = 0, charIndex = 0, isDeleting = false;

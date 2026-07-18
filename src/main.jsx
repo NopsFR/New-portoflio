@@ -30,27 +30,34 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <TrackingWrapper>
           <Routes>
-            {/* Admin */}
-            <Route path="/Oscar.admin">
-              {/* index = login page */}
-              <Route index element={<AdminLogin />} />
-              {/* layout wraps all sub-pages */}
-              <Route
-                element={
-                  <RequireAuth>
-                    <AdminLayout />
-                  </RequireAuth>
-                }
-              >
-                <Route path="dashboard" element={<AdminDashboard />} />
-                <Route path="analytics" element={<AnalyticsPage />} />
-                <Route path="users" element={<UserManagement />} />
-                <Route path="media" element={<MediaPage />} />
-                <Route path="security" element={<SecurityPage />} />
-                <Route path="config" element={<ConfigPage />} />
-                <Route path="*" element={<Navigate to="dashboard" replace />} />
-              </Route>
-            </Route>
+            {/* Admin login page */}
+            <Route path="/Oscar.admin" element={<AdminLogin />} />
+            
+            {/* Admin sub-routes — wrapped in Auth + Layout */}
+            <Route
+              path="/Oscar.admin/dashboard"
+              element={<RequireAuth><AdminLayout><AdminDashboard /></AdminLayout></RequireAuth>}
+            />
+            <Route
+              path="/Oscar.admin/analytics"
+              element={<RequireAuth><AdminLayout><AnalyticsPage /></AdminLayout></RequireAuth>}
+            />
+            <Route
+              path="/Oscar.admin/users"
+              element={<RequireAuth><AdminLayout><UserManagement /></AdminLayout></RequireAuth>}
+            />
+            <Route
+              path="/Oscar.admin/media"
+              element={<RequireAuth><AdminLayout><MediaPage /></AdminLayout></RequireAuth>}
+            />
+            <Route
+              path="/Oscar.admin/security"
+              element={<RequireAuth><AdminLayout><SecurityPage /></AdminLayout></RequireAuth>}
+            />
+            <Route
+              path="/Oscar.admin/config"
+              element={<RequireAuth><AdminLayout><ConfigPage /></AdminLayout></RequireAuth>}
+            />
 
             {/* Public portfolio */}
             <Route path="/*" element={<App />} />

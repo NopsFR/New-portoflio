@@ -40,7 +40,7 @@ function App() {
   return (
     <div className="relative text-white overflow-x-hidden min-h-screen" style={{ background: '#050505' }}>
       {/* Full-screen Matrix rain — single canvas, zIndex 0 */}
-      <MatrixRain opacity={0.05} speed={0.6} />
+      <MatrixRain opacity={0.05} />
 
       {/* CRT scanline overlay — pure CSS, no canvas */}
       <div

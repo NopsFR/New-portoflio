@@ -1,89 +1,68 @@
-import React from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { getSession, logout } from '../../lib/auth';
-import {
-  LayoutDashboard,
-  Users,
-  Shield,
-  Settings,
-  LogOut,
-  Eye,
-  Activity,
-  ChevronRight,
-  Image,
-} from 'lucide-react';
+import { LayoutDashboard, Users, Shield, Settings, LogOut, Activity, ChevronRight, Image } from 'lucide-react';
 
-function AdminLayout() {
+const NAV_ITEMS = [
+  { path: '/Oscar.admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { path: '/Oscar.admin/analytics', label: 'Analytics', icon: Activity },
+  { path: '/Oscar.admin/users', label: 'Users', icon: Users },
+  { path: '/Oscar.admin/media', label: 'Media', icon: Image },
+  { path: '/Oscar.admin/security', label: 'Security', icon: Shield },
+  { path: '/Oscar.admin/config', label: 'Config', icon: Settings },
+];
+
+export default function AdminLayout({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
-
   const session = getSession();
 
-  const handleLogout = () => {
-    logout();
-    navigate('/Oscar.admin', { replace: true });
-  };
-
-  const navItems = [
-    { path: '/Oscar.admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { path: '/Oscar.admin/analytics', label: 'Analytics', icon: Activity },
-    { path: '/Oscar.admin/users', label: 'Users', icon: Users },
-    { path: '/Oscar.admin/media', label: 'Media', icon: Image },
-    { path: '/Oscar.admin/security', label: 'Security', icon: Shield },
-    { path: '/Oscar.admin/config', label: 'Config', icon: Settings },
-  ];
-
-  const isActive = (path) => location.pathname === path;
-
   return (
-    <div className="min-h-screen bg-[#0a0a0f] flex">
+    <div className="flex min-h-screen" style={{ backgroundColor: 'var(--color-surface)' }}>
       {/* Sidebar */}
-      <aside className="w-64 bg-[#0d0d14] border-r border-gray-800 flex flex-col fixed h-full z-20">
-        <div className="p-6 border-b border-gray-800">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-[#00ff41]/10 border border-[#00ff41]/30 flex items-center justify-center">
-              <Eye className="w-5 h-5 text-[#00ff41]" />
-            </div>
-            <div>
-              <h1 className="text-[#00ff41] font-mono text-sm font-bold tracking-wider">
-                OSCAR.ADMIN
-              </h1>
-              <p className="text-gray-600 font-mono text-[10px]">v1.0.0</p>
-            </div>
-          </div>
+      <aside className="w-64 flex flex-col fixed h-full" style={{ borderRight: '1px solid var(--color-border)', backgroundColor: 'var(--color-bg)' }}>
+        <div className="p-6" style={{ borderBottom: '1px solid var(--color-border)' }}>
+          <h1 className="text-sm font-bold tracking-wider" style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-accent)' }}>
+            OSCAR.ADMIN
+          </h1>
+          <p className="mt-1" style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--color-muted)' }}>v1.0.0</p>
         </div>
 
         <nav className="flex-1 p-4 space-y-1">
-          {navItems.map((item) => (
+          {NAV_ITEMS.map((item) => (
             <button
               key={item.path}
               onClick={() => navigate(item.path)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-mono text-sm transition-all text-left ${
-                isActive(item.path)
-                  ? 'bg-[#00ff41]/10 text-[#00ff41] border border-[#00ff41]/20'
-                  : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 border border-transparent'
-              }`}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded text-sm transition-colors text-left font-mono"
+              style={{
+                backgroundColor: location.pathname === item.path ? 'var(--color-accent-dim)' : 'transparent',
+                color: location.pathname === item.path ? 'var(--color-accent)' : 'var(--color-muted)',
+                border: location.pathname === item.path ? '1px solid var(--color-accent-glow)' : '1px solid transparent',
+                borderRadius: 'var(--radius-md)',
+              }}
             >
               <item.icon className="w-4 h-4" />
               <span>{item.label}</span>
-              {isActive(item.path) && <ChevronRight className="w-4 h-4 ml-auto" />}
+              {location.pathname === item.path && <ChevronRight className="w-4 h-4 ml-auto" />}
             </button>
           ))}
         </nav>
 
-        <div className="p-4 border-t border-gray-800 space-y-3">
-          <div className="bg-[#050508] rounded-lg p-3 border border-gray-800">
-            <p className="text-gray-600 font-mono text-[10px] uppercase tracking-wider mb-1">
-              Session
-            </p>
-            <p className="text-gray-400 font-mono text-[11px] truncate">
+        {/* Session info + logout */}
+        <div className="p-4 space-y-3" style={{ borderTop: '1px solid var(--color-border)' }}>
+          <div className="p-3 rounded" style={{ backgroundColor: 'var(--color-bg)', border: '1px solid var(--color-border)' }}>
+            <p className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-muted)' }}>
               {session?.email || 'Unknown'}
             </p>
           </div>
-
           <button
-            onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-red-900/10 border border-red-800/30 text-red-400 font-mono text-sm hover:bg-red-900/20 hover:border-red-700/50 transition-all"
+            onClick={() => { logout(); navigate('/Oscar.admin', { replace: true }); }}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded text-sm font-mono transition-colors"
+            style={{
+              backgroundColor: 'rgba(239, 68, 68, 0.08)',
+              border: '1px solid rgba(239, 68, 68, 0.2)',
+              color: '#ef4444',
+              borderRadius: 'var(--radius-md)',
+            }}
           >
             <LogOut className="w-4 h-4" />
             Terminate Session
@@ -91,24 +70,22 @@ function AdminLayout() {
         </div>
       </aside>
 
-      <div className="ml-64 flex-1">
-        <header className="h-16 bg-[#0d0d14] border-b border-gray-800 flex items-center justify-between px-8 sticky top-0 z-10">
+      {/* Main content area */}
+      <div className="ml-64 flex-1 flex flex-col min-h-screen">
+        <header className="h-16 flex items-center justify-between px-8 sticky top-0" style={{ borderBottom: '1px solid var(--color-border)', backgroundColor: 'var(--color-bg)' }}>
           <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-[#00ff41] animate-pulse" />
-            <span className="text-gray-400 font-mono text-xs">SYSTEM ACTIVE</span>
+            <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: 'var(--color-accent)' }} />
+            <span className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-muted)' }}>SYSTEM ACTIVE</span>
           </div>
-          <div className="flex items-center gap-4 text-gray-500 font-mono text-xs">
-            <span>{new Date().toLocaleDateString()}</span>
-            <span>{new Date().toLocaleTimeString()}</span>
-          </div>
+          <span className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-muted)' }}>
+            {new Date().toLocaleDateString()}
+          </span>
         </header>
 
-        <main className="p-8">
-          <Outlet />
+        <main className="p-8" style={{ backgroundColor: 'var(--color-surface)' }}>
+          {children}
         </main>
       </div>
     </div>
   );
 }
-
-export default AdminLayout;

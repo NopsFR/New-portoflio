@@ -8,7 +8,10 @@ const TRACKING_ENABLED_KEY = 'oscar_tracking_enabled';
  * Initialize analytics storage if not exists
  */
 function initStorage() {
-  if (!localStorage.getItem(ANALYTICS_KEY)) {
+  try {
+    if (localStorage.getItem(ANALYTICS_KEY)) return;
+  } catch { return; }
+  try {
     const initialData = {
       totalPageViews: 0,
       totalUniqueVisitors: 0,
@@ -22,7 +25,7 @@ function initStorage() {
       screenSizes: {},     // { 'WxH': count }
     };
     localStorage.setItem(ANALYTICS_KEY, JSON.stringify(initialData));
-  }
+  } catch { /* storage unavailable — analytics disabled */ }
 }
 
 /**
@@ -58,12 +61,14 @@ function parseUserAgent(ua) {
  * Generate or retrieve a unique visitor ID
  */
 function getVisitorId() {
-  let visitorId = localStorage.getItem('oscar_visitor_id');
-  if (!visitorId) {
-    visitorId = 'v_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem('oscar_visitor_id', visitorId);
-  }
-  return visitorId;
+  try {
+    let visitorId = localStorage.getItem('oscar_visitor_id');
+    if (!visitorId) {
+      visitorId = 'v_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 9);
+      try { localStorage.setItem('oscar_visitor_id', visitorId); } catch {}
+    }
+    return visitorId;
+  } catch { return 'v_anonymous'; }
 }
 
 /**

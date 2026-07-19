@@ -1,36 +1,90 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { profileData } from '../../lib/profileData';
+
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.06 } },
+};
+
+const fadeSlideUp = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
+  },
+};
 
 export const TechArsenal = () => {
   return (
-    <section className="py-20 px-8 bg-obsidian">
+    <section className="py-20 px-8" style={{ backgroundColor: 'var(--color-bg)' }}>
       <div className="max-w-6xl mx-auto">
-        <div className="mb-12">
-          <h2 className="text-4xl font-bold text-white mb-2 font-mono">
-            <span className="text-cyber-lime">[02]</span> TECHNICAL ARSENAL
-          </h2>
-          <p className="text-gray-500 font-mono text-sm">Core capabilities and threat vectors</p>
-        </div>
+        <motion.div
+          className="mb-12"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+        >
+          <motion.h2
+            className="text-4xl font-bold mb-2 font-mono"
+            style={{ color: 'var(--color-white)' }}
+            variants={fadeSlideUp}
+          >
+            <span style={{ color: 'var(--color-accent)' }}>[02]</span> TECHNICAL ARSENAL
+          </motion.h2>
+          <motion.p
+            className="font-mono text-sm"
+            style={{ color: 'var(--color-muted)' }}
+            variants={fadeSlideUp}
+          >
+            Core capabilities and threat vectors
+          </motion.p>
+        </motion.div>
 
         <div className="space-y-8">
           {Object.entries(profileData.skills).map(([category, skills]) => (
-            <div key={category}>
-              <h3 className="text-sm font-mono text-cyber-lime uppercase tracking-widest mb-4">
+            <motion.div
+              key={category}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-40px' }}
+              variants={fadeSlideUp}
+            >
+              <h3
+                className="text-sm font-mono uppercase tracking-widest mb-4"
+                style={{ color: 'var(--color-accent)' }}
+              >
                 ╭─ {category}
               </h3>
 
-              <div className="flex flex-wrap gap-3 pl-4 border-l border-cyber-lime/30">
+              <motion.div
+                className="flex flex-wrap gap-3 pl-4"
+                style={{ borderLeft: '1px solid var(--color-accent-dim)' }}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={staggerContainer}
+              >
                 {skills.map((skill, idx) => (
-                  <div
+                  <motion.div
                     key={idx}
-                    className="font-mono text-xs px-3 py-2 bg-cyber-dark border border-cyber-lime/40 rounded text-cyber-lime hover:bg-cyber-lime hover:text-obsidian transition-all duration-200 cursor-default group relative"
+                    variants={fadeSlideUp}
+                    whileHover={{ scale: 1.06, borderColor: 'rgba(102,252,241,0.40)' }}
+                    className="font-mono text-xs px-3 py-2 rounded cursor-default transition-all duration-200"
+                    style={{
+                      color: 'var(--color-text)',
+                      background: 'linear-gradient(180deg, rgba(31,40,51,0.5) 0%, rgba(11,12,16,0.6) 100%)',
+                      border: '1px solid rgba(102,252,241,0.12)',
+                      borderRadius: 'var(--radius-sm)',
+                    }}
                   >
-                    <kbd className="hidden group-hover:inline">⌘</kbd>
                     {skill}
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           ))}
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import {
   HeroSection,
   TryHackMeTracker,
@@ -9,56 +10,67 @@ import {
 } from './components/cipher';
 import { TerminalBackground } from './components/vfx';
 
+const sectionVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
 function ScrollReveal({ children, className = '', delay = 0 }) {
   const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setVisible(true), delay);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [delay]);
 
   return (
-    <div ref={ref} className={`reveal-on-scroll ${visible ? 'visible' : ''} ${className}`}>
+    <motion.div
+      ref={ref}
+      className={className}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-60px' }}
+      variants={sectionVariants}
+      transition={{ delay: delay / 1000 }}
+    >
       {children}
-    </div>
+    </motion.div>
   );
 }
 
 function App() {
   return (
-    <div className="relative text-white overflow-x-hidden min-h-screen" style={{ background: 'var(--color-bg)' }}>
+    <div
+      className="relative text-white overflow-x-hidden min-h-screen"
+      style={{ background: 'var(--color-bg)' }}
+    >
       {/* Single-canvas background: matrix rain + particle web + scanline sweep */}
       <TerminalBackground opacity={0.06} />
 
       <SideNav />
 
-      <main className="md:mr-20 relative flex flex-col items-center" style={{ zIndex: 'var(--z-content)' }}>
+      <main
+        className="md:mr-20 relative flex flex-col items-center"
+        style={{ zIndex: 'var(--z-content)' }}
+      >
         <HeroSection />
+
+        {/* TryHackMe section */}
         <ScrollReveal delay={100}>
-          <section className="py-20 px-6 md:px-8 w-full">
-            <div className="max-w-6xl mx-auto">
+          <section className="rice-section w-full">
+            <div className="max-w-6xl mx-auto acrylic-card p-0">
               <TryHackMeTracker />
             </div>
           </section>
         </ScrollReveal>
+
         <ScrollReveal delay={150} className="w-full">
           <CapabilitiesSection />
         </ScrollReveal>
+
         <ScrollReveal delay={200} className="w-full">
           <AchievementGallery />
         </ScrollReveal>
+
         <ScrollReveal delay={250} className="w-full">
           <Footer />
         </ScrollReveal>

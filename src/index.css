@@ -61,7 +61,7 @@ body {
 }
 
 /* ============================================================
-   KEYFRAMES
+   KEYFRAMES — GPU-friendly: transform + opacity only
    ============================================================ */
 
 /* Scanline sweep — used on hero name */
@@ -71,7 +71,7 @@ body {
   100% { transform: translateY(100%); opacity: 0.2; }
 }
 
-/* Terminal cursor blink */
+/* Terminal cursor blink — GPU-friendly opacity-only */
 @keyframes blink {
   0%, 49.9% { opacity: 1; }
   50%, 100% { opacity: 0; }
@@ -81,6 +81,39 @@ body {
 @keyframes matrix-fall {
   0%   { transform: translateY(-100%); }
   100% { transform: translateY(100vh); }
+}
+
+/* Active window border glow — border-color only, no box-shadow repaints */
+@keyframes active-border-glow {
+  0%, 100% { border-color: rgba(102, 252, 241, 0.10); }
+  50%      { border-color: rgba(102, 252, 241, 0.30); }
+}
+
+/* RGB-split glitch on hover — 1-2 frames */
+@keyframes glitch-rgb-1 {
+  0%   { text-shadow: none; transform: none; }
+  15%  { text-shadow: -2px 0 #ff3333, 2px 0 #3b82f6; transform: translate(-1px, 0.5px); }
+  30%  { text-shadow: 1.5px 0 #ff3333, -1.5px 0 #3b82f6; transform: translate(0.5px, -0.5px); }
+  50%  { text-shadow: none; transform: none; }
+}
+
+@keyframes glitch-rgb-2 {
+  0%   { text-shadow: none; transform: none; }
+  20%  { text-shadow: 1.5px -0.5px #ff3333, -1.5px 0.5px #22c55e; transform: translate(0.5px, -0.5px); }
+  40%  { text-shadow: -1px 0.5px #3b82f6, 1px -0.5px #ff3333; transform: translate(-0.5px, 0.5px); }
+  60%  { text-shadow: none; transform: none; }
+}
+
+/* Cursor pulse for crosshair */
+@keyframes cursor-pulse {
+  0%, 100% { opacity: 0.65; }
+  50%      { opacity: 1; }
+}
+
+/* Terminal prompt blink */
+@keyframes prompt-cursor-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
 }
 
 /* ============================================================
@@ -129,24 +162,64 @@ body {
 }
 
 /* ============================================================
-   CURSOR — minimal crosshair, CSS-only, zero JS
+   RICE GAPS — Standardized 1rem margin between all major blocks
    ============================================================ */
-html {
-  cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><line x1='12' y1='0' x2='12' y2='10' stroke='%2300ff41' stroke-width='0.5' opacity='0.8'/><line x1='12' y1='14' x2='12' y2='24' stroke='%2300ff41' stroke-width='0.5' opacity='0.8'/><line x1='0' y1='12' x2='10' y2='12' stroke='%2300ff41' stroke-width='0.5' opacity='0.8'/><line x1='14' y1='12' x2='24' y2='12' stroke='%2300ff41' stroke-width='0.5' opacity='0.8'/></svg>") 12 12, crosshair;
+.rice-gap {
+  margin: 1rem;
 }
-a, button, [role="button"], input, textarea, select {
-  cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><line x1='12' y1='0' x2='12' y2='10' stroke='%2300ff41' stroke-width='0.5' opacity='0.8'/><line x1='12' y1='14' x2='12' y2='24' stroke='%2300ff41' stroke-width='0.5' opacity='0.8'/><line x1='0' y1='12' x2='10' y2='12' stroke='%2300ff41' stroke-width='0.5' opacity='0.8'/><line x1='14' y1='12' x2='24' y2='12' stroke='%2300ff41' stroke-width='0.5' opacity='0.8'/></svg>") 12 12, crosshair;
+
+@media (min-width: 768px) {
+  .rice-gap {
+    margin: 1rem;
+  }
 }
 
 /* ============================================================
+   GLASS CARD — Semi-transparent obsidian + minimal backdrop blur
+   Hardware-accelerated: GPU layer via translateZ, minimal blur
+   ============================================================ */
+.acrylic-card {
+  background-color: rgba(11, 12, 16, 0.55);
+  border-radius: 8px;
+  border: 1px solid var(--color-accent-dim);
+  /* Minimal blur — heavy backdrop-filter tanks scroll perf */
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  /* Promote to GPU layer */
+  transform: translateZ(0);
+}
+
+/* Fallback for browsers without backdrop-filter */
+@supports not (backdrop-filter: blur(1px)) {
+  .acrylic-card {
+    background-color: rgba(11, 12, 16, 0.72);
+  }
+}
+
+/* ============================================================
+   ACTIVE WINDOW BORDER — border-color animation, no box-shadow
+   ============================================================ */
+.rice-active-window {
+  border: 1px solid var(--color-accent-dim);
+  border-radius: 8px;
+  animation: active-border-glow 3.5s ease-in-out infinite;
+  will-change: border-color;
+}
+
+/* ============================================================
+   CURSOR — Standard system cursors for maximum performance
+   ============================================================ */
+
+/* ============================================================
    SCANLINE OVERLAY — shared by all pages
+   GPU-composited via will-change
    ============================================================ */
 .scanline-overlay {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: var(--z-scanline);
-  opacity: 0.04;
+  opacity: 0.03;
   background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 4px);
 }
 
@@ -236,7 +309,8 @@ a, button, [role="button"], input, textarea, select {
   line-height: 1.1;
   letter-spacing: 0.1em;
   color: var(--color-accent);
-  text-shadow: 0 0 10px rgba(0,255,65,0.4), 0 0 30px rgba(0,255,65,0.15);
+  /* Static text-shadow — not animated, no repaint cost */
+  text-shadow: 0 0 10px rgba(102, 252, 241, 0.35), 0 0 30px rgba(102, 252, 241, 0.12);
   margin-bottom: 0.25rem;
   position: relative;
 }
@@ -348,9 +422,11 @@ a, button, [role="button"], input, textarea, select {
 /* ---- terminal bio card ---- */
 .hero-card {
   border: 1px solid var(--color-accent-ghost);
-  background-color: rgba(0,0,0,0.3);
+  background-color: rgba(11, 12, 16, 0.4);
   border-radius: var(--radius-lg);
   padding: 1.25rem;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .hero-card-header {
@@ -369,9 +445,9 @@ a, button, [role="button"], input, textarea, select {
   opacity: 0.6;
 }
 
-.hero-card-dot.red    { background-color: #ef4444; }
-.hero-card-dot.yellow { background-color: #eab308; }
-.hero-card-dot.green  { background-color: #22c55e; }
+.hero-card-dot.red    { background-color: var(--accent-red); }
+.hero-card-dot.yellow { background-color: var(--accent-yellow); }
+.hero-card-dot.green  { background-color: var(--accent-green); }
 
 .hero-card-prompt {
   font-family: var(--font-mono);
@@ -399,7 +475,7 @@ a, button, [role="button"], input, textarea, select {
   gap: 0.75rem;
   padding: 0.625rem 1rem;
   border: 1px solid var(--color-border);
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(11, 12, 16, 0.3);
   border-radius: var(--radius-md);
   transition: border-color var(--duration-normal);
 }
@@ -408,7 +484,7 @@ a, button, [role="button"], input, textarea, select {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   color: var(--color-accent);
-  opacity: 0.5;
+  opacity: 0.6;
   width: 5rem;
   flex-shrink: 0;
 }
@@ -454,7 +530,7 @@ a, button, [role="button"], input, textarea, select {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   color: var(--color-accent);
-  opacity: 0.4;
+  opacity: 0.5;
   letter-spacing: 0.3em;
   white-space: nowrap;
 }
@@ -462,7 +538,7 @@ a, button, [role="button"], input, textarea, select {
 .hero-pathways-line {
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, rgba(0,255,65,0.2), transparent);
+  background: linear-gradient(90deg, rgba(102, 252, 241, 0.2), transparent);
 }
 
 .hero-pathways-grid {
@@ -478,12 +554,17 @@ a, button, [role="button"], input, textarea, select {
 .hero-pathway-card {
   padding: 1.25rem;
   border: 1px solid var(--color-border);
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(11, 12, 16, 0.3);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   border-radius: var(--radius-lg);
-  transition: border-color var(--duration-normal);
+  transition: border-color var(--duration-normal), transform var(--duration-fast) var(--ease-out);
 }
 
-.hero-pathway-card:hover { border-color: var(--color-accent-dim); }
+.hero-pathway-card:hover {
+  border-color: var(--color-accent-dim);
+  transform: translateY(-2px);
+}
 
 .hero-pathway-icon {
   font-family: var(--font-mono);
@@ -581,7 +662,7 @@ a, button, [role="button"], input, textarea, select {
    GLITCH / TERMINAL HOVER EFFECTS
    ============================================================ */
 
-/* Subtle glitch on hover — 3px shift + color flash */
+/* Subtle glitch shift on hover */
 .glitch-hover {
   transition: transform 0.08s ease, box-shadow 0.08s ease, color 0.08s ease;
 }
@@ -589,19 +670,430 @@ a, button, [role="button"], input, textarea, select {
   transform: translate(-1px, 1px);
 }
 
-/* Terminal bracket reveal on hover */
-[data-hover-brackets]:hover::before {
-  content: '[ ';
-  color: var(--color-accent);
-  opacity: 0.7;
+/* RGB-split glitch on text links — fast 1-2 frame effect on hover */
+.glitch-text-hover {
+  transition: text-shadow 0.06s ease;
 }
-[data-hover-brackets]:hover::after {
-  content: ' ]';
-  color: var(--color-accent);
-  opacity: 0.7;
+.glitch-text-hover:hover {
+  animation: glitch-rgb-1 0.15s steps(2) forwards;
 }
 
 /* Color inversion flash on clickable elements */
 a:hover, button:hover, [role="button"]:hover {
   transition: color var(--duration-fast) ease, background-color var(--duration-fast) ease;
+}
+
+/* ============================================================
+   RICE SECTION WRAPPER — consistent 1rem gaps between blocks
+   ============================================================ */
+.rice-section {
+  margin: 1rem;
+}
+
+@media (min-width: 768px) {
+  .rice-section {
+    margin: 1rem;
+  }
+}
+
+/* ============================================================
+   HYPRLAND TERMINAL SIMULATION — full-width interactive section
+   ============================================================ */
+.terminal-sim-section {
+  position: relative;
+  width: 100%;
+  margin: 1rem;
+  max-width: calc(100% - 2rem);
+}
+
+.terminal-sim-window {
+  position: relative;
+  width: 100%;
+  background-color: rgba(11, 12, 16, 0.50);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid var(--color-accent-dim);
+  border-radius: 8px;
+  overflow: hidden;
+  transform: translateZ(0);
+  will-change: transform;
+  box-shadow: 0 0 20px rgba(102, 252, 241, 0.04), 0 4px 32px rgba(0, 0, 0, 0.5);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .terminal-sim-window {
+    background-color: rgba(11, 12, 16, 0.65);
+  }
+}
+
+/* Title bar — Hyprland-style */
+.terminal-sim-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background-color: rgba(11, 12, 16, 0.5);
+  border-bottom: 1px solid var(--color-accent-ghost);
+  user-select: none;
+}
+
+.terminal-sim-title {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  letter-spacing: 0.15em;
+}
+
+.terminal-sim-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.terminal-sim-dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+}
+
+.terminal-sim-dot.red   { background-color: var(--accent-red); }
+.terminal-sim-dot.amber { background-color: var(--accent-yellow); }
+.terminal-sim-dot.green { background-color: var(--accent-green); }
+
+/* Terminal body */
+.terminal-sim-body {
+  padding: 1.5rem;
+  min-height: 320px;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--color-text);
+  overflow-y: auto;
+  max-height: 600px;
+}
+
+.terminal-sim-body::-webkit-scrollbar {
+  width: 4px;
+}
+.terminal-sim-body::-webkit-scrollbar-thumb {
+  background: var(--color-accent-dim);
+  border-radius: 2px;
+}
+
+/* Terminal lines */
+.terminal-line {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 0.15rem;
+  opacity: 0;
+  animation: terminal-line-in 0.12s ease forwards;
+}
+
+@keyframes terminal-line-in {
+  from { opacity: 0; transform: translateY(3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Terminal prompt */
+.terminal-prompt {
+  color: var(--color-accent);
+  white-space: pre;
+  flex-shrink: 0;
+}
+
+.terminal-prompt-user {
+  color: var(--accent-green);
+}
+
+.terminal-prompt-at {
+  color: var(--color-muted);
+}
+
+.terminal-prompt-host {
+  color: var(--accent-blue);
+}
+
+.terminal-prompt-tilde {
+  color: var(--color-accent);
+}
+
+.terminal-prompt-hash {
+  color: var(--color-danger);
+}
+
+/* Terminal command */
+.terminal-cmd {
+  color: var(--color-white);
+  white-space: pre;
+}
+
+/* Terminal output */
+.terminal-output {
+  color: var(--color-text);
+  padding-left: 0;
+  margin-bottom: 0.5rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Terminal cursor inline */
+.terminal-cursor-inline {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  background-color: var(--color-accent);
+  vertical-align: text-bottom;
+  margin-left: 1px;
+  animation: prompt-cursor-blink 0.7s step-end infinite;
+}
+
+/* Decrypt/resolve character transition — inherits from DecryptText */
+.decrypt-output {
+  display: inline;
+}
+
+/* Terminal section header */
+.terminal-sim-section-header {
+  text-align: left;
+  margin-bottom: 1rem;
+  padding: 0 0.5rem;
+}
+
+.terminal-sim-section-title {
+  font-family: var(--font-mono);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-white);
+  margin-bottom: 0.25rem;
+}
+
+.terminal-sim-section-subtitle {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  letter-spacing: 0.15em;
+}
+
+/* ============================================================
+   FASTFETCH TERMINAL WINDOW (Cipher Protocol)
+   ============================================================ */
+
+/* Window container */
+.fastfetch-window {
+  position: relative;
+  width: 100%;
+  background-color: var(--color-surface);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Title bar — macOS-style Hyprland */
+.ff-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background-color: rgba(11, 12, 16, 0.8);
+  border-bottom: 1px solid var(--color-border);
+  user-select: none;
+}
+
+.ff-titlebar-title {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  letter-spacing: 0.1em;
+}
+
+.ff-titlebar-dots {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.ff-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.ff-dot-red   { background-color: var(--accent-red); }
+.ff-dot-yellow { background-color: var(--accent-yellow); }
+.ff-dot-green  { background-color: var(--accent-green); }
+
+/* Terminal body */
+.ff-body {
+  padding: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.65;
+  color: var(--color-text);
+  overflow-y: auto;
+  max-height: 700px;
+}
+
+.ff-body::-webkit-scrollbar { width: 4px; }
+.ff-body::-webkit-scrollbar-thumb {
+  background: var(--color-accent-dim);
+  border-radius: 2px;
+}
+
+/* Intro line */
+.ff-intro-line {
+  color: var(--color-muted);
+  font-size: var(--text-xs);
+  margin-bottom: 0.75rem;
+  opacity: 0.6;
+}
+
+/* Command line */
+.fastfetch-cmd-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.fastfetch-prompt {
+  white-space: pre;
+  flex-shrink: 0;
+}
+
+.ff-prompt-user   { color: var(--accent-green); }
+.ff-prompt-at     { color: var(--color-muted); }
+.ff-prompt-tilde  { color: var(--color-accent); }
+.ff-prompt-hash   { color: var(--accent-red); }
+
+.fastfetch-cmd {
+  color: var(--color-white);
+  white-space: pre;
+}
+
+.fastfetch-cursor-inline {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  background-color: var(--color-accent);
+  vertical-align: text-bottom;
+  margin-left: 1px;
+  animation: prompt-cursor-blink 0.7s step-end infinite;
+}
+
+/* Two-column fastfetch layout */
+.fastfetch-layout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.5rem;
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 640px) {
+  .fastfetch-layout {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* Left column — ASCII art */
+.ff-left-col {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 0.25rem;
+}
+
+.ff-ascii {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  line-height: 1.25;
+  white-space: pre;
+  margin: 0;
+  user-select: none;
+}
+
+/* Right column — data blocks */
+.ff-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Data block */
+.fastfetch-block {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.55;
+}
+
+.ff-block-top,
+.ff-block-bottom {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.05em;
+  white-space: pre;
+  margin-bottom: 0.125rem;
+}
+
+.ff-block-bottom {
+  margin-top: 0.125rem;
+  margin-bottom: 0;
+}
+
+/* Data row */
+.ff-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-left: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.ff-row-connector {
+  flex-shrink: 0;
+  margin-right: 0.35rem;
+}
+
+.ff-row-icon {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+}
+
+.ff-row-label {
+  flex-shrink: 0;
+  font-weight: 500;
+}
+
+.ff-row-value {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ============================================================
+   RESPONSIVE TERMINAL
+   ============================================================ */
+@media (max-width: 640px) {
+  .terminal-sim-body {
+    padding: 1rem;
+    font-size: var(--text-xs);
+    min-height: 240px;
+  }
+
+  .terminal-sim-section {
+    margin: 1rem;
+  }
+
+  .ff-body {
+    padding: 1rem;
+    max-height: 500px;
+  }
+
+  .ff-ascii {
+    font-size: 0.5rem;
+    line-height: 1.15;
+  }
+
+  .ff-left-col {
+    display: none;
+  }
 }

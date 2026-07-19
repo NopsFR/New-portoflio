@@ -2,19 +2,17 @@ import React, { useEffect, useState } from 'react';
 
 export const ScanlineOverlay = () => {
   return (
-    <div className="fixed inset-0 pointer-events-none opacity-20">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyber-lime to-transparent opacity-0 animate-scan-line h-1"></div>
-    </div>
+    <div className="fixed inset-0 pointer-events-none scanline-overlay" />
   );
 };
 
 export const GridBackground = () => {
   return (
-    <div className="fixed inset-0 pointer-events-none opacity-5 bg-obsidian">
+    <div className="fixed inset-0 pointer-events-none" style={{ opacity: 0.05 }}>
       <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
-            <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#CCFF00" strokeWidth="0.5"/>
+            <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#66FCF1" strokeWidth="0.5"/>
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#grid)" />
@@ -39,7 +37,7 @@ export const Clock = () => {
   }, []);
 
   return (
-    <div className="font-mono text-cyber-lime text-xs tracking-wider">
+    <div className="font-mono text-xs tracking-wider" style={{ color: 'var(--color-accent)' }}>
       GMT: {time}
     </div>
   );

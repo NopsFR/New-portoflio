@@ -54,23 +54,36 @@ export const SideNav = () => {
     }
   };
 
+  const accentColor = 'var(--color-accent)';
+
   return (
     <>
       {/* Mobile bottom nav */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#0a0a0f]/95 backdrop-blur-md border-t border-[#00ff41]/20 z-40 flex justify-around py-3 px-4">
+      <nav
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 flex justify-around py-3 px-4"
+        style={{
+          backgroundColor: 'rgba(11,12,16,0.95)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          borderTop: '1px solid var(--color-accent-dim)',
+        }}
+      >
         {profileData.sections.map((section) => (
           <button
             key={section.id}
             onClick={() => scrollToSection(section.id)}
-            className={`flex flex-col items-center gap-1 transition-all duration-300 ${
-              activeSection === section.id
-                ? 'text-[#00ff41] scale-110'
-                : 'text-gray-500 hover:text-[#00ff41]/70'
-            }`}
+            className="flex flex-col items-center gap-1 transition-all duration-300"
+            style={{
+              color: activeSection === section.id
+                ? accentColor
+                : 'var(--color-muted)',
+              transform: activeSection === section.id ? 'scale(1.1)' : 'scale(1)',
+            }}
           >
-            <div className={`transition-transform duration-300 ${
-              activeSection === section.id ? 'scale-110' : 'scale-100'
-            }`}>
+            <div
+              className="transition-transform duration-300"
+              style={{ transform: activeSection === section.id ? 'scale(1.1)' : 'scale(1)' }}
+            >
               {navIcons[section.number] || (
                 <span className="font-mono text-xs font-bold">{section.number}</span>
               )}
@@ -79,40 +92,72 @@ export const SideNav = () => {
               {section.name.split(' ')[0]}
             </span>
             {activeSection === section.id && (
-              <div className="w-1 h-1 rounded-full bg-[#00ff41] shadow-[0_0_6px_#00ff41]" />
+              <div
+                className="w-1 h-1 rounded-full"
+                style={{
+                  backgroundColor: accentColor,
+                  boxShadow: '0 0 6px rgba(102,252,241,0.6)',
+                }}
+              />
             )}
           </button>
         ))}
       </nav>
 
       {/* Desktop right side nav */}
-      <nav className="hidden md:flex fixed right-0 top-0 h-screen w-20 bg-[#050505]/90 backdrop-blur-sm border-l border-[#00ff41]/20 flex-col items-center justify-center gap-10 z-40 px-2">
+      <nav
+        className="hidden md:flex fixed right-0 top-0 h-screen w-20 flex-col items-center justify-center gap-10 z-40 px-2"
+        style={{
+          backgroundColor: 'rgba(11,12,16,0.85)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          borderLeft: '1px solid var(--color-accent-dim)',
+        }}
+      >
         {profileData.sections.map((section) => (
           <button
             key={section.id}
             onClick={() => scrollToSection(section.id)}
             onMouseEnter={() => setHoveredItem(section.id)}
             onMouseLeave={() => setHoveredItem(null)}
-            className={`flex flex-col items-center gap-2 transition-all duration-300 group relative ${
-              activeSection === section.id
-                ? 'text-[#00ff41] drop-shadow-[0_0_10px_rgba(0,255,65,0.5)]'
-                : 'text-gray-500 hover:text-[#00ff41]/70'
-            }`}
+            className="flex flex-col items-center gap-2 transition-all duration-300 group relative"
+            style={{
+              color: activeSection === section.id
+                ? accentColor
+                : 'var(--color-muted)',
+              filter: activeSection === section.id
+                ? 'drop-shadow(0 0 10px rgba(102,252,241,0.5))'
+                : 'none',
+            }}
             title={section.name}
           >
             {/* Active indicator line */}
             {activeSection === section.id && (
-              <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-0.5 h-8 bg-[#00ff41] rounded-full shadow-[0_0_8px_#00ff41] animate-pulse" />
+              <div
+                className="absolute -left-3 top-1/2 -translate-y-1/2 w-0.5 h-8 rounded-full animate-pulse"
+                style={{
+                  backgroundColor: accentColor,
+                  boxShadow: '0 0 8px rgba(102,252,241,0.6)',
+                }}
+              />
             )}
 
             {/* Hover glow */}
             {hoveredItem === section.id && activeSection !== section.id && (
-              <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-[#00ff41]/30 rounded-full" />
+              <div
+                className="absolute -left-2 top-1/2 -translate-y-1/2 w-0.5 h-4 rounded-full"
+                style={{ backgroundColor: 'var(--color-accent-dim)' }}
+              />
             )}
 
-            <div className={`transition-transform duration-300 ${
-              activeSection === section.id ? 'scale-110' : 'scale-100 group-hover:scale-105'
-            }`}>
+            <div
+              className="transition-transform duration-300"
+              style={{
+                transform: activeSection === section.id
+                  ? 'scale(1.1)'
+                  : 'scale(1)',
+              }}
+            >
               <div className="font-mono text-xs font-bold mb-1 text-center">
                 {section.number}
               </div>
@@ -121,9 +166,7 @@ export const SideNav = () => {
                   <span
                     key={i}
                     className="font-mono text-[11px] font-bold leading-none"
-                    style={{
-                      animationDelay: `${i * 0.03}s`,
-                    }}
+                    style={{ animationDelay: `${i * 0.03}s` }}
                   >
                     {char}
                   </span>

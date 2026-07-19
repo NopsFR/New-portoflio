@@ -7,9 +7,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        obsidian: '#050505',
-        'cyber-lime': '#CCFF00',
-        'cyber-dark': '#0a0a0a',
+        obsidian: '#0B0C10',
+        charcoal: '#1F2833',
+        overlay: '#252A35',
+        border: '#2A3340',
+        'neon-cyan': '#66FCF1',
+        'teal': '#45A29E',
+        'electric-purple': '#C084FC',
+        'cyber-blue': '#60A5FA',
+        'success-green': '#4ADE80',
+        'text-primary': '#C5C6C7',
+        'text-muted': '#6B7280',
+        'text-high': '#E5E7EB',
       },
       fontFamily: {
         'mono': ['JetBrains Mono', 'monospace'],
@@ -21,34 +30,37 @@ export default {
       },
       keyframes: {
         'scan-line': {
-          '0%': { transform: 'translateY(-100%)', opacity: '0.5' },
-          '50%': { opacity: '0.8' },
-          '100%': { transform: 'translateY(100%)', opacity: '0.5' },
+          '0%': { transform: 'translateY(-100%)', opacity: '0.3' },
+          '50%': { opacity: '0.6' },
+          '100%': { transform: 'translateY(100%)', opacity: '0.3' },
         },
-        'pulse-lime': {
-          '0%, 100%': { boxShadow: '0 0 0 0 rgba(204, 255, 0, 0.7)' },
-          '50%': { boxShadow: '0 0 0 10px rgba(204, 255, 0, 0)' },
+        'pulse-glow': {
+          '0%, 100%': { opacity: '0.6', transform: 'scale(1)' },
+          '50%': { opacity: '1', transform: 'scale(1.02)' },
         },
-        'grid-fade': {
-          '0%': { opacity: '0.05' },
-          '100%': { opacity: '0.1' },
+        'border-glow': {
+          '0%, 100%': { borderColor: 'rgba(102,252,241,0.15)' },
+          '50%': { borderColor: 'rgba(102,252,241,0.40)' },
         },
       },
       animation: {
         'scan-line': 'scan-line 4s linear infinite',
-        'pulse-lime': 'pulse-lime 2s infinite',
-        'grid-fade': 'grid-fade 6s ease-in-out infinite',
-      },
-      backdropFilter: {
-        'none': 'none',
-        'sm': 'blur(4px)',
+        'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
+        'border-glow': 'border-glow 3.5s ease-in-out infinite',
       },
     },
   },
   plugins: [],
   safelist: [
-    { pattern: /bg-cyber-lime/ },
-    { pattern: /text-cyber-lime/ },
-    { pattern: /border-cyber-lime/ },
+    'bg-obsidian',
+    'bg-charcoal',
+    'bg-overlay',
+    'text-neon-cyan',
+    'text-electric-purple',
+    'text-cyber-blue',
+    'border-neon-cyan',
+    'border-electric-purple',
+    'border-cyber-blue',
+    'border-success-green',
   ],
 }

@@ -80,7 +80,7 @@ export default function TerminalBackground({ opacity = 0.06 }) {
 
     const draw = () => {
       /* 1. Fade previous frame (trail effect) */
-      ctx.fillStyle = `rgba(5,5,5,0.18)`;
+      ctx.fillStyle = `rgba(11,12,16,0.20)`;
       ctx.fillRect(0, 0, w, h);
 
       const mouse = mouseRef.current;
@@ -94,12 +94,12 @@ export default function TerminalBackground({ opacity = 0.06 }) {
         const y = d.y;
 
         // leading character (bright)
-        ctx.fillStyle = `rgba(0,255,65,${0.45 * opacity})`;
+        ctx.fillStyle = `rgba(102,252,241,${0.45 * opacity})`;
         ctx.fillText(char, x, y);
 
         // trail
         for (let j = 1; j <= TRAIL_LEN; j++) {
-          ctx.fillStyle = `rgba(0,255,65,${(0.35 * opacity) / (j + 1)})`;
+          ctx.fillStyle = `rgba(102,252,241,${(0.35 * opacity) / (j + 1)})`;
           ctx.fillText(
             MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)],
             x,
@@ -132,7 +132,7 @@ export default function TerminalBackground({ opacity = 0.06 }) {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0,255,65,${0.15 * opacity})`;
+        ctx.fillStyle = `rgba(102,252,241,${0.15 * opacity})`;
         ctx.fill();
 
         // connections near mouse
@@ -140,7 +140,7 @@ export default function TerminalBackground({ opacity = 0.06 }) {
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(mouse.x, mouse.y);
-          ctx.strokeStyle = `rgba(0,255,65,${(0.12 * opacity) * (1 - dist / 180)})`;
+          ctx.strokeStyle = `rgba(102,252,241,${(0.12 * opacity) * (1 - dist / 180)})`;
           ctx.lineWidth = 0.5;
           ctx.stroke();
         }
@@ -148,7 +148,7 @@ export default function TerminalBackground({ opacity = 0.06 }) {
 
       /* 4. Scanline sweep */
       scanY = (scanY + 2.5) % h;
-      ctx.fillStyle = `rgba(0,255,65,${0.025})`;
+      ctx.fillStyle = `rgba(102,252,241,${0.025})`;
       ctx.fillRect(0, scanY, w, 2);
 
       rafRef.current = requestAnimationFrame(draw);

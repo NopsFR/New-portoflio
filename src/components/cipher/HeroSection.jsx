@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import { profileData } from '../../lib/profileData';
 
 /* ------------------------------------------------------------------ */
@@ -29,8 +30,8 @@ function TerminalClock() {
 /* ------------------------------------------------------------------ */
 const HEX_CHARS    = '0123456789ABCDEF';
 const TARGET       = 'OSCAR SENIOR';
-const FRAMES_PER   = 4;          // frames per character resolve
-const START_LAG    = 6;          // frames before first resolve
+const FRAMES_PER   = 4;
+const START_LAG    = 6;
 
 function HackerTitle() {
   const spanRef   = useRef(null);
@@ -83,6 +84,43 @@ function HackerTitle() {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Staggered entrance animation variants                             */
+/* ------------------------------------------------------------------ */
+const staggerContainer = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.1, delayChildren: 0.3 },
+  },
+};
+
+const fadeSlideUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
+const fadeSlideLeft = {
+  hidden: { opacity: 0, x: -50 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
+const fadeSlideRight = {
+  hidden: { opacity: 0, x: 50 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
+/* ------------------------------------------------------------------ */
 /*  HeroSection                                                        */
 /* ------------------------------------------------------------------ */
 const HACK_PHRASES = ['BREACH', 'EXPLOIT', 'PERSIST', 'EXFILTRATE', 'DOMINATE'];
@@ -97,9 +135,14 @@ export const HeroSection = () => {
 
   return (
     <section id="bio" className="hero-section">
-      <div className="hero-section-inner">
+      <motion.div
+        className="hero-section-inner"
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+      >
         {/* ── Top bar ── */}
-        <div className="hero-topbar">
+        <motion.div className="hero-topbar" variants={fadeSlideUp}>
           <div>
             <div className="hero-status-line">
               <span className="hero-status-dot" />
@@ -108,7 +151,6 @@ export const HeroSection = () => {
               <span className="hero-status-phrase">{HACK_PHRASES[phraseIdx]}</span>
             </div>
 
-            {/* Title with rAF character resolve */}
             <HackerTitle />
 
             <p className="hero-subtitle">PENETRATION TESTER · RED TEAM OPERATOR</p>
@@ -128,11 +170,11 @@ export const HeroSection = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* ── Bio + Stats ── */}
-        <div className="hero-grid">
-          <div className="reveal-on-scroll-left">
+        <motion.div className="hero-grid" variants={staggerContainer}>
+          <motion.div variants={fadeSlideLeft}>
             <div className="hero-card">
               <div className="hero-card-header">
                 <span className="hero-card-dot red" />
@@ -146,9 +188,9 @@ export const HeroSection = () => {
                 <span className="hero-card-cursor animate-blink">█</span>
               </p>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="reveal-on-scroll-right hero-stats">
+          <motion.div className="hero-stats" variants={fadeSlideRight}>
             {[
               ['LOCATION', profileData.location],
               ['RANK',     `${profileData.tryhackme.rank} · ${profileData.tryhackme.tier}`],
@@ -161,35 +203,37 @@ export const HeroSection = () => {
                 <span className="hero-stat-indicator" />
               </div>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* ── Pathways ── */}
-        <div className="hero-pathways reveal-on-scroll">
+        <motion.div className="hero-pathways" variants={fadeSlideUp}>
           <div className="hero-pathways-header">
             <span className="hero-pathways-title">COMPLETED PATHWAYS</span>
             <div className="hero-pathways-line" />
           </div>
           <div className="hero-pathways-grid">
-            {profileData.pathways.map(p => (
-              <div key={p.name} className="hero-pathway-card">
+            {profileData.pathways.map((p, i) => (
+              <motion.div
+                key={p.name}
+                className="hero-pathway-card"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              >
                 <div className="hero-pathway-icon">[{p.icon.toUpperCase()}]</div>
                 <h3 className="hero-pathway-name">{p.name}</h3>
                 <p className="hero-pathway-date">Completed: {p.completed}</p>
                 <div className="hero-pathway-bar">
                   <div className="hero-pathway-fill" />
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        {/* ── Scroll hint ── */}
-        <div className="hero-scroll-hint">
-          <span className="hero-scroll-label">SCROLL</span>
-          <div className="hero-scroll-arrow" />
-        </div>
-      </div>
+      </motion.div>
     </section>
   );
 };
